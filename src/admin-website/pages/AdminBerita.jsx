@@ -6,10 +6,19 @@ import AdminLayout from '../components/AdminLayout';
 export default function AdminBerita() {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState('berita');
-  const [items, setItems] = useState([
-    { id: 1, title: 'Kegiatan Literasi Sekolah', date: '29 Apr 2026', status: 'Publik' },
-    { id: 2, title: 'Kunjungan Komunitas', date: '28 Apr 2026', status: 'Draft' },
-  ]);
+  const [items, setItems] = useState(() => {
+    const savedItems = localStorage.getItem('adminBeritaItems');
+    return savedItems ? JSON.parse(savedItems) : [
+      { id: 1, title: 'Perpusnas Kawal Ombudsman Sinkronisasi Aset Bantuan', date: '2026-04-28', status: 'Publik', category: 'Berita', excerpt: 'Dinas Perpustakaan dan Arsip Kabupaten Penajam Paser Utara mengikuti serangkaian kegiatan sinkronisasi aset dengan pihak Ombudsman untuk memastikan semua bantuan tercatat dengan baik.', image: 'https://via.placeholder.com/600x400?text=Berita+1' },
+      { id: 2, title: 'Semangat Kartini di Dunia Literasi dan Pendidikan Perempuan', date: '2026-04-27', status: 'Publik', category: 'Berita', excerpt: 'Peringatan Hari Kartini tahun ini menghadirkan tema tentang pendidikan dan literasi perempuan di era digital.', image: 'https://via.placeholder.com/600x400?text=Berita+2' },
+      { id: 3, title: 'Perpusnas dan Pimpinan Pusat Aisyiyah Perluas Gerakan Literasi Berkarakter', date: '2026-04-27', status: 'Draft', category: 'Berita', excerpt: 'Kolaborasi strategis antara Perpustakaan Nasional dan Aisyiyah untuk memperluas akses literasi kepada masyarakat luas.', image: 'https://via.placeholder.com/600x400?text=Berita+3' },
+    ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('adminBeritaItems', JSON.stringify(items));
+  }, [items]);
+
   const [modalState, setModalState] = useState({ isOpen: false, type: 'view', item: null });
   const [successState, setSuccessState] = useState({ isOpen: false, message: '' });
 
@@ -30,6 +39,9 @@ export default function AdminBerita() {
       title: formData.get('title')?.toString() || '',
       date: formData.get('date')?.toString() || '',
       status: formData.get('status')?.toString() || 'Draft',
+      category: formData.get('category')?.toString() || 'Berita', // Added category
+      excerpt: formData.get('excerpt')?.toString() || '', // Added excerpt
+      image: formData.get('image')?.toString() || 'https://via.placeholder.com/600x400?text=New+Berita', // Added image
     };
 
     setItems((currentItems) => {
@@ -137,6 +149,18 @@ export default function AdminBerita() {
                         <option value="Publik">Publik</option>
                         <option value="Draft">Draft</option>
                       </select>
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">Kategori</label>
+                      <input name="category" defaultValue={modalState.item?.category || ''} disabled={modalState.type === 'view'} className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" />
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">Ringkasan</label>
+                      <textarea name="excerpt" defaultValue={modalState.item?.excerpt || ''} disabled={modalState.type === 'view'} rows="3" className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50"></textarea>
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">URL Gambar</label>
+                      <input name="image" defaultValue={modalState.item?.image || ''} disabled={modalState.type === 'view'} className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" />
                     </div>
                   </>
                 )}

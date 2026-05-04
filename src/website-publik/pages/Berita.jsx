@@ -1,60 +1,37 @@
+import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageBanner from '../components/PageBanner';
 import { Calendar } from 'lucide-react';
 
-const beritaList = [
-  {
-    id: 1,
-    title: 'Perpusnas Kawal Ombudsman Sinkronisasi Aset Bantuan',
-      date: '2026-04-28',
-      category: 'Berita',
-      excerpt: 'Dinas Perpustakaan dan Arsip Kabupaten Penajam Paser Utara mengikuti serangkaian kegiatan sinkronisasi aset dengan pihak Ombudsman untuk memastikan semua bantuan tercatat dengan baik.',
-      image: 'https://via.placeholder.com/600x400?text=Berita+1',
-    },
-    {
-      id: 2,
-      title: 'Semangat Kartini di Dunia Literasi dan Pendidikan Perempuan',
-      date: '2026-04-27',
-      category: 'Berita',
-      excerpt: 'Peringatan Hari Kartini tahun ini menghadirkan tema tentang pendidikan dan literasi perempuan di era digital.',
-      image: 'https://via.placeholder.com/600x400?text=Berita+2',
-    },
-    {
-      id: 3,
-      title: 'Perpusnas dan Pimpinan Pusat Aisyiyah Perluas Gerakan Literasi Berkarakter',
-      date: '2026-04-27',
-      category: 'Berita',
-      excerpt: 'Kolaborasi strategis antara Perpustakaan Nasional dan Aisyiyah untuk memperluas akses literasi kepada masyarakat luas.',
-      image: 'https://via.placeholder.com/600x400?text=Berita+3',
-    },
-    {
-      id: 4,
-      title: 'Kepala Perpusnas Rinci Tiga Tahapan dalam Hakikat Membaca Buku',
-      date: '2026-04-26',
-      category: 'Berita',
-      excerpt: 'Pemimpin Perpustakaan Nasional menjelaskan pentingnya membaca buku dan tahapan-tahapan dalam kebiasaan membaca.',
-      image: 'https://via.placeholder.com/600x400?text=Berita+4',
-    },
-    {
-      id: 5,
-      title: 'Perpusnas Apresiasi Upaya Edukasi Antikorupsi Melalui Cerpen',
-      date: '2026-04-24',
-      category: 'Berita',
-      excerpt: 'Perpustakaan Nasional memberikan apresiasi kepada penulis yang mengangkat tema antikorupsi melalui karya sastra cerpen.',
-      image: 'https://via.placeholder.com/600x400?text=Berita+5',
-    },
-    {
-      id: 6,
-      title: 'SIARAN PERS: Berkolaborasi, Perpusnas Perkuat Kapasitas Pustakawan',
-      date: '2026-04-22',
-      category: 'Berita',
-      excerpt: 'Program pelatihan dan peningkatan kapasitas untuk para pustakawan profesional dilaksanakan secara berkala.',
-      image: 'https://via.placeholder.com/600x400?text=Berita+6',
-    },
-];
-
 export default function Berita() {
+  const [beritaList, setBeritaList] = useState(() => {
+    const savedItems = localStorage.getItem('adminBeritaItems');
+    if (savedItems) {
+      const allNews = JSON.parse(savedItems);
+      const publicNews = allNews.filter(item => item.status === 'Publik');
+      return publicNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const savedItems = localStorage.getItem('adminBeritaItems');
+      if (savedItems) {
+        const allNews = JSON.parse(savedItems);
+        const publicNews = allNews.filter(item => item.status === 'Publik');
+        const sortedNews = publicNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setBeritaList(sortedNews);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
   return (
     <div className="w-full">
       <Header />
