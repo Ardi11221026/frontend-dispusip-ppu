@@ -112,7 +112,7 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
         </div>
 
         {/* BODY (SCROLLABLE) */}
-        <form onSubmit={handleSubmit} className="overflow-y-auto px-6 py-4 space-y-6">
+        <form id="berita-form" onSubmit={handleSubmit} className="overflow-y-auto px-6 py-4 space-y-6 flex-1">
 
           {/* Thumbnail */}
           <div>
