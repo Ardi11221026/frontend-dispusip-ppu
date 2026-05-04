@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Home from './website-publik/pages/Home';
 import Layanan from './website-publik/pages/Layanan';
 import Berita from './website-publik/pages/Berita';
@@ -26,13 +27,33 @@ import AdminBackupData from './admin-website/pages/AdminBackupData';
 import AdminImportData from './admin-website/pages/AdminImportData';
 import './App.css';
 
+// Deteksi subdomain dan redirect otomatis
+function SubdomainRouter({ children }) {
+  const [shouldShowOpac, setShouldShowOpac] = useState(false);
+
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    // Cek jika hostname dimulai dengan "opac."
+    if (hostname.startsWith('opac.')) {
+      setShouldShowOpac(true);
+    }
+  }, []);
+
+  if (shouldShowOpac) {
+    return <Opac />;
+  }
+
+  return children;
+}
+
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* Public Pages */}
-        <Route path="/" element={<Home />} />
-        <Route path="/opac" element={<Opac />} />
+      <SubdomainRouter>
+        <Routes>
+          {/* Public Pages */}
+          <Route path="/" element={<Home />} />
+          <Route path="/opac" element={<Opac />} />
         <Route path="/login" element={<Login />} />
         <Route path="/daftar" element={<Daftar />} />
         <Route path="/layanan" element={<Layanan />} />
@@ -62,7 +83,8 @@ function App() {
         <Route path="/admin/export-data" element={<AdminExportData />} />
         <Route path="/admin/backup-data" element={<AdminBackupData />} />
         <Route path="/admin/import-data" element={<AdminImportData />} />
-      </Routes>
+        </Routes>
+      </SubdomainRouter>
     </Router>
   );
 }

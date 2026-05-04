@@ -28,7 +28,7 @@ export default function HeaderDesktop() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white text-gray-900 shadow-lg">
+    <header className="w-full border-b border-slate-200 bg-white text-gray-900 shadow-lg">
       <div className="border-b border-gray-200 bg-gradient-to-r from-blue-900 via-emerald-700 to-teal-600">
         <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-6 px-4 py-7">
           <div className="flex items-center justify-start">

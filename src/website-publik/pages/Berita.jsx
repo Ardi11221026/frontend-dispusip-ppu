@@ -4,10 +4,53 @@ import PageBanner from '../components/PageBanner';
 import { Calendar } from 'lucide-react';
 
 export default function Berita() {
-  const beritaList = [
-    {
-      id: 1,
-      title: 'Perpusnas Kawal Ombudsman Sinkronisasi Aset Bantuan',
+  return (
+    <div className="w-full">
+      <Header />
+      <div className="md:hidden h-20" /> {/* Spacer untuk offset fixed header di mobile */}
+      
+      <PageBanner
+        title="Berita"
+        breadcrumbs={[
+          { label: 'Beranda', href: '/' },
+          { label: 'Berita' },
+        ]}
+      />
+
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+        <div className="space-y-8">
+          {beritaList.map((item) => (
+            <article key={item.id} className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md transition hover:shadow-lg">
+              <div className="grid gap-4 sm:grid-cols-3">
+                <img src={item.image} alt={item.title} className="sm:col-span-1 h-48 w-full object-cover sm:h-auto" />
+                <div className="flex flex-col justify-between sm:col-span-2 p-4 sm:p-6">
+                  <div>
+                    <div className="mb-2 flex items-center gap-2">
+                      <Calendar size={16} className="text-blue-900" />
+                      <time className="text-sm text-gray-600">{new Date(item.date).toLocaleDateString('id-ID')}</time>
+                    </div>
+                    <h3 className="mb-2 text-xl font-bold text-gray-900 line-clamp-2">{item.title}</h3>
+                    <p className="text-gray-600 line-clamp-3">{item.excerpt}</p>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <button className="inline-block text-blue-900 font-semibold hover:text-emerald-700 transition">Baca Selengkapnya →</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <Footer />
+    </div>
+  );
+}
+
+const beritaList = [
+  {
+    id: 1,
+    title: 'Perpusnas Kawal Ombudsman Sinkronisasi Aset Bantuan',
       date: '2026-04-28',
       category: 'Berita',
       excerpt: 'Dinas Perpustakaan dan Arsip Kabupaten Penajam Paser Utara mengikuti serangkaian kegiatan sinkronisasi aset dengan pihak Ombudsman untuk memastikan semua bantuan tercatat dengan baik.',

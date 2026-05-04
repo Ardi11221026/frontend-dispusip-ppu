@@ -6,6 +6,7 @@ export default function Sejarah() {
   return (
     <div className="w-full">
       <Header />
+      <div className="md:hidden h-20" /> {/* Spacer untuk offset fixed header di mobile */}
 
       <PageBanner
         title="Sejarah"

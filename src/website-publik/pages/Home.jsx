@@ -8,6 +8,7 @@ export default function Home() {
   return (
     <div className="w-full">
       <Header />
+      <div className="md:hidden h-20" /> {/* Spacer untuk offset fixed header di mobile */}
       <Banner />
       <LayananKami />
       

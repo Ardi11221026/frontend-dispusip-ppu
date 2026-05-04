@@ -9,6 +9,7 @@ export default function Daftar() {
   return (
     <div className="min-h-screen bg-slate-50 font-poppins flex flex-col">
       <Header />
+      <div className="md:hidden h-20" /> {/* Spacer untuk offset fixed header di mobile */}
       
       <div className="flex-1 py-16 px-4">
         <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-lg border border-gray-100 p-10">
