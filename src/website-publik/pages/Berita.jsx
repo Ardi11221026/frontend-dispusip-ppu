@@ -48,68 +48,9 @@ export default function Berita() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-12">
-        {/* Featured News */}
-        {beritaList.length > 0 && (
-          <div className="mb-12">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="md:col-span-2 bg-white rounded-lg shadow-lg overflow-hidden">
-                <img
-                  src={beritaList[0].image}
-                  alt={beritaList[0].title}
-                  className="w-full h-80 object-cover"
-                />
-                <div className="p-6">
-                  <div className="flex items-center gap-2 text-gray-500 font-poppins text-sm mb-3">
-                    <Calendar size={16} />
-                    {new Date(beritaList[0].date).toLocaleDateString('id-ID')}
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900 font-poppins mb-3">
-                    {beritaList[0].title}
-                  </h2>
-                  <p className="text-gray-600 font-poppins mb-4">
-                    {beritaList[0].excerpt}
-                  </p>
-                  <button 
-                    onClick={() => navigate(`/berita/${beritaList[0].id}`)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-poppins font-bold py-2 px-6 rounded transition">
-                    Baca Selengkapnya
-                  </button>
-                </div>
-              </div>
-
-              {/* Sidebar Featured */}
-              <div className="space-y-4">
-                {beritaList.slice(1, 4).map((berita) => (
-                  <div 
-                    key={berita.id} 
-                    onClick={() => navigate(`/berita/${berita.id}`)}
-                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer"
-                  >
-                    <img
-                      src={berita.image}
-                      alt={berita.title}
-                      className="w-full h-32 object-cover"
-                    />
-                    <div className="p-4">
-                      <div className="flex items-center gap-2 text-gray-500 font-poppins text-xs mb-2">
-                        <Calendar size={14} />
-                        {new Date(berita.date).toLocaleDateString('id-ID')}
-                      </div>
-                      <h3 className="font-bold text-gray-900 font-poppins text-sm line-clamp-2">
-                        {berita.title}
-                      </h3>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* All News Grid */}
         <div>
-          <h2 className="text-3xl font-bold text-gray-900 font-poppins mb-8">Semua Berita</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <h2 className="text-3xl font-bold text-gray-900 font-poppins mb-8">Berita Terbaru</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {beritaList.map((berita) => (
               <div
                 key={berita.id}
@@ -144,25 +85,6 @@ export default function Berita() {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Pagination */}
-        <div className="flex justify-center gap-2 mt-12">
-          <button className="px-3 py-2 rounded bg-gray-200 text-gray-700 font-poppins hover:bg-gray-300">
-            ←
-          </button>
-          <button className="px-4 py-2 rounded bg-blue-600 text-white font-poppins font-bold">
-            1
-          </button>
-          <button className="px-4 py-2 rounded bg-gray-200 text-gray-700 font-poppins hover:bg-gray-300">
-            2
-          </button>
-          <button className="px-4 py-2 rounded bg-gray-200 text-gray-700 font-poppins hover:bg-gray-300">
-            3
-          </button>
-          <button className="px-3 py-2 rounded bg-gray-200 text-gray-700 font-poppins hover:bg-gray-300">
-            →
-          </button>
         </div>
       </div>
 
