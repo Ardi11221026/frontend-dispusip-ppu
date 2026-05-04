@@ -106,11 +106,6 @@ export default function LihatBeritaModal({ isOpen, item, onClose }) {
             </button>
           </div>
 
-          {/* Excerpt */}
-          <p className="text-lg text-gray-700 mb-6 italic border-l-4 border-blue-500 pl-4">
-            {item.excerpt}
-          </p>
-
           {/* Content */}
           <div className="prose max-w-none">
             <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
