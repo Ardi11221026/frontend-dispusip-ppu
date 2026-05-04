@@ -51,7 +51,8 @@ const beritaList = [
       category: 'Berita',
       excerpt: 'Program pelatihan dan peningkatan kapasitas untuk para pustakawan profesional dilaksanakan secara berkala.',
       image: 'https://via.placeholder.com/600x400?text=Berita+6',
-  ];
+    },
+];
 
 export default function Berita() {
   return (
