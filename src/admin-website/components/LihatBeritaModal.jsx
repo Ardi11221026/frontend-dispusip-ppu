@@ -29,7 +29,8 @@ export default function LihatBeritaModal({ isOpen, item, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+    <div className="fixed inset-0 z-[90] h-screen w-screen overflow-y-auto bg-slate-950/60 px-4 py-6 backdrop-blur-[2px]">
+      <div className="flex min-h-full items-center justify-center">
       <div className="w-full max-w-4xl max-h-[90vh] bg-white rounded-lg shadow-lg flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4 shrink-0">

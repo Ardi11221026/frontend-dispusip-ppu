@@ -5,6 +5,8 @@ import { formatDate } from '../../shared/utils/formatDate';
 import AdminLayout from '../components/AdminLayout';
 import BeritaFormModal from '../components/BeritaFormModal';
 import LihatBeritaModal from '../components/LihatBeritaModal';
+import PopupKonfirmasi from '../../shared/components/PopupKonfirmasi';
+import PopupBerhasil from '../../shared/components/PopupBerhasil';
 
 export default function AdminBerita() {
   const navigate = useNavigate();
@@ -143,34 +145,22 @@ export default function AdminBerita() {
         />
 
         {/* Delete Confirmation Modal */}
-        {deleteModal.isOpen && (
-          <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 px-4">
-            <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl">
-              <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
-                <h3 className="text-xl font-bold text-gray-900">Hapus Berita</h3>
-              </div>
-              <div className="space-y-4 px-6 py-5 text-center">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-red-600"><Trash2 size={26} /></div>
-                <p className="font-semibold text-gray-900">Yakin ingin menghapus data ini?</p>
-                <div className="flex justify-end gap-3 pt-2">
-                  <button type="button" onClick={() => setDeleteModal({ isOpen: false, item: null })} className="rounded-lg border border-gray-300 px-4 py-2 font-medium text-gray-700 hover:bg-gray-50">Batal</button>
-                  <button type="button" onClick={handleDelete} className="rounded-lg bg-red-600 px-4 py-2 font-medium text-white hover:bg-red-700">Ya, Hapus</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        <PopupKonfirmasi
+          isOpen={deleteModal.isOpen}
+          title="Hapus Berita"
+          message="Yakin ingin menghapus data ini?"
+          confirmText="Ya, Hapus"
+          cancelText="Batal"
+          onConfirm={handleDelete}
+          onCancel={() => setDeleteModal({ isOpen: false, item: null })}
+          tone="danger"
+        />
 
-        {/* Success Modal */}
-        {successState.isOpen && (
-          <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 px-4">
-            <div className="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl">
-              <h3 className="text-lg font-bold text-gray-900">Berhasil</h3>
-              <p className="mt-2 text-sm text-gray-600">{successState.message}</p>
-              <button type="button" onClick={() => setSuccessState({ isOpen: false, message: '' })} className="mt-5 w-full rounded-lg bg-green-600 px-4 py-2 font-medium text-white hover:bg-green-700">Tutup</button>
-            </div>
-          </div>
-        )}
+        <PopupBerhasil
+          isOpen={successState.isOpen}
+          message={successState.message}
+          onClose={() => setSuccessState({ isOpen: false, message: '' })}
+        />
       </div>
     </AdminLayout>
   );

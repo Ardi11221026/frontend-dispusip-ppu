@@ -97,8 +97,8 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
                 <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
               </div>
               <div className="text-right leading-tight">
-                <p className="text-sm font-bold text-blue-950">{localStorage.getItem('userEmail') || 'petugas@perpus.id'}</p>
-                <p className="text-xs text-amber-700">Petugas Perpustakaan</p>
+                <p className="text-sm font-bold text-blue-950">{localStorage.getItem('userName') || localStorage.getItem('userEmail') || 'petugas@perpus.id'}</p>
+                <p className="text-xs text-amber-700">{localStorage.getItem('userEmail') || 'Petugas Perpustakaan'}</p>
               </div>
             </div>
 

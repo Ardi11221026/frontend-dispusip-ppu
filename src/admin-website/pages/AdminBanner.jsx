@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, Image, Pencil, Plus, Trash2, X } from 'lucide-react';
+import { Eye, Pencil, Plus, Trash2, AlertCircle } from 'lucide-react';
 import AdminLayout from '../components/AdminLayout';
 import { bannerStorage } from '../../shared/utils/bannerStorage';
+import PopupKonfirmasi from '../../shared/components/PopupKonfirmasi';
+import PopupBerhasil from '../../shared/components/PopupBerhasil';
 
 export default function AdminBanner() {
   const navigate = useNavigate();
@@ -10,6 +12,7 @@ export default function AdminBanner() {
   const [items, setItems] = useState(() => bannerStorage.getAll());
   const [modalState, setModalState] = useState({ isOpen: false, type: 'add', item: null });
   const [successState, setSuccessState] = useState({ isOpen: false, message: '' });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (localStorage.getItem('userRole') !== 'admin') {
@@ -19,15 +22,28 @@ export default function AdminBanner() {
 
   const refreshItems = () => setItems(bannerStorage.getAll());
   const openModal = (type, item = null) => setModalState({ isOpen: true, type, item });
-  const closeModal = () => setModalState({ isOpen: false, type: 'add', item: null });
+  const closeModal = () => {
+    setModalState({ isOpen: false, type: 'add', item: null });
+    setErrors({});
+  };
 
   const handleSave = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    const nextErrors = {};
+    const title = formData.get('title')?.toString().trim() || '';
+    const image = formData.get('image')?.toString().trim() || modalState.item?.image || '';
+
+    if (!title) nextErrors.title = 'Judul banner wajib diisi';
+    if (!image) nextErrors.image = 'URL gambar wajib diisi';
+
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
+
     const nextItem = {
       id: modalState.item?.id || Date.now(),
-      title: formData.get('title')?.toString() || '',
-      image: formData.get('image')?.toString() || modalState.item?.image || '/banner/pusip1.jpeg',
+      title,
+      image,
     };
 
     if (modalState.type === 'edit' && modalState.item) {
@@ -51,7 +67,7 @@ export default function AdminBanner() {
 
   return (
     <AdminLayout activeMenu={activeMenu} setActiveMenu={setActiveMenu}>
-      <div className="p-4 sm:p-6 space-y-4">
+      <div className="space-y-4 p-4 sm:p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h3 className="text-2xl font-bold text-gray-900">Banner</h3>
@@ -91,65 +107,55 @@ export default function AdminBanner() {
           ))}
         </div>
 
-        {modalState.isOpen && (
-          <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 px-4">
-            <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl">
-              <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
-                <h3 className="text-xl font-bold text-gray-900">{modalState.type === 'view' ? 'Lihat Banner' : modalState.type === 'edit' ? 'Edit Banner' : 'Hapus Banner'}</h3>
+        {modalState.isOpen && modalState.type === 'delete' ? (
+          <PopupKonfirmasi
+            isOpen
+            title="Hapus Banner"
+            message="Yakin ingin menghapus banner ini?"
+            confirmText="Ya, Hapus"
+            cancelText="Batal"
+            onConfirm={handleDelete}
+            onCancel={closeModal}
+            tone="danger"
+          />
+        ) : modalState.isOpen ? (
+          <div className="fixed inset-0 z-[90] h-screen w-screen overflow-y-auto bg-slate-950/60 px-4 py-6 backdrop-blur-[2px]">
+            <div className="flex min-h-full items-center justify-center">
+              <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl">
+                <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+                  <h3 className="text-xl font-bold text-gray-900">{modalState.type === 'view' ? 'Lihat Banner' : 'Edit Banner'}</h3>
+                </div>
+
+                <form onSubmit={handleSave} className="space-y-4 px-6 py-5">
+                  <div className="overflow-hidden rounded-xl bg-gray-50">
+                    <img src={modalState.item?.image || '/banner/pusip1.jpeg'} alt="Preview" className="h-56 w-full object-cover" />
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">Judul</label>
+                    <input name="title" defaultValue={modalState.item?.title || ''} disabled={modalState.type === 'view'} className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" />
+                    {errors.title ? <p className="mt-1 text-sm text-red-500">{errors.title}</p> : null}
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">URL Gambar</label>
+                    <input name="image" defaultValue={modalState.item?.image || ''} disabled={modalState.type === 'view'} placeholder="/banner/pusip1.jpeg" className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" />
+                    {errors.image ? <p className="mt-1 text-sm text-red-500">{errors.image}</p> : null}
+                  </div>
+
+                  {modalState.type === 'view' ? (
+                    <div className="flex justify-end pt-2"><button type="button" onClick={closeModal} className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700">Tutup</button></div>
+                  ) : (
+                    <div className="flex justify-end gap-3 pt-2">
+                      <button type="button" onClick={closeModal} className="rounded-lg border border-gray-300 px-4 py-2 font-medium text-gray-700 hover:bg-gray-50">Batal</button>
+                      <button type="submit" className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700">Simpan</button>
+                    </div>
+                  )}
+                </form>
               </div>
-
-              <form onSubmit={handleSave} className="space-y-4 px-6 py-5">
-                {modalState.type === 'delete' ? (
-                  <div className="space-y-4 text-center">
-                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-red-600"><Trash2 size={26} /></div>
-                    <p className="font-semibold text-gray-900">Yakin ingin menghapus banner ini?</p>
-                  </div>
-                ) : (
-                  <>
-                    <div className="overflow-hidden rounded-xl bg-gray-50">
-                      <img src={modalState.item?.image || '/banner/pusip1.jpeg'} alt="Preview" className="h-56 w-full object-cover" />
-                    </div>
-                    <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">Judul</label>
-                      <input name="title" defaultValue={modalState.item?.title || ''} disabled={modalState.type === 'view'} className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" />
-                    </div>
-                    <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">URL Gambar</label>
-                      <input name="image" defaultValue={modalState.item?.image || ''} disabled={modalState.type === 'view'} placeholder="/banner/pusip1.jpeg" className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" />
-                    </div>
-                  </>
-                )}
-
-                {modalState.type === 'view' ? (
-                  <div className="flex justify-end pt-2"><button type="button" onClick={closeModal} className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700">Tutup</button></div>
-                ) : modalState.type === 'delete' ? (
-                  <div className="flex justify-end gap-3 pt-2">
-                    <button type="button" onClick={closeModal} className="rounded-lg border border-gray-300 px-4 py-2 font-medium text-gray-700 hover:bg-gray-50">Batal</button>
-                    <button type="button" onClick={handleDelete} className="rounded-lg bg-red-600 px-4 py-2 font-medium text-white hover:bg-red-700">Ya, Hapus</button>
-                  </div>
-                ) : (
-                  <div className="flex justify-end gap-3 pt-2">
-                    <button type="button" onClick={closeModal} className="rounded-lg border border-gray-300 px-4 py-2 font-medium text-gray-700 hover:bg-gray-50">Batal</button>
-                    <button type="submit" className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700">Simpan</button>
-                  </div>
-                )}
-              </form>
             </div>
           </div>
-        )}
+        ) : null}
 
-        {successState.isOpen && (
-          <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 px-4">
-            <div className="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100 text-green-600">
-                <Image size={26} />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900">Berhasil</h3>
-              <p className="mt-2 text-sm text-gray-600">{successState.message}</p>
-              <button type="button" onClick={() => setSuccessState({ isOpen: false, message: '' })} className="mt-5 w-full rounded-lg bg-green-600 px-4 py-2 font-medium text-white hover:bg-green-700">Tutup</button>
-            </div>
-          </div>
-        )}
+        <PopupBerhasil isOpen={successState.isOpen} message={successState.message} onClose={() => setSuccessState({ isOpen: false, message: '' })} />
       </div>
     </AdminLayout>
   );

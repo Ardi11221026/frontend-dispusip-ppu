@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { X, Eye, Edit2, Trash2, AlertCircle } from 'lucide-react';
+import PopupKonfirmasi from '../../shared/components/PopupKonfirmasi';
+import PopupBerhasil from '../../shared/components/PopupBerhasil';
 
 export function GalleryModal({ isOpen, type, item, onClose, onSubmit }) {
   const [formData, setFormData] = useState(item || { title: '', image: '', date: new Date().toISOString().split('T')[0] });
@@ -47,8 +49,9 @@ export function GalleryModal({ isOpen, type, item, onClose, onSubmit }) {
   const titleText = type === 'add' ? 'Tambah Gambar' : type === 'edit' ? 'Edit Gambar' : 'Lihat Gambar';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-[90] h-screen w-screen overflow-y-auto bg-slate-950/60 px-4 py-6 backdrop-blur-[2px]">
+      <div className="mx-auto flex min-h-full w-full max-w-md items-center justify-center">
+        <div className="bg-white rounded-lg shadow-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-xl font-bold text-gray-900">{titleText}</h2>
@@ -146,67 +149,27 @@ export function GalleryModal({ isOpen, type, item, onClose, onSubmit }) {
             </button>
           )}
         </div>
+        </div>
       </div>
     </div>
   );
 }
 
 export function DeleteConfirmModal({ isOpen, title, onConfirm, onCancel }) {
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-lg shadow-2xl max-w-sm w-full mx-4">
-        <div className="p-6 text-center">
-          <div className="mx-auto w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4">
-            <Trash2 size={24} className="text-red-600" />
-          </div>
-          <h3 className="text-lg font-bold text-gray-900 mb-2">Hapus Gambar?</h3>
-          <p className="text-gray-600 mb-6">
-            Anda yakin ingin menghapus <strong>{title}</strong>? Tindakan ini tidak dapat dibatalkan.
-          </p>
-          <div className="flex gap-3">
-            <button
-              onClick={onCancel}
-              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
-            >
-              Batal
-            </button>
-            <button
-              onClick={onConfirm}
-              className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"
-            >
-              Hapus
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <PopupKonfirmasi
+      isOpen={isOpen}
+      title="Hapus Gambar?"
+      message={title ? `Anda yakin ingin menghapus ${title}? Tindakan ini tidak dapat dibatalkan.` : 'Anda yakin ingin menghapus data ini?'}
+      confirmText="Hapus"
+      cancelText="Batal"
+      onConfirm={onConfirm}
+      onCancel={onCancel}
+      tone="danger"
+    />
   );
 }
 
 export function SuccessModal({ isOpen, message, onClose }) {
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-lg shadow-2xl max-w-sm w-full mx-4">
-        <div className="p-6 text-center">
-          <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
-            <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <h3 className="text-lg font-bold text-gray-900 mb-2">Berhasil!</h3>
-          <p className="text-gray-600 mb-6">{message}</p>
-          <button
-            onClick={onClose}
-            className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium"
-          >
-            Tutup
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  return <PopupBerhasil isOpen={isOpen} message={message} onClose={onClose} />;
 }

@@ -179,25 +179,26 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="w-full max-w-3xl bg-white rounded-xl shadow-xl flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-[90] h-screen w-screen overflow-y-auto bg-slate-950/60 px-4 py-6 backdrop-blur-[2px]">
+      <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-white shadow-xl">
 
         {/* HEADER */}
-        <div className="flex items-center justify-between px-6 py-4 border-b">
+        <div className="flex items-center justify-between border-b px-6 py-4">
           <h2 className="text-lg font-semibold">Buat Berita Baru</h2>
         </div>
 
         {/* BODY (SCROLLABLE) */}
-          <form id="berita-form" onSubmit={handleSubmit} className="overflow-y-auto px-6 py-4 space-y-6 flex-1">
+          <form id="berita-form" onSubmit={handleSubmit} className="flex-1 space-y-6 overflow-y-auto px-6 py-4">
 
           {/* Thumbnail */}
           <div>
-            <label className="font-medium block mb-2">Thumbnail Berita *</label>
+            <label className="mb-2 block font-medium">Thumbnail Berita *</label>
             <label className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer text-gray-500">
               <Upload />
               <span className="text-sm mt-2">Klik untuk upload thumbnail</span>
               <input type="file" hidden onChange={handleImageChange} />
             </label>
+            {errors.image && <p className="mt-1 text-sm text-red-500">{errors.image}</p>}
             {formData.image && (
               <div className="relative inline-block mt-3">
                 <img src={formData.image} className="h-32 rounded" />
@@ -214,61 +215,59 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
 
           {/* Tanggal */}
           <div>
-            <label className="block mb-1 font-medium">Tanggal Berita</label>
-                    <div className="flex gap-2">
-                      <input
-                        type="date"
-                        value={formData.date}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, date: e.target.value }))
-                        }
-                        className="w-1/2 border rounded-lg px-3 py-2"
-                      />
-                      <input
-                        type="time"
-                        value={formData.time}
-                        onChange={(e) => setFormData((prev) => ({ ...prev, time: e.target.value }))}
-                        className="w-1/2 border rounded-lg px-3 py-2"
-                      />
-                    </div>
+            <label className="mb-1 block font-medium">Tanggal Berita</label>
+            <div className="flex gap-2">
+              <input
+                type="date"
+                value={formData.date}
+                onChange={(e) => setFormData((prev) => ({ ...prev, date: e.target.value }))}
+                className="w-1/2 rounded-lg border px-3 py-2"
+              />
+              <input
+                type="time"
+                value={formData.time}
+                onChange={(e) => setFormData((prev) => ({ ...prev, time: e.target.value }))}
+                className="w-1/2 rounded-lg border px-3 py-2"
+              />
+            </div>
           </div>
 
           {/* Judul */}
           <div>
-            <label className="block mb-1 font-medium">Judul Berita *</label>
+            <label className="mb-1 block font-medium">Judul Berita *</label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
               placeholder="Masukkan judul berita"
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full rounded-lg border px-3 py-2"
             />
             {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
           </div>
 
           {/* Konten */}
           <div>
-            <label className="font-medium block mb-2">Konten Berita *</label>
+            <label className="mb-2 block font-medium">Konten Berita *</label>
 
             <div className="flex gap-2 mb-3">
               <button
                 type="button"
                 onClick={() => addContentBlock('text')}
-                className="bg-blue-600 text-white px-3 py-1 rounded"
+                className="rounded bg-blue-600 px-3 py-1 text-white"
               >
                 Teks
               </button>
               <button
                 type="button"
                 onClick={() => addContentBlock('image')}
-                className="bg-yellow-400 px-3 py-1 rounded"
+                className="rounded bg-yellow-400 px-3 py-1"
               >
                 Gambar
               </button>
             </div>
             {formData.contentBlocks.map((block, i) => (
-              <div key={i} className="border rounded-lg p-3 mb-3">
+              <div key={i} className="mb-3 rounded-lg border p-3">
 
                 {block.type === 'text' ? (
                   <>
@@ -344,7 +343,7 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
                 </div>
               </div>
             ))}
-            {errors.content && <p className="text-red-500 text-sm mt-1">{errors.content}</p>}
+            {errors.content && <p className="mt-1 text-sm text-red-500">{errors.content}</p>}
           </div>
         </form>
 
