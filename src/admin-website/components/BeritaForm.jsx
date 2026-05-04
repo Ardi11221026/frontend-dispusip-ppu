@@ -4,7 +4,6 @@ import {
   ChevronUp,
   ChevronDown,
   Trash2,
-  X,
   Bold,
   Italic,
   Underline,
