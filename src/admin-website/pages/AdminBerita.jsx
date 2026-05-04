@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, Pencil, Plus, Trash2, X } from 'lucide-react';
 import AdminLayout from '../components/AdminLayout';
+import BeritaFormModal from '../components/BeritaFormModal';
+import LihatBeritaModal from '../components/LihatBeritaModal';
 
 export default function AdminBerita() {
   const navigate = useNavigate();
@@ -9,9 +11,9 @@ export default function AdminBerita() {
   const [items, setItems] = useState(() => {
     const savedItems = localStorage.getItem('adminBeritaItems');
     return savedItems ? JSON.parse(savedItems) : [
-      { id: 1, title: 'Perpusnas Kawal Ombudsman Sinkronisasi Aset Bantuan', date: '2026-04-28', status: 'Publik', category: 'Berita', excerpt: 'Dinas Perpustakaan dan Arsip Kabupaten Penajam Paser Utara mengikuti serangkaian kegiatan sinkronisasi aset dengan pihak Ombudsman untuk memastikan semua bantuan tercatat dengan baik.', image: 'https://via.placeholder.com/600x400?text=Berita+1' },
-      { id: 2, title: 'Semangat Kartini di Dunia Literasi dan Pendidikan Perempuan', date: '2026-04-27', status: 'Publik', category: 'Berita', excerpt: 'Peringatan Hari Kartini tahun ini menghadirkan tema tentang pendidikan dan literasi perempuan di era digital.', image: 'https://via.placeholder.com/600x400?text=Berita+2' },
-      { id: 3, title: 'Perpusnas dan Pimpinan Pusat Aisyiyah Perluas Gerakan Literasi Berkarakter', date: '2026-04-27', status: 'Draft', category: 'Berita', excerpt: 'Kolaborasi strategis antara Perpustakaan Nasional dan Aisyiyah untuk memperluas akses literasi kepada masyarakat luas.', image: 'https://via.placeholder.com/600x400?text=Berita+3' },
+      { id: 1, title: 'Perpusnas Kawal Ombudsman Sinkronisasi Aset Bantuan', date: '2026-04-28', status: 'Publik', category: 'Berita', excerpt: 'Dinas Perpustakaan dan Arsip Kabupaten Penajam Paser Utara mengikuti serangkaian kegiatan sinkronisasi aset dengan pihak Ombudsman untuk memastikan semua bantuan tercatat dengan baik.', image: 'https://via.placeholder.com/600x400?text=Berita+1', content: 'Konten berita 1...' },
+      { id: 2, title: 'Semangat Kartini di Dunia Literasi dan Pendidikan Perempuan', date: '2026-04-27', status: 'Publik', category: 'Berita', excerpt: 'Peringatan Hari Kartini tahun ini menghadirkan tema tentang pendidikan dan literasi perempuan di era digital.', image: 'https://via.placeholder.com/600x400?text=Berita+2', content: 'Konten berita 2...' },
+      { id: 3, title: 'Perpusnas dan Pimpinan Pusat Aisyiyah Perluas Gerakan Literasi Berkarakter', date: '2026-04-27', status: 'Draft', category: 'Berita', excerpt: 'Kolaborasi strategis antara Perpustakaan Nasional dan Aisyiyah untuk memperluas akses literasi kepada masyarakat luas.', image: 'https://via.placeholder.com/600x400?text=Berita+3', content: 'Konten berita 3...' },
     ];
   });
 
@@ -19,7 +21,9 @@ export default function AdminBerita() {
     localStorage.setItem('adminBeritaItems', JSON.stringify(items));
   }, [items]);
 
-  const [modalState, setModalState] = useState({ isOpen: false, type: 'view', item: null });
+  const [formModal, setFormModal] = useState({ isOpen: false, type: 'add', item: null });
+  const [lihatModal, setLihatModal] = useState({ isOpen: false, item: null });
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, item: null });
   const [successState, setSuccessState] = useState({ isOpen: false, message: '' });
 
   useEffect(() => {
@@ -28,50 +32,43 @@ export default function AdminBerita() {
     }
   }, [navigate]);
 
-  const openModal = (type, item = null) => setModalState({ isOpen: true, type, item });
-  const closeModal = () => setModalState({ isOpen: false, type: 'view', item: null });
+  const openFormModal = (type, item = null) => setFormModal({ isOpen: true, type, item });
+  const closeFormModal = () => setFormModal({ isOpen: false, type: 'add', item: null });
 
-  const handleSave = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const nextItem = {
-      id: modalState.item?.id || Date.now(),
-      title: formData.get('title')?.toString() || '',
-      date: formData.get('date')?.toString() || '',
-      status: formData.get('status')?.toString() || 'Draft',
-      category: formData.get('category')?.toString() || 'Berita', // Added category
-      excerpt: formData.get('excerpt')?.toString() || '', // Added excerpt
-      image: formData.get('image')?.toString() || 'https://via.placeholder.com/600x400?text=New+Berita', // Added image
-    };
+  const openLihatModal = (item) => setLihatModal({ isOpen: true, item });
+  const closeLihatModal = () => setLihatModal({ isOpen: false, item: null });
 
+  const handleSaveBerita = (berita) => {
     setItems((currentItems) => {
-      if (modalState.type === 'edit' && modalState.item) {
-        return currentItems.map((item) => (item.id === modalState.item.id ? nextItem : item));
+      if (formModal.type === 'edit') {
+        return currentItems.map((item) => (item.id === berita.id ? berita : item));
       }
-
-      return [nextItem, ...currentItems];
+      return [berita, ...currentItems];
     });
 
-    closeModal();
-    setSuccessState({ isOpen: true, message: modalState.type === 'edit' ? 'Data berhasil diperbarui.' : 'Data berhasil ditambahkan.' });
+    closeFormModal();
+    setSuccessState({ 
+      isOpen: true, 
+      message: formModal.type === 'edit' ? 'Berita berhasil diperbarui.' : 'Berita berhasil ditambahkan.' 
+    });
   };
 
   const handleDelete = () => {
-    if (!modalState.item) return;
-    setItems((currentItems) => currentItems.filter((item) => item.id !== modalState.item.id));
-    closeModal();
-    setSuccessState({ isOpen: true, message: 'Data berhasil dihapus.' });
+    if (!deleteModal.item) return;
+    setItems((currentItems) => currentItems.filter((item) => item.id !== deleteModal.item.id));
+    setDeleteModal({ isOpen: false, item: null });
+    setSuccessState({ isOpen: true, message: 'Berita berhasil dihapus.' });
   };
 
   const ActionButtons = ({ item }) => (
     <div className="flex items-center gap-2">
-      <button type="button" onClick={() => openModal('view', item)} className="inline-flex items-center justify-center rounded-lg border border-blue-200 bg-blue-50 p-2 text-blue-700 hover:bg-blue-100" aria-label="Lihat">
+      <button type="button" onClick={() => openLihatModal(item)} className="inline-flex items-center justify-center rounded-lg border border-blue-200 bg-blue-50 p-2 text-blue-700 hover:bg-blue-100" title="Lihat preview">
         <Eye size={16} />
       </button>
-      <button type="button" onClick={() => openModal('edit', item)} className="inline-flex items-center justify-center rounded-lg border border-amber-200 bg-amber-50 p-2 text-amber-700 hover:bg-amber-100" aria-label="Edit">
+      <button type="button" onClick={() => openFormModal('edit', item)} className="inline-flex items-center justify-center rounded-lg border border-amber-200 bg-amber-50 p-2 text-amber-700 hover:bg-amber-100" title="Edit">
         <Pencil size={16} />
       </button>
-      <button type="button" onClick={() => openModal('delete', item)} className="inline-flex items-center justify-center rounded-lg border border-red-200 bg-red-50 p-2 text-red-700 hover:bg-red-100" aria-label="Hapus">
+      <button type="button" onClick={() => setDeleteModal({ isOpen: true, item })} className="inline-flex items-center justify-center rounded-lg border border-red-200 bg-red-50 p-2 text-red-700 hover:bg-red-100" title="Hapus">
         <Trash2 size={16} />
       </button>
     </div>
@@ -82,107 +79,80 @@ export default function AdminBerita() {
       <div className="p-4 sm:p-6 space-y-4">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h3 className="text-2xl font-bold text-gray-900">Daftar Berita</h3>
-          <button onClick={() => openModal('add')} className="inline-flex items-center gap-2 self-start rounded-lg bg-blue-600 px-5 py-2 text-white transition hover:bg-blue-700 sm:self-auto">
+          <button onClick={() => openFormModal('add')} className="inline-flex items-center gap-2 self-start rounded-lg bg-blue-600 px-5 py-2 text-white transition hover:bg-blue-700 sm:self-auto">
             <Plus size={18} />
             Berita Baru
           </button>
         </div>
 
         <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 bg-white text-sm shadow-sm">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">No.</th>
-              <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Judul</th>
-              <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Tanggal</th>
-              <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Status</th>
-              <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item, index) => (
-              <tr key={item.id} className="hover:bg-gray-50">
-                <td className="border border-gray-300 px-2 py-3">{index + 1}</td>
-                <td className="border border-gray-300 px-2 py-3">{item.title}</td>
-                <td className="border border-gray-300 px-2 py-3">{item.date}</td>
-                <td className="border border-gray-300 px-2 py-3">
-                  <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${item.status === 'Publik' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700'}`}>
-                    {item.status}
-                  </span>
-                </td>
-                <td className="border border-gray-300 px-2 py-3"><ActionButtons item={item} /></td>
+          <table className="w-full border-collapse border border-gray-300 bg-white text-sm shadow-sm">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">No.</th>
+                <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Judul</th>
+                <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Tanggal</th>
+                <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Status</th>
+                <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {items.map((item, index) => (
+                <tr key={item.id} className="hover:bg-gray-50">
+                  <td className="border border-gray-300 px-2 py-3">{index + 1}</td>
+                  <td className="border border-gray-300 px-2 py-3">{item.title}</td>
+                  <td className="border border-gray-300 px-2 py-3">{new Date(item.date).toLocaleDateString('id-ID')}</td>
+                  <td className="border border-gray-300 px-2 py-3">
+                    <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${item.status === 'Publik' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700'}`}>
+                      {item.status}
+                    </span>
+                  </td>
+                  <td className="border border-gray-300 px-2 py-3"><ActionButtons item={item} /></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        {modalState.isOpen && (
+        {/* Form Modal */}
+        <BeritaFormModal
+          isOpen={formModal.isOpen}
+          type={formModal.type}
+          item={formModal.item}
+          onClose={closeFormModal}
+          onSave={(berita) => {
+            handleSaveBerita(berita);
+          }}
+        />
+
+        {/* Lihat Modal */}
+        <LihatBeritaModal
+          isOpen={lihatModal.isOpen}
+          item={lihatModal.item}
+          onClose={closeLihatModal}
+        />
+
+        {/* Delete Confirmation Modal */}
+        {deleteModal.isOpen && (
           <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 px-4">
-            <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl">
+            <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl">
               <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
-                <h3 className="text-xl font-bold text-gray-900">
-                  {modalState.type === 'view' ? 'Lihat Data' : modalState.type === 'edit' ? 'Edit Data' : 'Hapus Data'}
-                </h3>
-                <button onClick={closeModal} className="rounded-lg p-2 hover:bg-gray-100"><X size={20} /></button>
+                <h3 className="text-xl font-bold text-gray-900">Hapus Berita</h3>
+                <button onClick={() => setDeleteModal({ isOpen: false, item: null })} className="rounded-lg p-2 hover:bg-gray-100"><X size={20} /></button>
               </div>
-
-              <form onSubmit={handleSave} className="space-y-4 px-6 py-5">
-                {modalState.type === 'delete' ? (
-                  <div className="space-y-4 text-center">
-                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-red-600"><Trash2 size={26} /></div>
-                    <p className="font-semibold text-gray-900">Yakin ingin menghapus data ini?</p>
-                  </div>
-                ) : (
-                  <>
-                    <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">Judul</label>
-                      <input name="title" defaultValue={modalState.item?.title || ''} disabled={modalState.type === 'view'} className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" />
-                    </div>
-                    <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">Tanggal</label>
-                      <input name="date" defaultValue={modalState.item?.date || ''} disabled={modalState.type === 'view'} className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" />
-                    </div>
-                    <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">Status</label>
-                      <select name="status" defaultValue={modalState.item?.status || 'Draft'} disabled={modalState.type === 'view'} className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50">
-                        <option value="Publik">Publik</option>
-                        <option value="Draft">Draft</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">Kategori</label>
-                      <input name="category" defaultValue={modalState.item?.category || ''} disabled={modalState.type === 'view'} className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" />
-                    </div>
-                    <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">Ringkasan</label>
-                      <textarea name="excerpt" defaultValue={modalState.item?.excerpt || ''} disabled={modalState.type === 'view'} rows="3" className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50"></textarea>
-                    </div>
-                    <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">URL Gambar</label>
-                      <input name="image" defaultValue={modalState.item?.image || ''} disabled={modalState.type === 'view'} className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" />
-                    </div>
-                  </>
-                )}
-
-                {modalState.type === 'view' ? (
-                  <div className="flex justify-end pt-2"><button type="button" onClick={closeModal} className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700">Tutup</button></div>
-                ) : modalState.type === 'delete' ? (
-                  <div className="flex justify-end gap-3 pt-2">
-                    <button type="button" onClick={closeModal} className="rounded-lg border border-gray-300 px-4 py-2 font-medium text-gray-700 hover:bg-gray-50">Batal</button>
-                    <button type="button" onClick={handleDelete} className="rounded-lg bg-red-600 px-4 py-2 font-medium text-white hover:bg-red-700">Ya, Hapus</button>
-                  </div>
-                ) : (
-                  <div className="flex justify-end gap-3 pt-2">
-                    <button type="button" onClick={closeModal} className="rounded-lg border border-gray-300 px-4 py-2 font-medium text-gray-700 hover:bg-gray-50">Batal</button>
-                    <button type="submit" className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700">Simpan</button>
-                  </div>
-                )}
-              </form>
+              <div className="space-y-4 px-6 py-5 text-center">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-red-600"><Trash2 size={26} /></div>
+                <p className="font-semibold text-gray-900">Yakin ingin menghapus data ini?</p>
+                <div className="flex justify-end gap-3 pt-2">
+                  <button type="button" onClick={() => setDeleteModal({ isOpen: false, item: null })} className="rounded-lg border border-gray-300 px-4 py-2 font-medium text-gray-700 hover:bg-gray-50">Batal</button>
+                  <button type="button" onClick={handleDelete} className="rounded-lg bg-red-600 px-4 py-2 font-medium text-white hover:bg-red-700">Ya, Hapus</button>
+                </div>
+              </div>
             </div>
           </div>
         )}
 
+        {/* Success Modal */}
         {successState.isOpen && (
           <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 px-4">
             <div className="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl">
