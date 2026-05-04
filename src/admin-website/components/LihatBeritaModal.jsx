@@ -29,9 +29,9 @@ export default function LihatBeritaModal({ isOpen, item, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-      <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-lg">
+      <div className="w-full max-w-4xl max-h-[90vh] bg-white rounded-lg shadow-lg flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="sticky top-0 flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4">
+        <div className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4 shrink-0">
           <h2 className="text-xl font-bold text-gray-900">Preview Berita</h2>
           <button
             onClick={onClose}
@@ -42,7 +42,7 @@ export default function LihatBeritaModal({ isOpen, item, onClose }) {
         </div>
 
         {/* Content */}
-        <div className="p-8">
+        <div className="p-8 overflow-y-auto flex-1">
           {/* Featured Image */}
           {item.image && (
             <div className="mb-8">
@@ -119,15 +119,16 @@ export default function LihatBeritaModal({ isOpen, item, onClose }) {
             )}
           </div>
 
-          {/* Close Button */}
-          <div className="mt-8 pt-8 border-t border-gray-200 flex justify-end">
-            <button
-              onClick={onClose}
-              className="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg font-semibold hover:bg-gray-400 transition"
-            >
-              Tutup
-            </button>
-          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="border-t border-gray-200 bg-white px-8 py-4 flex justify-end shrink-0">
+          <button
+            onClick={onClose}
+            className="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg font-semibold hover:bg-gray-400 transition"
+          >
+            Tutup
+          </button>
         </div>
       </div>
     </div>

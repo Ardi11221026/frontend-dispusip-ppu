@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Banner from '../components/Banner';
 import LayananKami from '../components/LayananKami';
 import Footer from '../components/Footer';
-import { Book, Users, FileText, Award } from 'lucide-react';
+import { Users, FileText, Award, Calendar } from 'lucide-react';
 
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
     <div className="w-full">
       <Header />
@@ -85,12 +88,13 @@ export default function Home() {
           <NewsSection />
 
           <div className="text-center mt-10 sm:mt-12">
-            <a
-              href="/berita"
+            <button
+              type="button"
+              onClick={() => navigate('/berita')}
               className="inline-block bg-gradient-to-r from-blue-900 to-emerald-600 hover:from-blue-800 hover:to-emerald-700 text-white font-bold py-3 sm:py-4 px-8 sm:px-10 rounded-lg transition duration-300 text-base sm:text-lg shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               Lihat Semua Berita
-            </a>
+            </button>
           </div>
         </div>
       </section>
@@ -101,6 +105,7 @@ export default function Home() {
 }
 
 function NewsSection() {
+  const navigate = useNavigate();
   const [beritaList, setBeritaList] = useState([]);
 
   useEffect(() => {
@@ -110,7 +115,7 @@ function NewsSection() {
         try {
           const allNews = JSON.parse(savedItems);
           const sorted = allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
-          setBeritaList(sorted.slice(0, 3));
+          setBeritaList(sorted.slice(0, 5));
         } catch (e) {
           setBeritaList([]);
         }
@@ -134,15 +139,20 @@ function NewsSection() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 sm:gap-8">
       {beritaList.map((berita) => (
         <div key={berita.id} className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer">
           <div className="h-40 sm:h-48 md:h-56 overflow-hidden">
             <img src={berita.image} alt={berita.title} className="w-full h-full object-cover" />
           </div>
           <div className="p-5 sm:p-6">
-            <p className="text-xs text-blue-900 font-semibold mb-2 flex items-center gap-1">
-              📅 {new Date(berita.date).toLocaleDateString('id-ID')}
+            <p className="text-xs text-blue-900 font-semibold mb-2 flex items-center gap-2">
+              <Calendar size={14} />
+              {new Date(berita.date).toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })}
             </p>
             <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-900 transition">
               {berita.title}
@@ -150,9 +160,13 @@ function NewsSection() {
             <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
               {berita.excerpt}
             </p>
-            <div className="mt-3 pt-3 border-t border-gray-200 flex items-center text-emerald-600 font-semibold text-sm group-hover:text-blue-900 transition">
+            <button
+              type="button"
+              onClick={() => navigate(`/berita/${berita.id}`)}
+              className="mt-3 pt-3 border-t border-gray-200 w-full text-left flex items-center text-emerald-600 font-semibold text-sm group-hover:text-blue-900 transition"
+            >
               Baca selengkapnya →
-            </div>
+            </button>
           </div>
         </div>
       ))}

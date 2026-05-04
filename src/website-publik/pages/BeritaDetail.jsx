@@ -108,7 +108,11 @@ export default function BeritaDetail() {
               <div className="flex items-center gap-2 text-gray-600 font-poppins text-sm">
                 <Calendar size={16} />
                 <time dateTime={berita.date}>
-                  {new Date(berita.date).toLocaleDateString('id-ID')}
+                  {new Date(berita.date).toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })}
                 </time>
               </div>
               <div>
@@ -208,7 +212,11 @@ export default function BeritaDetail() {
                       </h4>
                       <div className="flex items-center gap-2 text-gray-500 font-poppins text-xs">
                         <Calendar size={12} />
-                        {new Date(beritaItem.date).toLocaleDateString('id-ID')}
+                        {new Date(beritaItem.date).toLocaleDateString('id-ID', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })}
                       </div>
                     </div>
                   </div>

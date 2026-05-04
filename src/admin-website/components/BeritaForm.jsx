@@ -105,6 +105,12 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
     withActiveBlock(index, () => execFormat('createLink', url));
   };
 
+  const handleEditorFocus = (index, event) => {
+    setActiveBlock(index);
+    event.currentTarget.setAttribute('dir', 'ltr');
+    event.currentTarget.style.unicodeBidi = 'plaintext';
+  };
+
   const updateContentBlock = (index, value) => {
     const newBlocks = [...formData.contentBlocks];
     newBlocks[index].value = value;
@@ -290,10 +296,12 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
                     <div
                       ref={(el) => (contentRefs.current[i] = el)}
                       contentEditable
+                      dir="ltr"
                       suppressContentEditableWarning
-                      onFocus={() => setActiveBlock(i)}
+                      onFocus={(e) => handleEditorFocus(i, e)}
                       onInput={(e) => updateContentBlock(i, e.currentTarget.innerHTML)}
                       className="w-full border rounded p-2 min-h-[120px] prose max-w-full"
+                      style={{ unicodeBidi: 'plaintext' }}
                       dangerouslySetInnerHTML={{ __html: block.value || '' }}
                     />
                   </>
