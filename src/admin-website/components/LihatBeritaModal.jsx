@@ -1,4 +1,5 @@
-import { X, Share2, MessageCircle, Facebook, Copy } from 'lucide-react';
+import { X, Share2, MessageCircle, Copy } from 'lucide-react';
+import { Facebook } from 'lucide-react/icons';
 import { useState } from 'react';
 
 export default function LihatBeritaModal({ isOpen, item, onClose }) {

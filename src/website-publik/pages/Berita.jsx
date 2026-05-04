@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageBanner from '../components/PageBanner';
-import { Calendar, MessageCircle, Facebook, Copy, X } from 'lucide-react';
+import { Calendar, MessageCircle, Copy, X } from 'lucide-react';
+import { Facebook } from 'lucide-react/icons';
 
 export default function Berita() {
   const [beritaList, setBeritaList] = useState(() => {
