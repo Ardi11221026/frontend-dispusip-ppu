@@ -9,7 +9,6 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-slate-50 font-poppins flex flex-col">
       <Header />
-      <div className="md:hidden h-20" /> {/* Spacer untuk offset fixed header di mobile */}
       
       <div className="flex-1 flex items-center justify-center py-16 px-4">
         <div className="bg-white rounded-3xl w-full max-w-md shadow-lg border border-gray-100 p-10">

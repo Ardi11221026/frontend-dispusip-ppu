@@ -16,7 +16,7 @@ export default function HeaderDesktop() {
   const [profilOpen, setProfilOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
+  // Close dropdown only when clicking outside - NOT on scroll
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
