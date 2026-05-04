@@ -50,7 +50,12 @@ export default function Berita() {
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div>
           <h2 className="text-3xl font-bold text-gray-900 font-poppins mb-8">Berita Terbaru</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {beritaList.length === 0 ? (
+            <div className="bg-gray-50 rounded-lg border border-gray-200 p-12 text-center">
+              <p className="text-gray-500 text-lg font-poppins">Belum ada berita terbaru</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {beritaList.map((berita) => (
               <div
                 key={berita.id}
