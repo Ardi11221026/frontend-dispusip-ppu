@@ -7,15 +7,14 @@ export default function AdminHome() {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeMenu, setActiveMenu] = useState(location.state?.activeMenu || 'dashboard');
-  const [beritaItems, setBeritaItems] = useState([
-    { id: 1, title: 'Kegiatan Literasi Sekolah', date: '29 Apr 2026', status: 'Publik' },
-    { id: 2, title: 'Kunjungan Komunitas', date: '28 Apr 2026', status: 'Draft' },
-  ]);
-  const [petugasItems, setPetugasItems] = useState([
-    { id: 1, name: 'Petugas 1', email: 'petugas1@perpus.id', status: 'Aktif' },
-    { id: 2, name: 'Petugas 2', email: 'petugas2@perpus.id', status: 'Aktif' },
-    { id: 3, name: 'Petugas 3', email: 'petugas3@perpus.id', status: 'Nonaktif' },
-  ]);
+  const [beritaItems, setBeritaItems] = useState(() => {
+    const savedItems = localStorage.getItem('adminBeritaItems');
+    return savedItems ? JSON.parse(savedItems) : [];
+  });
+  const [petugasItems, setPetugasItems] = useState(() => {
+    const savedItems = localStorage.getItem('adminPetugasItems');
+    return savedItems ? JSON.parse(savedItems) : [];
+  });
   const [modalState, setModalState] = useState({ isOpen: false, type: 'view', category: 'berita', item: null });
   const [successState, setSuccessState] = useState({ isOpen: false, message: '' });
 
@@ -29,6 +28,14 @@ export default function AdminHome() {
   useEffect(() => {
     setActiveMenu(location.state?.activeMenu || 'dashboard');
   }, [location.pathname, location.state, setActiveMenu]);
+
+  useEffect(() => {
+    localStorage.setItem('adminBeritaItems', JSON.stringify(beritaItems));
+  }, [beritaItems]);
+
+  useEffect(() => {
+    localStorage.setItem('adminPetugasItems', JSON.stringify(petugasItems));
+  }, [petugasItems]);
 
   const stats = [
     { label: 'Total Berita', value: '0', color: 'from-blue-500 to-blue-600' },

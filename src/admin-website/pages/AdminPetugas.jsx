@@ -6,11 +6,10 @@ import AdminLayout from '../components/AdminLayout';
 export default function AdminPetugas() {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState('petugas');
-  const [items, setItems] = useState([
-    { id: 1, name: 'Petugas 1', email: 'petugas1@perpus.id', status: 'Aktif' },
-    { id: 2, name: 'Petugas 2', email: 'petugas2@perpus.id', status: 'Aktif' },
-    { id: 3, name: 'Petugas 3', email: 'petugas3@perpus.id', status: 'Nonaktif' },
-  ]);
+  const [items, setItems] = useState(() => {
+    const savedItems = localStorage.getItem('adminPetugasItems');
+    return savedItems ? JSON.parse(savedItems) : [];
+  });
   const [modalState, setModalState] = useState({ isOpen: false, type: 'view', item: null });
   const [successState, setSuccessState] = useState({ isOpen: false, message: '' });
 
@@ -19,6 +18,10 @@ export default function AdminPetugas() {
       navigate('/admin/login');
     }
   }, [navigate]);
+
+  useEffect(() => {
+    localStorage.setItem('adminPetugasItems', JSON.stringify(items));
+  }, [items]);
 
   const openModal = (type, item = null) => setModalState({ isOpen: true, type, item });
   const closeModal = () => setModalState({ isOpen: false, type: 'view', item: null });

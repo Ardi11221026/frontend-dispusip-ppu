@@ -2,43 +2,11 @@
 
 const STORAGE_KEY = 'dispusip_gallery_items';
 
-// Default sample data
-const DEFAULT_ITEMS = [
-  {
-    id: 1,
-    title: 'Kunjungan Sekolah',
-    image: 'https://via.placeholder.com/400x300?text=Galeri+1',
-    category: 'Kegiatan',
-  },
-  {
-    id: 2,
-    title: 'Acara Literasi',
-    image: 'https://via.placeholder.com/400x300?text=Galeri+2',
-    category: 'Literasi',
-  },
-  {
-    id: 3,
-    title: 'Ruang Baca Anak',
-    image: 'https://via.placeholder.com/400x300?text=Galeri+3',
-    category: 'Fasilitas',
-  },
-  {
-    id: 4,
-    title: 'Koleksi Buku',
-    image: 'https://via.placeholder.com/400x300?text=Galeri+4',
-    category: 'Koleksi',
-  },
-];
-
 export const galleryStorage = {
   // Get all items
   getAll: () => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ITEMS));
-      return DEFAULT_ITEMS;
-    }
-    return JSON.parse(stored);
+    return stored ? JSON.parse(stored) : [];
   },
 
   // Add new item

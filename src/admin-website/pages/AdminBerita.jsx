@@ -10,11 +10,7 @@ export default function AdminBerita() {
   const [activeMenu, setActiveMenu] = useState('berita');
   const [items, setItems] = useState(() => {
     const savedItems = localStorage.getItem('adminBeritaItems');
-    return savedItems ? JSON.parse(savedItems) : [
-      { id: 1, title: 'Perpusnas Kawal Ombudsman Sinkronisasi Aset Bantuan', date: '2026-04-28', status: 'Publik', category: 'Berita', excerpt: 'Dinas Perpustakaan dan Arsip Kabupaten Penajam Paser Utara mengikuti serangkaian kegiatan sinkronisasi aset dengan pihak Ombudsman untuk memastikan semua bantuan tercatat dengan baik.', image: 'https://via.placeholder.com/600x400?text=Berita+1', content: 'Konten berita 1...' },
-      { id: 2, title: 'Semangat Kartini di Dunia Literasi dan Pendidikan Perempuan', date: '2026-04-27', status: 'Publik', category: 'Berita', excerpt: 'Peringatan Hari Kartini tahun ini menghadirkan tema tentang pendidikan dan literasi perempuan di era digital.', image: 'https://via.placeholder.com/600x400?text=Berita+2', content: 'Konten berita 2...' },
-      { id: 3, title: 'Perpusnas dan Pimpinan Pusat Aisyiyah Perluas Gerakan Literasi Berkarakter', date: '2026-04-27', status: 'Draft', category: 'Berita', excerpt: 'Kolaborasi strategis antara Perpustakaan Nasional dan Aisyiyah untuk memperluas akses literasi kepada masyarakat luas.', image: 'https://via.placeholder.com/600x400?text=Berita+3', content: 'Konten berita 3...' },
-    ];
+    return savedItems ? JSON.parse(savedItems) : [];
   });
 
   useEffect(() => {

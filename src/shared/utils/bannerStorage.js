@@ -1,20 +1,9 @@
 const STORAGE_KEY = 'dispusip_banner_items';
 
-const DEFAULT_ITEMS = [
-  { id: 1, title: 'Banner 1', image: '/banner/pusip1.jpeg' },
-  { id: 2, title: 'Banner 2', image: '/banner/pusip2.jpg' },
-  { id: 3, title: 'Banner 3', image: '/banner/pusip3.jpeg' },
-];
-
 export const bannerStorage = {
   getAll: () => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ITEMS));
-      return DEFAULT_ITEMS;
-    }
-
-    return JSON.parse(stored);
+    return stored ? JSON.parse(stored) : [];
   },
 
   add: (item) => {
