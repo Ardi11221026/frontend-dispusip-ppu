@@ -1,5 +1,28 @@
 import { useState, useEffect, useRef } from 'react';
-import { Upload, ChevronUp, ChevronDown, Trash2, X } from 'lucide-react';
+import {
+  Upload,
+  ChevronUp,
+  ChevronDown,
+  Trash2,
+  X,
+  Bold,
+  Italic,
+  Underline,
+  Heading2,
+  Heading3,
+  Pilcrow,
+  List,
+  ListOrdered,
+  Strikethrough,
+  Baseline,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
+  Link,
+  Palette,
+  Eraser,
+} from 'lucide-react';
 
 export default function BeritaForm({ type, item, onSave, onClose }) {
   const [formData, setFormData] = useState({
@@ -67,6 +90,19 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
     document.execCommand(cmd, false, value);
     // sync state
     updateContentBlock(activeBlock, el.innerHTML);
+  };
+
+  const withActiveBlock = (index, fn) => {
+    setActiveBlock(index);
+    const el = contentRefs.current[index];
+    if (el) el.focus();
+    fn();
+  };
+
+  const handleInsertLink = (index) => {
+    const url = window.prompt('Masukkan URL (contoh: https://contoh.com)');
+    if (!url) return;
+    withActiveBlock(index, () => execFormat('createLink', url));
   };
 
   const updateContentBlock = (index, value) => {
@@ -217,18 +253,39 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
 
                 {block.type === 'text' ? (
                   <>
-                    <div className="mb-2 flex flex-wrap gap-2">
-                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('bold'); }}>B</button>
-                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('italic'); }}>I</button>
-                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('underline'); }}>U</button>
-                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('formatBlock', '<H2>'); }}>H2</button>
-                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('formatBlock', '<H3>'); }}>H3</button>
-                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('insertUnorderedList'); }}>• List</button>
-                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('insertOrderedList'); }}>1. List</button>
-                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('justifyLeft'); }}>Left</button>
-                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('justifyCenter'); }}>Center</button>
-                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('justifyRight'); }}>Right</button>
-                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('removeFormat'); }}>Clear</button>
+                    <div className="mb-2 flex flex-wrap items-center gap-1 rounded-lg border bg-gray-50 p-2">
+                      <button type="button" title="Bold" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('bold'))}><Bold size={16} /></button>
+                      <button type="button" title="Italic" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('italic'))}><Italic size={16} /></button>
+                      <button type="button" title="Underline" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('underline'))}><Underline size={16} /></button>
+                      <div className="mx-1 h-6 w-px bg-gray-300" />
+
+                      <button type="button" title="Heading 2" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('formatBlock', '<H2>'))}><Heading2 size={16} /></button>
+                      <button type="button" title="Heading 3" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('formatBlock', '<H3>'))}><Heading3 size={16} /></button>
+                      <button type="button" title="Paragraph" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('formatBlock', '<P>'))}><Pilcrow size={16} /></button>
+                      <div className="mx-1 h-6 w-px bg-gray-300" />
+
+                      <button type="button" title="Bullet List" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('insertUnorderedList'))}><List size={16} /></button>
+                      <button type="button" title="Numbered List" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('insertOrderedList'))}><ListOrdered size={16} /></button>
+                      <button type="button" title="Strikethrough" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('strikeThrough'))}><Strikethrough size={16} /></button>
+                      <button type="button" title="Superscript" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('superscript'))}><Baseline size={16} /></button>
+                      <div className="mx-1 h-6 w-px bg-gray-300" />
+
+                      <button type="button" title="Align Left" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('justifyLeft'))}><AlignLeft size={16} /></button>
+                      <button type="button" title="Align Center" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('justifyCenter'))}><AlignCenter size={16} /></button>
+                      <button type="button" title="Align Right" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('justifyRight'))}><AlignRight size={16} /></button>
+                      <button type="button" title="Justify" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('justifyFull'))}><AlignJustify size={16} /></button>
+                      <div className="mx-1 h-6 w-px bg-gray-300" />
+
+                      <button type="button" title="Insert Link" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => handleInsertLink(i)}><Link size={16} /></button>
+                      <label title="Text Color" className="relative inline-flex cursor-pointer items-center justify-center p-2 border rounded text-sm hover:bg-gray-100">
+                        <Palette size={16} />
+                        <input
+                          type="color"
+                          className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                          onChange={(e) => withActiveBlock(i, () => execFormat('foreColor', e.target.value))}
+                        />
+                      </label>
+                      <button type="button" title="Clear Format" className="p-2 border rounded text-sm hover:bg-gray-100" onClick={() => withActiveBlock(i, () => execFormat('removeFormat'))}><Eraser size={16} /></button>
                     </div>
                     <div
                       ref={(el) => (contentRefs.current[i] = el)}
