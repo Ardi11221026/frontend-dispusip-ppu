@@ -121,6 +121,7 @@ export default function LihatBeritaModal({ isOpen, item, onClose }) {
           </button>
         </div>
       </div>
+      </div>
     </div>
   );
 }
