@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Banner from '../components/Banner';
 import LayananKami from '../components/LayananKami';
@@ -81,31 +82,7 @@ export default function Home() {
             <p className="text-base sm:text-lg text-gray-600 mt-4">Informasi dan update terkini dari perpustakaan kami</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {/* Sample News Cards */}
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer">
-                <div className="h-40 sm:h-48 md:h-56 bg-gradient-to-br from-blue-900 via-emerald-700 to-teal-600 flex items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-20 bg-white transition duration-300"></div>
-                  <span className="text-white font-bold text-lg sm:text-xl relative z-10">📰 Berita {item}</span>
-                </div>
-                <div className="p-5 sm:p-6">
-                  <p className="text-xs text-blue-900 font-semibold mb-2 flex items-center gap-1">
-                    📅 28 April 2026
-                  </p>
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-900 transition">
-                    Judul Berita Terbaru {item}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
-                    Deskripsi singkat berita ini akan ditampilkan di sini untuk memberikan informasi lebih lengkap mengenai berita terkini.
-                  </p>
-                  <div className="mt-3 pt-3 border-t border-gray-200 flex items-center text-emerald-600 font-semibold text-sm group-hover:text-blue-900 transition">
-                    Baca selengkapnya →
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <NewsSection />
 
           <div className="text-center mt-10 sm:mt-12">
             <a
@@ -119,6 +96,67 @@ export default function Home() {
       </section>
 
       <Footer />
+    </div>
+  );
+}
+
+function NewsSection() {
+  const [beritaList, setBeritaList] = useState([]);
+
+  useEffect(() => {
+    const load = () => {
+      const savedItems = localStorage.getItem('adminBeritaItems');
+      if (savedItems) {
+        try {
+          const allNews = JSON.parse(savedItems);
+          const publicNews = allNews.filter((item) => item.status === 'Publik');
+          const sorted = publicNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+          setBeritaList(sorted.slice(0, 3));
+        } catch (e) {
+          setBeritaList([]);
+        }
+      } else {
+        setBeritaList([]);
+      }
+    };
+
+    load();
+    const onStorage = () => load();
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
+  if (!beritaList || beritaList.length === 0) {
+    return (
+      <div className="bg-gray-50 rounded-lg border border-gray-200 p-8 text-center">
+        <p className="text-gray-500 text-lg">Belum ada berita terbaru</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      {beritaList.map((berita) => (
+        <div key={berita.id} className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer">
+          <div className="h-40 sm:h-48 md:h-56 overflow-hidden">
+            <img src={berita.image} alt={berita.title} className="w-full h-full object-cover" />
+          </div>
+          <div className="p-5 sm:p-6">
+            <p className="text-xs text-blue-900 font-semibold mb-2 flex items-center gap-1">
+              📅 {new Date(berita.date).toLocaleDateString('id-ID')}
+            </p>
+            <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-900 transition">
+              {berita.title}
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
+              {berita.excerpt}
+            </p>
+            <div className="mt-3 pt-3 border-t border-gray-200 flex items-center text-emerald-600 font-semibold text-sm group-hover:text-blue-900 transition">
+              Baca selengkapnya →
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

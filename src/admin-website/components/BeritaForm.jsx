@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Upload, ChevronUp, ChevronDown, Trash2, X } from 'lucide-react';
 
 export default function BeritaForm({ type, item, onSave, onClose }) {
@@ -10,6 +10,9 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
     image: '',
     contentBlocks: [],
   });
+  const [errors, setErrors] = useState({});
+  const contentRefs = useRef([]);
+  const [activeBlock, setActiveBlock] = useState(null);
 
   useEffect(() => {
     if (type === 'edit' && item) {
@@ -53,6 +56,17 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
     }));
   };
 
+  const execFormat = (cmd, value = null) => {
+    if (activeBlock == null) return;
+    const el = contentRefs.current[activeBlock];
+    if (!el) return;
+    el.focus();
+    // use deprecated execCommand for simple formatting
+    document.execCommand(cmd, false, value);
+    // sync state
+    updateContentBlock(activeBlock, el.innerHTML);
+  };
+
   const updateContentBlock = (index, value) => {
     const newBlocks = [...formData.contentBlocks];
     newBlocks[index].value = value;
@@ -80,6 +94,18 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // simple validation
+    const newErrors = {};
+    if (!formData.title || formData.title.trim() === '') newErrors.title = 'Judul wajib diisi';
+    const hasContent = formData.contentBlocks.some((b) => {
+      if (b.type === 'text') return (b.value || '').replace(/<[^>]*>/g, '').trim() !== '';
+      if (b.type === 'image') return !!b.value;
+      return false;
+    });
+    if (!hasContent) newErrors.content = 'Tambahkan setidaknya satu blok konten (teks atau gambar)';
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
+
     const content = formData.contentBlocks
       .map((b) => (b.type === 'text' ? b.value : ''))
       .join('\n');
@@ -88,12 +114,14 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
       .filter((b) => b.type === 'image')
       .map((b) => b.value);
 
+    const plainText = content.replace(/<[^>]+>/g, '');
+
     onSave({
       ...item,
       ...formData,
       content,
       gallery,
-      excerpt: content.substring(0, 150),
+      excerpt: plainText.substring(0, 150),
       id: item?.id || Date.now(),
       status: item?.status || 'Draft',
     });
@@ -112,7 +140,7 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
         </div>
 
         {/* BODY (SCROLLABLE) */}
-        <form id="berita-form" onSubmit={handleSubmit} className="overflow-y-auto px-6 py-4 space-y-6 flex-1">
+          <form id="berita-form" onSubmit={handleSubmit} className="overflow-y-auto px-6 py-4 space-y-6 flex-1">
 
           {/* Thumbnail */}
           <div>
@@ -151,6 +179,7 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
               placeholder="Masukkan judul berita"
               className="w-full border rounded-lg px-3 py-2"
             />
+            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
           </div>
 
           {/* Konten */}
@@ -173,17 +202,34 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
                 Gambar
               </button>
             </div>
-
             {formData.contentBlocks.map((block, i) => (
               <div key={i} className="border rounded-lg p-3 mb-3">
 
                 {block.type === 'text' ? (
-                  <textarea
-                    value={block.value}
-                    onChange={(e) => updateContentBlock(i, e.target.value)}
-                    placeholder="Tulis konten..."
-                    className="w-full border rounded p-2 min-h-[100px]"
-                  />
+                  <>
+                    <div className="mb-2 flex flex-wrap gap-2">
+                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('bold'); }}>B</button>
+                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('italic'); }}>I</button>
+                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('underline'); }}>U</button>
+                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('formatBlock', '<H2>'); }}>H2</button>
+                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('formatBlock', '<H3>'); }}>H3</button>
+                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('insertUnorderedList'); }}>• List</button>
+                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('insertOrderedList'); }}>1. List</button>
+                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('justifyLeft'); }}>Left</button>
+                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('justifyCenter'); }}>Center</button>
+                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('justifyRight'); }}>Right</button>
+                      <button type="button" className="px-2 py-1 border rounded text-sm" onClick={() => { setActiveBlock(i); execFormat('removeFormat'); }}>Clear</button>
+                    </div>
+                    <div
+                      ref={(el) => (contentRefs.current[i] = el)}
+                      contentEditable
+                      suppressContentEditableWarning
+                      onFocus={() => setActiveBlock(i)}
+                      onInput={(e) => updateContentBlock(i, e.currentTarget.innerHTML)}
+                      className="w-full border rounded p-2 min-h-[120px] prose max-w-full"
+                      dangerouslySetInnerHTML={{ __html: block.value || '' }}
+                    />
+                  </>
                 ) : (
                   <div>
                     <input
@@ -209,6 +255,7 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
                 </div>
               </div>
             ))}
+            {errors.content && <p className="text-red-500 text-sm mt-1">{errors.content}</p>}
           </div>
         </form>
 
