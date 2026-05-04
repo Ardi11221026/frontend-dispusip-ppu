@@ -42,7 +42,8 @@ export default function Footer() {
               </div>
               <div className="flex items-start gap-2">
                 <MapPin size={16} className="mt-0.5 flex-shrink-0" />
-                <p className="text-xs sm:text-sm">Jl. Pendidikan No. 1<br />Penajam, Kab. PPU</p>
+                <p className="text-xs sm:text-sm">Jalan Korpri KM. 9 Kelurahan Nipah-Nipah <br />Kecamatan Penajam
+Kabupaten Penajam Paser Utara<br /> Kalimantan Timur 76142</p>
               </div>
             </div>
           </div>
