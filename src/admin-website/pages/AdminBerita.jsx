@@ -143,7 +143,6 @@ export default function AdminBerita() {
             <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl">
               <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
                 <h3 className="text-xl font-bold text-gray-900">Hapus Berita</h3>
-                <button onClick={() => setDeleteModal({ isOpen: false, item: null })} className="rounded-lg p-2 hover:bg-gray-100"><X size={20} /></button>
               </div>
               <div className="space-y-4 px-6 py-5 text-center">
                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-red-600"><Trash2 size={26} /></div>

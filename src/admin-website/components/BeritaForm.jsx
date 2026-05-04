@@ -178,9 +178,6 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
         {/* HEADER */}
         <div className="flex items-center justify-between px-6 py-4 border-b">
           <h2 className="text-lg font-semibold">Buat Berita Baru</h2>
-          <button onClick={onClose}>
-            <X size={20} />
-          </button>
         </div>
 
         {/* BODY (SCROLLABLE) */}

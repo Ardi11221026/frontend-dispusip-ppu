@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { X, Eye, Edit2, Trash2, AlertCircle } from 'lucide-react';
 
-export function GalleryModal({ isOpen, type, item, onClose, onSubmit, categories }) {
-  const [formData, setFormData] = useState(item || { title: '', category: 'Kegiatan', image: '' });
+export function GalleryModal({ isOpen, type, item, onClose, onSubmit }) {
+  const [formData, setFormData] = useState(item || { title: '', image: '', date: new Date().toISOString().split('T')[0] });
   const [errors, setErrors] = useState({});
   const [imagePreview, setImagePreview] = useState(item?.image || '');
 
   const validateForm = () => {
     const newErrors = {};
     if (!formData.title.trim()) newErrors.title = 'Nama kegiatan wajib diisi';
-    if (!formData.category.trim()) newErrors.category = 'Kategori wajib dipilih';
     if (type !== 'view' && !formData.image && !imagePreview) {
       newErrors.image = 'Foto wajib dipilih';
     }
@@ -37,7 +36,7 @@ export function GalleryModal({ isOpen, type, item, onClose, onSubmit, categories
   };
 
   const handleClose = () => {
-    setFormData(item || { title: '', category: 'Kegiatan', image: '' });
+    setFormData(item || { title: '', image: '', date: new Date().toISOString().split('T')[0] });
     setErrors({});
     setImagePreview('');
     onClose();
@@ -53,12 +52,6 @@ export function GalleryModal({ isOpen, type, item, onClose, onSubmit, categories
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-xl font-bold text-gray-900">{titleText}</h2>
-          <button
-            onClick={handleClose}
-            className="p-1 hover:bg-gray-100 rounded-lg transition"
-          >
-            <X size={20} />
-          </button>
         </div>
 
         {/* Content */}
@@ -123,32 +116,16 @@ export function GalleryModal({ isOpen, type, item, onClose, onSubmit, categories
             )}
           </div>
 
-          {/* Category */}
+          {/* Date (allow backdate) */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Kategori
-            </label>
-            <select
-              value={formData.category}
-              onChange={(e) => {
-                setFormData({ ...formData, category: e.target.value });
-                if (errors.category) setErrors({ ...errors, category: '' });
-              }}
+            <label className="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
+            <input
+              type="date"
+              value={formData.date}
+              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
               disabled={type === 'view'}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
-            >
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-            {errors.category && (
-              <div className="mt-2 flex items-center gap-2 text-red-600 text-sm">
-                <AlertCircle size={16} />
-                {errors.category}
-              </div>
-            )}
+            />
           </div>
         </div>
 

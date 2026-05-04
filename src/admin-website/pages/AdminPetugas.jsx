@@ -110,7 +110,6 @@ export default function AdminPetugas() {
                 <h3 className="text-xl font-bold text-gray-900">
                   {modalState.type === 'view' ? 'Lihat Data' : modalState.type === 'edit' ? 'Edit Data' : 'Hapus Data'}
                 </h3>
-                <button onClick={closeModal} className="rounded-lg p-2 hover:bg-gray-100"><X size={20} /></button>
               </div>
 
               <form onSubmit={handleSave} className="space-y-4 px-6 py-5">

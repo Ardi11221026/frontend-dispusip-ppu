@@ -96,7 +96,6 @@ export default function AdminBanner() {
             <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl">
               <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
                 <h3 className="text-xl font-bold text-gray-900">{modalState.type === 'view' ? 'Lihat Banner' : modalState.type === 'edit' ? 'Edit Banner' : 'Hapus Banner'}</h3>
-                <button onClick={closeModal} className="rounded-lg p-2 hover:bg-gray-100"><X size={20} /></button>
               </div>
 
               <form onSubmit={handleSave} className="space-y-4 px-6 py-5">

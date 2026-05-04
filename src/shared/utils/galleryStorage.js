@@ -16,6 +16,7 @@ export const galleryStorage = {
       ...item,
       id: Math.max(...items.map(i => i.id), 0) + 1,
       image: item.image || `https://via.placeholder.com/400x300?text=${item.title}`,
+      date: item.date || new Date().toISOString().split('T')[0],
     };
     items.push(newItem);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
@@ -45,8 +46,8 @@ export const galleryStorage = {
     return items.find(i => i.id === id);
   },
 
-  // Get categories
+  // No categories required for simplified gallery; return default
   getCategories: (items) => {
-    return ['Semua', ...new Set(items.map(img => img.category))];
+    return ['Semua'];
   },
 };

@@ -9,7 +9,6 @@ const AdminGaleriManajemen = () => {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState('galeri');
   const [galleryItems, setGalleryItems] = useState(() => galleryStorage.getAll());
-  const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [modalState, setModalState] = useState({ isOpen: false, type: 'add', item: null });
   const [deleteState, setDeleteState] = useState({ isOpen: false, item: null });
   const [successState, setSuccessState] = useState({ isOpen: false, message: '' });
@@ -21,11 +20,7 @@ const AdminGaleriManajemen = () => {
     }
   }, [navigate]);
 
-  const categories = useMemo(() => galleryStorage.getCategories(galleryItems).filter((category) => category !== 'Semua'), [galleryItems]);
-
-  const filteredItems = selectedCategory === 'Semua'
-    ? galleryItems
-    : galleryItems.filter((item) => item.category === selectedCategory);
+  const filteredItems = galleryItems;
 
   const handleAddPhoto = () => {
     setModalState({ isOpen: true, type: 'add', item: null });
@@ -81,19 +76,7 @@ const AdminGaleriManajemen = () => {
         </button>
       </div>
 
-      <div className="mb-6 flex flex-wrap gap-2">
-        {['Semua', ...categories].map((category) => (
-          <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-              selectedCategory === category ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 shadow hover:bg-gray-100'
-            }`}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
+      {/* categories removed - simplified gallery (no categories) */}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {filteredItems.map((item) => (
@@ -101,8 +84,8 @@ const AdminGaleriManajemen = () => {
             <img src={item.image} alt={item.title} className="h-52 w-full object-cover" />
             <div className="space-y-3 p-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">{item.category}</p>
                 <h3 className="mt-1 text-lg font-bold text-gray-900">{item.title}</h3>
+                <p className="text-sm text-gray-500">{new Date(item.date).toLocaleDateString('id-ID')}</p>
               </div>
 
               <div className="flex gap-2">
@@ -143,7 +126,6 @@ const AdminGaleriManajemen = () => {
         isOpen={modalState.isOpen}
         type={modalState.type}
         item={modalState.item}
-        categories={categories.length ? categories : ['Kegiatan']}
         onClose={() => setModalState({ isOpen: false, type: 'add', item: null })}
         onSubmit={handleSubmitGallery}
       />
