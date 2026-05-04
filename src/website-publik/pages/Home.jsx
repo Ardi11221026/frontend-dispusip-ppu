@@ -109,8 +109,7 @@ function NewsSection() {
       if (savedItems) {
         try {
           const allNews = JSON.parse(savedItems);
-          const publicNews = allNews.filter((item) => item.status === 'Publik');
-          const sorted = publicNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+          const sorted = allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
           setBeritaList(sorted.slice(0, 3));
         } catch (e) {
           setBeritaList([]);

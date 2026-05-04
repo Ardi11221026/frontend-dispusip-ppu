@@ -17,11 +17,10 @@ export default function BeritaDetail() {
     const savedItems = localStorage.getItem('adminBeritaItems');
     if (savedItems) {
       const allNews = JSON.parse(savedItems);
-      const publicNews = allNews.filter(item => item.status === 'Publik');
-      const sortedNews = publicNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+      const sortedNews = allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
       
       // Cari berita dengan ID yang sesuai
-      const foundBerita = allNews.find(item => item.id === id);
+      const foundBerita = allNews.find((item) => String(item.id) === String(id));
       
       // Update state hanya sekali
       if (foundBerita) {
@@ -72,7 +71,7 @@ export default function BeritaDetail() {
   }
 
   // Berita lainnya (untuk sidebar)
-  const otherBerita = beritaList.filter(b => b.id !== id).slice(0, 5);
+  const otherBerita = beritaList.filter((b) => String(b.id) !== String(id)).slice(0, 5);
 
   return (
     <div className="w-full">

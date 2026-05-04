@@ -11,8 +11,7 @@ export default function Berita() {
     const savedItems = localStorage.getItem('adminBeritaItems');
     if (savedItems) {
       const allNews = JSON.parse(savedItems);
-      const publicNews = allNews.filter(item => item.status === 'Publik');
-      return publicNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+      return allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
     }
     return [];
   });
@@ -22,8 +21,7 @@ export default function Berita() {
       const savedItems = localStorage.getItem('adminBeritaItems');
       if (savedItems) {
         const allNews = JSON.parse(savedItems);
-        const publicNews = allNews.filter(item => item.status === 'Publik');
-        const sortedNews = publicNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const sortedNews = allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
         setBeritaList(sortedNews);
       }
     };
