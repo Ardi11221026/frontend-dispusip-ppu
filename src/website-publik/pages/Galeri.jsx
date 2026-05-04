@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import PageBanner from '../components/PageBanner';
 import { X, Eye } from 'lucide-react';
 import { galleryStorage } from '../../shared/utils/galleryStorage';
+import { formatDate } from '../../shared/utils/formatDate';
 
 export default function Galeri() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -49,7 +50,7 @@ export default function Galeri() {
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition duration-300 flex items-end justify-start">
                 <div className="p-4 text-white opacity-0 group-hover:opacity-100 transition duration-300">
                   <p className="font-poppins font-bold text-sm">{image.title}</p>
-                  <p className="text-xs mt-1 text-gray-200">{new Date(image.date).toLocaleDateString('id-ID')}</p>
+                  <p className="text-xs mt-1 text-gray-200">{formatDate(image.date)}</p>
                 </div>
               </div>
             </div>
@@ -84,7 +85,7 @@ export default function Galeri() {
               <h2 className="text-2xl font-bold text-gray-900 font-poppins">
                 {selectedImage.title}
               </h2>
-              <p className="text-sm text-gray-500 mt-2">{new Date(selectedImage.date).toLocaleDateString('id-ID')}</p>
+              <p className="text-sm text-gray-500 mt-2">{formatDate(selectedImage.date)}</p>
             </div>
             <button
               onClick={() => setSelectedImage(null)}

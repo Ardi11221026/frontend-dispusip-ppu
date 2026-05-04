@@ -1,3 +1,5 @@
+import { X, MessageCircle, Copy, Share2, Calendar } from 'lucide-react';
+import { formatDate } from '../../shared/utils/formatDate';
 import { MessageCircle, Copy, Share2, Calendar } from 'lucide-react';
 import { useState } from 'react';
 import { sanitizeRichHtml } from '../../shared/utils/sanitizeRichHtml';
@@ -52,13 +54,7 @@ export default function LihatBeritaModal({ isOpen, item, onClose }) {
           <div className="flex items-center gap-4 mb-4 pb-4 border-b border-gray-200">
             <div className="flex items-center gap-2 text-gray-600">
               <Calendar size={18} />
-              <time dateTime={item.date}>
-                {new Date(item.date).toLocaleDateString('id-ID', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </time>
+              <time dateTime={item.date}>{formatDate(item.date)}</time>
             </div>
             <div className="flex items-center gap-2">
               <span className="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded">

@@ -85,7 +85,7 @@ const AdminGaleriManajemen = () => {
             <div className="space-y-3 p-4">
               <div>
                 <h3 className="mt-1 text-lg font-bold text-gray-900">{item.title}</h3>
-                <p className="text-sm text-gray-500">{new Date(item.date).toLocaleDateString('id-ID')}</p>
+                <p className="text-sm text-gray-500">{formatDate(item.date)}</p>
               </div>
 
               <div className="flex gap-2">

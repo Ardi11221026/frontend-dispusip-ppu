@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, Pencil, Plus, Trash2, X } from 'lucide-react';
+import { Eye, Pencil, Plus, Trash2, Calendar, Clock } from 'lucide-react';
+import { formatDate } from '../../shared/utils/formatDate';
 import AdminLayout from '../components/AdminLayout';
 import BeritaFormModal from '../components/BeritaFormModal';
 import LihatBeritaModal from '../components/LihatBeritaModal';
@@ -105,12 +106,16 @@ export default function AdminBerita() {
                   </td>
                   <td className="border border-gray-300 px-2 py-3">{item.title}</td>
                   <td className="border border-gray-300 px-2 py-3">
-                    <div className="text-sm font-medium">
-                      {item.date ? new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).toLowerCase() : '-'}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {item.time ? item.time.replace(':', '.') : '-'}
-                    </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 text-gray-600">
+                          <Calendar size={16} />
+                          <div className="text-sm font-medium">{item.date ? formatDate(item.date) : '-'}</div>
+                        </div>
+                        <div className="flex items-center gap-2 text-gray-500">
+                          <Clock size={14} />
+                          <div className="text-xs">{item.time ? item.time : '-'}</div>
+                        </div>
+                      </div>
                   </td>
                   <td className="border border-gray-300 px-2 py-3"><ActionButtons item={item} /></td>
                 </tr>
