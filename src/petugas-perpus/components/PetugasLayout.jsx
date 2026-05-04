@@ -62,13 +62,21 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
               </h2>
             </div>
 
-            <div className="flex items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 shadow-sm">
-              <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-yellow-500 font-bold text-white ring-2 ring-yellow-300">
-                P
+            {/* Desktop: Icon + Text (match Admin appearance) */}
+            <div className="hidden items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2 shadow-sm md:flex">
+              <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
+                <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
               </div>
               <div className="text-right leading-tight">
-                <p className="text-sm font-bold text-emerald-950">{localStorage.getItem('userEmail') || 'petugas@perpus.id'}</p>
-                <p className="text-xs text-emerald-700">Petugas Perpustakaan</p>
+                <p className="text-sm font-bold text-blue-950">{localStorage.getItem('userEmail') || 'petugas@perpus.id'}</p>
+                <p className="text-xs text-amber-700">Petugas Perpustakaan</p>
+              </div>
+            </div>
+
+            {/* Mobile: Icon Only */}
+            <div className="flex md:hidden">
+              <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
+                <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
               </div>
             </div>
           </div>
