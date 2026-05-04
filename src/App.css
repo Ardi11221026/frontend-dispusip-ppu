@@ -1,0 +1,23 @@
+/* App Styles with Tailwind CSS */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+button {
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+}
+
+a {
+  text-decoration: none;
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Dinas Perpustakaan dan Arsip - Kabupaten Penajam Paser Utara",
+  "short_name": "Dispusip PPU",
+  "description": "Portal resmi Dinas Perpustakaan dan Arsip Kabupaten Penajam Paser Utara",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e3a8a",
+  "icons": []
+}
