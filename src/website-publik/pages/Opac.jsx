@@ -86,6 +86,7 @@ export default function Opac() {
   return (
     <div className="min-h-screen bg-slate-50 font-poppins">
       <Header />
+      <div className="md:hidden h-20" /> {/* Spacer untuk offset fixed header di mobile */}
       
       {/* Hero Search Section */}
       <div className="bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 text-white pt-24 pb-32 px-4">
