@@ -46,8 +46,8 @@ export default function AdminLogin() {
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-900 to-emerald-700 px-6 py-10 text-white">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center font-bold text-blue-900 text-2xl">
-                A
+              <div className="w-16 h-16 rounded-full bg-white ring-2 ring-amber-300 overflow-hidden">
+                <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-2" />
               </div>
             </div>
             <h1 className="text-3xl font-bold text-center">Admin Portal</h1>

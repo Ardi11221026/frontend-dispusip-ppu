@@ -15,16 +15,22 @@ export default function BackOfficeLogin() {
     setError('');
     setLoading(true);
 
-    // Simulasi login (dalam produksi akan memanggil API)
     try {
-      // Demo: accept any email/password combination
-      if (email && password) {
-        // Simpan ke localStorage
+      const savedItems = JSON.parse(localStorage.getItem('adminPetugasItems') || '[]');
+      const matchedItem = savedItems.find((item) => {
+        const itemEmail = (item.email || '').trim().toLowerCase();
+        const itemPassword = (item.password || '').trim();
+        const itemStatus = (item.status || 'Aktif').trim();
+        return itemEmail === email.trim().toLowerCase() && itemPassword === password && itemStatus === 'Aktif';
+      });
+
+      if (matchedItem) {
         localStorage.setItem('userRole', 'petugas');
         localStorage.setItem('userEmail', email);
-        navigate('/back-office/home');
+        localStorage.setItem('userName', matchedItem.name || email);
+        navigate('/back-office/beranda');
       } else {
-        setError('Email dan password harus diisi');
+        setError('Email atau password tidak cocok, atau akun belum didaftarkan admin');
       }
     } catch (err) {
       setError('Terjadi kesalahan saat login');
@@ -47,10 +53,8 @@ export default function BackOfficeLogin() {
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-900 to-emerald-700 px-6 py-8 text-white">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-                </svg>
+              <div className="w-16 h-16 rounded-full bg-white ring-2 ring-amber-300 overflow-hidden">
+                <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-2" />
               </div>
             </div>
             <h1 className="text-3xl font-bold text-center">Portal Petugas</h1>
@@ -128,6 +132,7 @@ export default function BackOfficeLogin() {
           <p className="font-semibold mb-2">Demo Login:</p>
           <p>Email: petugas@perpus.id</p>
           <p>Password: password123</p>
+          <p className="mt-2 text-xs text-amber-200">Login petugas membaca data dari daftar petugas yang didaftarkan admin.</p>
         </div>
       </div>
     </div>

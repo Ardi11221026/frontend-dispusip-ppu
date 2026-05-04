@@ -8,10 +8,39 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const menuKey = activeMenu || (location.pathname === '/back-office/home' ? 'dashboard' : 'dashboard');
+  const pathToMenuKey = {
+    '/back-office/home': 'beranda',
+    '/back-office/beranda': 'beranda',
+    '/back-office/akuisisi': 'akuisisi',
+    '/back-office/katalog': 'katalog',
+    '/back-office/sskckr': 'sskckr',
+    '/back-office/keanggotaan': 'keanggotaan',
+    '/back-office/sirkulasi': 'sirkulasi',
+    '/back-office/loker': 'loker',
+    '/back-office/survey': 'survey',
+    '/back-office/buku-tamu': 'buku-tamu',
+    '/back-office/opac': 'opac',
+    '/back-office/layanan-koleksi-digital': 'layanan-koleksi-digital',
+    '/back-office/baca-ditempat': 'baca-ditempat',
+    '/back-office/laporan': 'laporan',
+    '/back-office/administrasi': 'administrasi',
+  };
+  const menuKey = activeMenu || pathToMenuKey[location.pathname] || 'beranda';
   const titleByMenu = {
-    dashboard: 'Dashboard',
-    manajemen: 'Manajemen',
+    beranda: 'Beranda',
+    akuisisi: 'Akuisisi',
+    katalog: 'Katalog',
+    sskckr: 'SSKCKR',
+    keanggotaan: 'Keanggotaan',
+    sirkulasi: 'Sirkulasi',
+    loker: 'Loker',
+    survey: 'Survey',
+    'buku-tamu': 'Buku Tamu',
+    opac: 'OPAC',
+    'layanan-koleksi-digital': 'Layanan Koleksi Digital',
+    'baca-ditempat': 'Baca Ditempat',
+    laporan: 'Laporan',
+    administrasi: 'Administrasi',
   };
 
   useEffect(() => {
@@ -81,9 +110,7 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
             </div>
           </div>
 
-          <main className="flex-1">
-            {children}
-          </main>
+          <main className="flex-1">{children}</main>
         </div>
       </div>
 

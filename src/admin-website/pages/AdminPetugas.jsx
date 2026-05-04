@@ -33,6 +33,7 @@ export default function AdminPetugas() {
       id: modalState.item?.id || Date.now(),
       name: formData.get('name')?.toString() || '',
       email: formData.get('email')?.toString() || '',
+      password: formData.get('password')?.toString() || modalState.item?.password || '',
       status: formData.get('status')?.toString() || 'Aktif',
     };
 
@@ -127,6 +128,17 @@ export default function AdminPetugas() {
                     <div>
                       <label className="mb-2 block text-sm font-medium text-gray-700">Email</label>
                       <input name="email" defaultValue={modalState.item?.email || ''} disabled={modalState.type === 'view'} className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" />
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">Password Login</label>
+                      <input
+                        name="password"
+                        type="text"
+                        defaultValue={modalState.item?.password || ''}
+                        disabled={modalState.type === 'view'}
+                        placeholder="Contoh: hilmi123"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50"
+                      />
                     </div>
                     <div>
                       <label className="mb-2 block text-sm font-medium text-gray-700">Status</label>

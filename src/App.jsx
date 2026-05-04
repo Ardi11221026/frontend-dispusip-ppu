@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Home from './website-publik/pages/Home';
 import Layanan from './website-publik/pages/Layanan';
@@ -15,7 +15,20 @@ import Opac from './website-publik/pages/Opac';
 import Login from './website-publik/pages/Login';
 import Daftar from './website-publik/pages/Daftar';
 import BackOfficeLogin from './petugas-perpus/pages/BackOfficeLogin';
-import BackOfficeHome from './petugas-perpus/pages/BackOfficeHome';
+import Beranda from './petugas-perpus/pages/Beranda';
+import Akuisisi from './petugas-perpus/pages/Akuisisi';
+import Katalog from './petugas-perpus/pages/Katalog';
+import SSKCKR from './petugas-perpus/pages/SSKCKR';
+import Keanggotaan from './petugas-perpus/pages/Keanggotaan';
+import Sirkulasi from './petugas-perpus/pages/Sirkulasi';
+import Loker from './petugas-perpus/pages/Loker';
+import Survey from './petugas-perpus/pages/Survey';
+import BukuTamu from './petugas-perpus/pages/BukuTamu';
+import OpacPetugas from './petugas-perpus/pages/Opac';
+import LayananKoleksiDigital from './petugas-perpus/pages/LayananKoleksiDigital';
+import BacaDitempat from './petugas-perpus/pages/BacaDitempat';
+import Laporan from './petugas-perpus/pages/Laporan';
+import Administrasi from './petugas-perpus/pages/Administrasi';
 import AdminLogin from './admin-website/pages/AdminLogin';
 import AdminHome from './admin-website/pages/AdminHome';
 import AdminBerita from './admin-website/pages/AdminBerita';
@@ -72,7 +85,21 @@ function App() {
         
         {/* Back-office Pages (Petugas Perpustakaan) */}
         <Route path="/back-office/login" element={<BackOfficeLogin />} />
-        <Route path="/back-office/home" element={<BackOfficeHome />} />
+        <Route path="/back-office/home" element={<Beranda />} />
+        <Route path="/back-office/beranda" element={<Beranda />} />
+        <Route path="/back-office/akuisisi" element={<Akuisisi />} />
+        <Route path="/back-office/katalog" element={<Katalog />} />
+        <Route path="/back-office/sskckr" element={<SSKCKR />} />
+        <Route path="/back-office/keanggotaan" element={<Keanggotaan />} />
+        <Route path="/back-office/sirkulasi" element={<Sirkulasi />} />
+        <Route path="/back-office/loker" element={<Loker />} />
+        <Route path="/back-office/survey" element={<Survey />} />
+        <Route path="/back-office/buku-tamu" element={<BukuTamu />} />
+        <Route path="/back-office/opac" element={<OpacPetugas />} />
+        <Route path="/back-office/layanan-koleksi-digital" element={<LayananKoleksiDigital />} />
+        <Route path="/back-office/baca-ditempat" element={<BacaDitempat />} />
+        <Route path="/back-office/laporan" element={<Laporan />} />
+        <Route path="/back-office/administrasi" element={<Administrasi />} />
         
         {/* Admin Pages */}
         <Route path="/admin-website-dispusip-ppu" element={<AdminLogin />} />
