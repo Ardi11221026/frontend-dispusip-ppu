@@ -71,6 +71,7 @@ export default function AdminPetugas() {
           </button>
         </div>
 
+        <div className="overflow-x-auto">
         <table className="w-full border-collapse border border-gray-300 bg-white text-sm shadow-sm">
           <thead className="bg-gray-50">
             <tr>
@@ -97,6 +98,7 @@ export default function AdminPetugas() {
             ))}
           </tbody>
         </table>
+        </div>
 
         {modalState.isOpen && (
           <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 px-4">

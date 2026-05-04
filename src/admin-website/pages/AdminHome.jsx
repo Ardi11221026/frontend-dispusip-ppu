@@ -192,6 +192,7 @@ export default function AdminHome() {
             </button>
           </div>
 
+          <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse border border-gray-300 bg-white shadow-sm">
             <thead className="bg-gray-50">
               <tr>
@@ -218,6 +219,7 @@ export default function AdminHome() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 
@@ -240,6 +242,7 @@ export default function AdminHome() {
             </button>
           </div>
 
+          <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse border border-gray-300 bg-white shadow-sm">
             <thead className="bg-gray-50">
               <tr>
@@ -266,6 +269,7 @@ export default function AdminHome() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 

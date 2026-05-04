@@ -42,7 +42,7 @@ export default function SidebarAdmin({ activeMenu, open, onClose, onLogout, setA
               <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
             </div>
             <div>
-              <h1 className="text-lg font-bold leading-tight">DPUPR PPU</h1>
+              <h1 className="text-sm font-bold leading-tight">Dinas Perpustakaan<br />& Arsip PPU</h1>
               <p className="text-xs text-amber-300">Admin Panel</p>
             </div>
           </div>
