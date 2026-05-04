@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageBanner from '../components/PageBanner';
-import { Calendar, MessageCircle, Copy, X, Share2 } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 export default function Berita() {
+  const navigate = useNavigate();
   const [beritaList, setBeritaList] = useState(() => {
     const savedItems = localStorage.getItem('adminBeritaItems');
     if (savedItems) {
@@ -14,9 +16,6 @@ export default function Berita() {
     }
     return [];
   });
-
-  const [selectedBerita, setSelectedBerita] = useState(null);
-  const [copiedLink, setCopiedLink] = useState(false);
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -34,26 +33,6 @@ export default function Berita() {
       window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
-
-  const handleCopyLink = (berita) => {
-    const link = `${window.location.origin}/berita/${berita.id}`;
-    navigator.clipboard.writeText(link);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2000);
-  };
-
-  const handleShareWhatsApp = (berita) => {
-    const text = `${berita.title}\n\n${berita.excerpt}\n\n${window.location.origin}/berita/${berita.id}`;
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
-    window.open(whatsappUrl, '_blank');
-  };
-
-  const handleShareFacebook = (berita) => {
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-      `${window.location.origin}/berita/${berita.id}`
-    )}`;
-    window.open(facebookUrl, '_blank');
-  };
 
   return (
     <div className="w-full">
@@ -91,7 +70,7 @@ export default function Berita() {
                     {beritaList[0].excerpt}
                   </p>
                   <button 
-                    onClick={() => setSelectedBerita(beritaList[0])}
+                    onClick={() => navigate(`/berita/${beritaList[0].id}`)}
                     className="bg-blue-600 hover:bg-blue-700 text-white font-poppins font-bold py-2 px-6 rounded transition">
                     Baca Selengkapnya
                   </button>
@@ -101,7 +80,11 @@ export default function Berita() {
               {/* Sidebar Featured */}
               <div className="space-y-4">
                 {beritaList.slice(1, 4).map((berita) => (
-                  <div key={berita.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                  <div 
+                    key={berita.id} 
+                    onClick={() => navigate(`/berita/${berita.id}`)}
+                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer"
+                  >
                     <img
                       src={berita.image}
                       alt={berita.title}
@@ -152,7 +135,7 @@ export default function Berita() {
                     {berita.excerpt}
                   </p>
                   <a
-                    onClick={() => setSelectedBerita(berita)}
+                    onClick={() => navigate(`/berita/${berita.id}`)}
                     className="text-blue-600 hover:text-blue-800 font-poppins font-bold text-sm cursor-pointer"
                   >
                     Baca Selengkapnya →
@@ -182,111 +165,6 @@ export default function Berita() {
           </button>
         </div>
       </div>
-
-      {/* Detail Modal */}
-      {selectedBerita && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-          <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-lg">
-            {/* Header */}
-            <div className="sticky top-0 flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4">
-              <h2 className="text-xl font-bold text-gray-900">Detail Berita</h2>
-              <button
-                onClick={() => setSelectedBerita(null)}
-                className="rounded-full p-1 hover:bg-gray-100 transition"
-              >
-                <X size={24} />
-              </button>
-            </div>
-
-            {/* Content */}
-            <div className="p-8">
-              {/* Featured Image */}
-              {selectedBerita.image && (
-                <div className="mb-8">
-                  <img
-                    src={selectedBerita.image}
-                    alt={selectedBerita.title}
-                    className="w-full h-96 object-cover rounded-lg shadow-md"
-                  />
-                </div>
-              )}
-
-              {/* Meta Info */}
-              <div className="flex items-center gap-4 mb-4 pb-4 border-b border-gray-200">
-                <div className="flex items-center gap-2 text-gray-600">
-                  <Calendar size={18} />
-                  <time dateTime={selectedBerita.date}>
-                    {new Date(selectedBerita.date).toLocaleDateString('id-ID', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </time>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded">
-                    {selectedBerita.category}
-                  </span>
-                </div>
-              </div>
-
-              {/* Title */}
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">{selectedBerita.title}</h1>
-
-              {/* Share Buttons */}
-              <div className="flex items-center gap-3 mb-8 pb-8 border-b border-gray-200 flex-wrap">
-                <span className="text-sm font-semibold text-gray-700">Bagikan:</span>
-                <button
-                  onClick={() => handleShareWhatsApp(selectedBerita)}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
-                  title="Bagikan ke WhatsApp"
-                >
-                  <MessageCircle size={18} />
-                </button>
-                <button
-                  onClick={() => handleShareFacebook(selectedBerita)}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                  title="Bagikan ke Facebook"
-                >
-                  <Share2 size={18} />
-                </button>
-                <button
-                  onClick={() => handleCopyLink(selectedBerita)}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
-                  title="Copy link"
-                >
-                  <Copy size={18} />
-                  <span className="text-sm font-semibold">
-                    {copiedLink ? 'Tersalin!' : 'Copy'}
-                  </span>
-                </button>
-              </div>
-
-              {/* Excerpt */}
-              <p className="text-lg text-gray-700 mb-6 italic border-l-4 border-blue-500 pl-4">
-                {selectedBerita.excerpt}
-              </p>
-
-              {/* Content */}
-              <div className="prose max-w-none">
-                <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
-                  {selectedBerita.content || 'Konten berita akan ditampilkan di sini...'}
-                </div>
-              </div>
-
-              {/* Close Button */}
-              <div className="mt-8 pt-8 border-t border-gray-200 flex justify-end">
-                <button
-                  onClick={() => setSelectedBerita(null)}
-                  className="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg font-semibold hover:bg-gray-400 transition"
-                >
-                  Tutup
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       <Footer />
     </div>

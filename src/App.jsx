@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Home from './website-publik/pages/Home';
 import Layanan from './website-publik/pages/Layanan';
 import Berita from './website-publik/pages/Berita';
+import BeritaDetail from './website-publik/pages/BeritaDetail';
 import Galeri from './website-publik/pages/Galeri';
 import Kelembagaan from './website-publik/pages/Kelembagaan';
 import VisiMisi from './website-publik/pages/VisiMisi';
@@ -58,6 +59,7 @@ function App() {
         <Route path="/daftar" element={<Daftar />} />
         <Route path="/layanan" element={<Layanan />} />
         <Route path="/berita" element={<Berita />} />
+        <Route path="/berita/:id" element={<BeritaDetail />} />
         <Route path="/galeri" element={<Galeri />} />
         
         {/* Profile Pages */}
