@@ -5,6 +5,7 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
   const [formData, setFormData] = useState({
     title: '',
     date: new Date().toISOString().split('T')[0],
+    time: (() => { const now = new Date(); return String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0'); })(),
     category: 'Berita',
     location: '',
     image: '',
@@ -19,6 +20,7 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
       setFormData({
         title: item.title || '',
         date: item.date || new Date().toISOString().split('T')[0],
+        time: item.time || (() => { const now = new Date(); return String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0'); })(),
         category: item.category || 'Berita',
         location: item.location || '',
         image: item.image || '',
@@ -158,14 +160,22 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
           {/* Tanggal */}
           <div>
             <label className="block mb-1 font-medium">Tanggal Berita</label>
-            <input
-              type="date"
-              value={formData.date}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, date: e.target.value }))
-              }
-              className="w-full border rounded-lg px-3 py-2"
-            />
+                    <div className="flex gap-2">
+                      <input
+                        type="date"
+                        value={formData.date}
+                        onChange={(e) =>
+                          setFormData((prev) => ({ ...prev, date: e.target.value }))
+                        }
+                        className="w-1/2 border rounded-lg px-3 py-2"
+                      />
+                      <input
+                        type="time"
+                        value={formData.time}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, time: e.target.value }))}
+                        className="w-1/2 border rounded-lg px-3 py-2"
+                      />
+                    </div>
           </div>
 
           {/* Judul */}

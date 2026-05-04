@@ -86,9 +86,9 @@ export default function AdminBerita() {
             <thead className="bg-gray-50">
               <tr>
                 <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">No.</th>
+                <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Thumbnail</th>
                 <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Judul</th>
-                <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Tanggal</th>
-                <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Status</th>
+                <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Tanggal / Waktu</th>
                 <th className="border border-gray-300 px-2 py-3 text-left font-semibold text-gray-700">Aksi</th>
               </tr>
             </thead>
@@ -96,12 +96,21 @@ export default function AdminBerita() {
               {items.map((item, index) => (
                 <tr key={item.id} className="hover:bg-gray-50">
                   <td className="border border-gray-300 px-2 py-3">{index + 1}</td>
-                  <td className="border border-gray-300 px-2 py-3">{item.title}</td>
-                  <td className="border border-gray-300 px-2 py-3">{new Date(item.date).toLocaleDateString('id-ID')}</td>
                   <td className="border border-gray-300 px-2 py-3">
-                    <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${item.status === 'Publik' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700'}`}>
-                      {item.status}
-                    </span>
+                    {item.image ? (
+                      <img src={item.image} alt={item.title} className="h-12 w-20 object-cover rounded" />
+                    ) : (
+                      <div className="h-12 w-20 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">No Image</div>
+                    )}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-3">{item.title}</td>
+                  <td className="border border-gray-300 px-2 py-3">
+                    <div className="text-sm font-medium">
+                      {item.date ? new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).toLowerCase() : '-'}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {item.time ? item.time.replace(':', '.') : '-'}
+                    </div>
                   </td>
                   <td className="border border-gray-300 px-2 py-3"><ActionButtons item={item} /></td>
                 </tr>
