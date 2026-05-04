@@ -1,5 +1,6 @@
 import { X, MessageCircle, Copy, Share2, Calendar } from 'lucide-react';
 import { useState } from 'react';
+import { sanitizeRichHtml } from '../../shared/utils/sanitizeRichHtml';
 
 export default function LihatBeritaModal({ isOpen, item, onClose }) {
   const [copiedLink, setCopiedLink] = useState(false);
@@ -108,9 +109,14 @@ export default function LihatBeritaModal({ isOpen, item, onClose }) {
 
           {/* Content */}
           <div className="prose max-w-none">
-            <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
-              {item.content}
-            </div>
+            {item.content ? (
+              <div
+                className="text-gray-700 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: sanitizeRichHtml(item.content) }}
+              />
+            ) : (
+              <div className="text-gray-700 leading-relaxed">Konten berita belum tersedia.</div>
+            )}
           </div>
 
           {/* Close Button */}

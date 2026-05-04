@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageBanner from '../components/PageBanner';
 import { Calendar, MessageCircle, Copy, Share2 } from 'lucide-react';
+import { sanitizeRichHtml } from '../../shared/utils/sanitizeRichHtml';
 
 export default function BeritaDetail() {
   const { id } = useParams();
@@ -153,9 +154,16 @@ export default function BeritaDetail() {
 
             {/* Content */}
             <div className="prose prose-lg max-w-none mb-12">
-              <div className="whitespace-pre-wrap text-gray-700 leading-relaxed font-poppins text-justify">
-                {berita.content || 'Konten berita akan ditampilkan di sini...'}
-              </div>
+              {berita.content ? (
+                <div
+                  className="text-gray-700 leading-relaxed font-poppins text-justify"
+                  dangerouslySetInnerHTML={{ __html: sanitizeRichHtml(berita.content) }}
+                />
+              ) : (
+                <div className="text-gray-700 leading-relaxed font-poppins text-justify">
+                  Konten berita akan ditampilkan di sini...
+                </div>
+              )}
             </div>
 
             {/* Gallery Section */}
