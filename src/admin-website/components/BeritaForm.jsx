@@ -21,6 +21,7 @@ import {
   Link,
   Palette,
   Eraser,
+  X,
 } from 'lucide-react';
 
 export default function BeritaForm({ type, item, onSave, onClose }) {
@@ -206,9 +207,7 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
               <span className="text-sm mt-2">Klik untuk upload thumbnail</span>
               <input type="file" hidden onChange={handleImageChange} />
             </label>
-            {formData.image && (
-              <img src={formData.image} className="h-32 mt-3 rounded" />
-            )}
+            {formData.image && (`n              <div className="relative inline-block mt-3">`n                <img src={formData.image} className="h-32 rounded" />`n                <button`n                  type="button"`n                  onClick={() => setFormData((prev) => ({ ...prev, image: '' }))}`n                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"`n                >`n                  <X size={16} />`n                </button>`n              </div>`n            )}
           </div>
 
           {/* Tanggal */}
@@ -351,15 +350,11 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
         <div className="flex justify-end gap-3 p-4 border-t">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded bg-gray-200"
-          >
-            Batal
+            className="px-4 py-2 rounded bg-gray-200 font-medium"`n          >`n            Batal
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 rounded bg-blue-700 text-white"
-          >
-            Simpan Berita
+            className="px-4 py-2 rounded bg-blue-700 text-white font-medium"`n          >`n            Simpan Berita
           </button>
         </div>
       </div>
