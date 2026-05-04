@@ -1,4 +1,4 @@
-import { X, MessageCircle, Copy, Facebook, Calendar } from 'lucide-react';
+import { X, MessageCircle, Copy, Share2, Calendar } from 'lucide-react';
 import { useState } from 'react';
 
 export default function LihatBeritaModal({ isOpen, item, onClose }) {
@@ -91,7 +91,7 @@ export default function LihatBeritaModal({ isOpen, item, onClose }) {
               className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
               title="Bagikan ke Facebook"
             >
-              <Facebook size={18} />
+              <Share2 size={18} />
               <span className="text-sm font-semibold">Facebook</span>
             </button>
             <button

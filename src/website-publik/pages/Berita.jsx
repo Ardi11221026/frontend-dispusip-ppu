@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageBanner from '../components/PageBanner';
-import { Calendar, MessageCircle, Copy, X } from 'lucide-react';
-import { Facebook } from 'lucide-react/icons';
+import { Calendar, MessageCircle, Copy, X, Share2 } from 'lucide-react';
 
 export default function Berita() {
   const [beritaList, setBeritaList] = useState(() => {
@@ -249,7 +248,7 @@ export default function Berita() {
                   className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                   title="Bagikan ke Facebook"
                 >
-                  <Facebook size={18} />
+                  <Share2 size={18} />
                 </button>
                 <button
                   onClick={() => handleCopyLink(selectedBerita)}
