@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageBanner from '../components/PageBanner';
 import { Calendar } from 'lucide-react';
+import { formatDate } from '../../shared/utils/formatDate';
 
 export default function Berita() {
   const navigate = useNavigate();
@@ -67,11 +68,7 @@ export default function Berita() {
                   <div className="p-6">
                     <div className="flex items-center gap-2 text-gray-500 font-poppins text-sm mb-2">
                       <Calendar size={16} />
-                      {new Date(berita.date).toLocaleDateString('id-ID', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                      })}
+                      {formatDate(berita.date)}
                     </div>
                     <span className="inline-block bg-blue-100 text-blue-800 text-xs font-poppins font-bold px-3 py-1 rounded mb-3">
                       {berita.category}

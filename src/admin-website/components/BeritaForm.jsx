@@ -107,7 +107,23 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
   const handleEditorFocus = (index, event) => {
     setActiveBlock(index);
     event.currentTarget.setAttribute('dir', 'ltr');
-    event.currentTarget.style.unicodeBidi = 'plaintext';
+    // enforce visual direction and caret placement
+    event.currentTarget.style.direction = 'ltr';
+    event.currentTarget.style.unicodeBidi = 'isolate';
+    // place caret at end to avoid reverse typing
+    setTimeout(() => {
+      try {
+        const el = event.currentTarget;
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      } catch (e) {
+        // ignore
+      }
+    }, 0);
   };
 
   const updateContentBlock = (index, value) => {
@@ -294,10 +310,11 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
                       contentEditable
                       dir="ltr"
                       suppressContentEditableWarning
+                      spellCheck={false}
                       onFocus={(e) => handleEditorFocus(i, e)}
                       onInput={(e) => updateContentBlock(i, e.currentTarget.innerHTML)}
                       className="w-full border rounded p-2 min-h-[120px] prose max-w-full"
-                      style={{ unicodeBidi: 'plaintext' }}
+                      style={{ direction: 'ltr', unicodeBidi: 'isolate' }}
                       dangerouslySetInnerHTML={{ __html: block.value || '' }}
                     />
                   </>

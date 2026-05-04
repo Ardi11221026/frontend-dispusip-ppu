@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import PageBanner from '../components/PageBanner';
 import { Calendar, MessageCircle, Copy, Share2 } from 'lucide-react';
 import { sanitizeRichHtml } from '../../shared/utils/sanitizeRichHtml';
+import { formatDate } from '../../shared/utils/formatDate';
 
 export default function BeritaDetail() {
   const { id } = useParams();
@@ -107,13 +108,7 @@ export default function BeritaDetail() {
             <div className="flex flex-wrap items-center gap-4 mb-6">
               <div className="flex items-center gap-2 text-gray-600 font-poppins text-sm">
                 <Calendar size={16} />
-                <time dateTime={berita.date}>
-                  {new Date(berita.date).toLocaleDateString('id-ID', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  })}
-                </time>
+                <time dateTime={berita.date}>{formatDate(berita.date)}</time>
               </div>
               <div>
                 <span className="inline-block bg-blue-100 text-blue-800 text-xs font-poppins font-bold px-3 py-1 rounded">
@@ -212,11 +207,7 @@ export default function BeritaDetail() {
                       </h4>
                       <div className="flex items-center gap-2 text-gray-500 font-poppins text-xs">
                         <Calendar size={12} />
-                        {new Date(beritaItem.date).toLocaleDateString('id-ID', {
-                          day: 'numeric',
-                          month: 'long',
-                          year: 'numeric',
-                        })}
+                        {formatDate(beritaItem.date)}
                       </div>
                     </div>
                   </div>

@@ -5,6 +5,7 @@ import Banner from '../components/Banner';
 import LayananKami from '../components/LayananKami';
 import Footer from '../components/Footer';
 import { Users, FileText, Award, Calendar } from 'lucide-react';
+import { formatDate } from '../../shared/utils/formatDate';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -148,11 +149,7 @@ function NewsSection() {
           <div className="p-5 sm:p-6">
             <p className="text-xs text-blue-900 font-semibold mb-2 flex items-center gap-2">
               <Calendar size={14} />
-              {new Date(berita.date).toLocaleDateString('id-ID', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-              })}
+              {formatDate(berita.date)}
             </p>
             <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-900 transition">
               {berita.title}

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
+import { formatDate } from '../../shared/utils/formatDate';
 import AdminLayout from '../components/AdminLayout';
 import { DeleteConfirmModal, GalleryModal, SuccessModal } from '../components/GalleryModals';
 import { galleryStorage } from '../../shared/utils/galleryStorage';

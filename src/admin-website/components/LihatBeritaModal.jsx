@@ -1,6 +1,5 @@
 import { X, MessageCircle, Copy, Share2, Calendar } from 'lucide-react';
 import { formatDate } from '../../shared/utils/formatDate';
-import { MessageCircle, Copy, Share2, Calendar } from 'lucide-react';
 import { useState } from 'react';
 import { sanitizeRichHtml } from '../../shared/utils/sanitizeRichHtml';
 
