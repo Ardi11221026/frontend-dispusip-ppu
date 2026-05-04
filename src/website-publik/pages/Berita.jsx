@@ -89,6 +89,8 @@ export default function Berita() {
                 </div>
               </div>
             ))}
+            </div>
+          )}
           </div>
         </div>
       </div>
