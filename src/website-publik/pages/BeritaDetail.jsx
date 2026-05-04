@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageBanner from '../components/PageBanner';
-import { Calendar, MessageCircle, Copy, Share2, ArrowLeft } from 'lucide-react';
+import { Calendar, MessageCircle, Copy, Share2 } from 'lucide-react';
 
 export default function BeritaDetail() {
   const { id } = useParams();
@@ -19,13 +19,15 @@ export default function BeritaDetail() {
       const allNews = JSON.parse(savedItems);
       const publicNews = allNews.filter(item => item.status === 'Publik');
       const sortedNews = publicNews.sort((a, b) => new Date(b.date) - new Date(a.date));
-      setBeritaList(sortedNews);
-
+      
       // Cari berita dengan ID yang sesuai
       const foundBerita = allNews.find(item => item.id === id);
+      
+      // Update state hanya sekali
       if (foundBerita) {
         setBerita(foundBerita);
       }
+      setBeritaList(sortedNews);
     }
   }, [id]);
 
@@ -87,102 +89,99 @@ export default function BeritaDetail() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Article */}
-          <div className="lg:col-span-2">
-            {/* Back Button */}
-            <button
-              onClick={() => navigate('/berita')}
-              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-poppins font-semibold mb-6 transition"
-            >
-              <ArrowLeft size={20} />
-              Kembali ke Berita
-            </button>
-
+          <div className="lg:col-span-3">
             {/* Featured Image */}
             {berita.image && (
-              <div className="mb-8">
+              <div className="mb-6">
                 <img
                   src={berita.image}
                   alt={berita.title}
-                  className="w-full h-96 object-cover rounded-lg shadow-lg"
+                  className="w-full h-96 object-cover"
                 />
               </div>
             )}
 
             {/* Meta Info */}
-            <div className="flex flex-wrap items-center gap-4 mb-6 pb-6 border-b border-gray-200">
-              <div className="flex items-center gap-2 text-gray-600 font-poppins">
-                <Calendar size={18} />
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+              <div className="flex items-center gap-2 text-gray-600 font-poppins text-sm">
+                <Calendar size={16} />
                 <time dateTime={berita.date}>
-                  {new Date(berita.date).toLocaleDateString('id-ID', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
+                  {new Date(berita.date).toLocaleDateString('id-ID')}
                 </time>
               </div>
-              <div className="flex items-center gap-2">
+              <div>
                 <span className="inline-block bg-blue-100 text-blue-800 text-xs font-poppins font-bold px-3 py-1 rounded">
                   {berita.category}
                 </span>
               </div>
             </div>
 
-            {/* Title */}
-            <h1 className="text-4xl font-bold text-gray-900 font-poppins mb-6">
-              {berita.title}
-            </h1>
-
             {/* Share Buttons */}
-            <div className="flex flex-wrap items-center gap-3 mb-8 pb-8 border-b border-gray-200">
+            <div className="flex flex-wrap items-center gap-3 mb-8">
               <span className="text-sm font-semibold text-gray-700 font-poppins">Bagikan:</span>
               <button
                 onClick={handleShareWhatsApp}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-poppins"
+                className="inline-flex items-center gap-1 px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-poppins text-sm"
                 title="Bagikan ke WhatsApp"
               >
-                <MessageCircle size={18} />
+                <MessageCircle size={16} />
                 WhatsApp
               </button>
               <button
                 onClick={handleShareFacebook}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-poppins"
+                className="inline-flex items-center gap-1 px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-poppins text-sm"
                 title="Bagikan ke Facebook"
               >
-                <Share2 size={18} />
+                <Share2 size={16} />
                 Facebook
               </button>
               <button
                 onClick={handleCopyLink}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition font-poppins"
+                className="inline-flex items-center gap-1 px-3 py-1 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition font-poppins text-sm"
                 title="Copy link"
               >
-                <Copy size={18} />
-                <span className="text-sm font-semibold">
-                  {copiedLink ? 'Tersalin!' : 'Copy Link'}
-                </span>
+                <Copy size={16} />
+                <span>{copiedLink ? 'Tersalin!' : 'Copy Link'}</span>
               </button>
             </div>
 
-            {/* Excerpt */}
-            <p className="text-lg text-gray-700 mb-8 italic border-l-4 border-blue-500 pl-4 font-poppins">
-              {berita.excerpt}
-            </p>
+            {/* Title */}
+            <h1 className="text-3xl font-bold text-gray-900 font-poppins mb-6">
+              {berita.title}
+            </h1>
 
             {/* Content */}
-            <div className="prose prose-lg max-w-none">
-              <div className="whitespace-pre-wrap text-gray-700 leading-relaxed font-poppins">
+            <div className="prose prose-lg max-w-none mb-12">
+              <div className="whitespace-pre-wrap text-gray-700 leading-relaxed font-poppins text-justify">
                 {berita.content || 'Konten berita akan ditampilkan di sini...'}
               </div>
             </div>
+
+            {/* Gallery Section */}
+            {berita.gallery && berita.gallery.length > 0 && (
+              <div className="mb-12">
+                <h3 className="text-2xl font-bold text-gray-900 font-poppins mb-6">Galeri</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {berita.gallery.map((image, idx) => (
+                    <img
+                      key={idx}
+                      src={image}
+                      alt={`Galeri ${idx + 1}`}
+                      className="w-full h-64 object-cover rounded-lg"
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Sidebar - Berita Terbaru Lainnya */}
+          {/* Sidebar - Berita Terbaru */}
           <div className="lg:col-span-1">
             <div className="sticky top-20">
-              <h3 className="text-2xl font-bold text-gray-900 font-poppins mb-6">
-                Berita Terbaru Lainnya
+              <h3 className="text-xl font-bold text-gray-900 font-poppins mb-6">
+                Berita Terbaru
               </h3>
               <div className="space-y-4">
                 {otherBerita.map((beritaItem) => (
@@ -194,16 +193,16 @@ export default function BeritaDetail() {
                     <img
                       src={beritaItem.image}
                       alt={beritaItem.title}
-                      className="w-full h-32 object-cover"
+                      className="w-full h-28 object-cover"
                     />
-                    <div className="p-4">
-                      <div className="flex items-center gap-2 text-gray-500 font-poppins text-xs mb-2">
-                        <Calendar size={14} />
-                        {new Date(beritaItem.date).toLocaleDateString('id-ID')}
-                      </div>
-                      <h4 className="font-bold text-gray-900 font-poppins text-sm line-clamp-2 hover:text-blue-600">
+                    <div className="p-3">
+                      <h4 className="font-bold text-gray-900 font-poppins text-sm line-clamp-2 hover:text-blue-600 mb-2">
                         {beritaItem.title}
                       </h4>
+                      <div className="flex items-center gap-2 text-gray-500 font-poppins text-xs">
+                        <Calendar size={12} />
+                        {new Date(beritaItem.date).toLocaleDateString('id-ID')}
+                      </div>
                     </div>
                   </div>
                 ))}
