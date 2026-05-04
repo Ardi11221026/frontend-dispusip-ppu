@@ -31,7 +31,7 @@ export default function SidebarAdmin({ activeMenu, open, onClose, onLogout, setA
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-40 w-72 transform bg-gradient-to-b from-blue-950 via-blue-900 to-indigo-950 text-white transition-transform duration-300 ease-in-out md:sticky md:top-0 md:h-screen md:translate-x-0 ${
+      className={`fixed inset-y-0 left-0 z-50 w-72 transform bg-gradient-to-b from-blue-950 via-blue-900 to-indigo-950 text-white transition-transform duration-300 ease-in-out md:sticky md:top-0 md:h-screen md:translate-x-0 ${
         open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
       }`}
     >
