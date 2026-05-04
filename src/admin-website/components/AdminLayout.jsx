@@ -68,7 +68,19 @@ export default function AdminLayout({ children, activeMenu, setActiveMenu }) {
               </h2>
             </div>
 
-            <div className="flex items-center justify-center">
+            {/* Desktop: Icon + Text */}
+            <div className="hidden items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2 shadow-sm md:flex">
+              <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
+                <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
+              </div>
+              <div className="text-right leading-tight">
+                <p className="text-sm font-bold text-blue-950">{localStorage.getItem('userEmail') || 'admin@perpus.id'}</p>
+                <p className="text-xs text-amber-700">Administrator</p>
+              </div>
+            </div>
+
+            {/* Mobile: Icon Only */}
+            <div className="flex md:hidden">
               <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
                 <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
               </div>
