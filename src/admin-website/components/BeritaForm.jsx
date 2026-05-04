@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import {
   Upload,
   ChevronUp,
@@ -24,35 +24,26 @@ import {
   X,
 } from 'lucide-react';
 
+const getInitialFormData = (type, item) => ({
+  title: type === 'edit' && item ? item.title || '' : '',
+  date: type === 'edit' && item ? item.date || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+  time: type === 'edit' && item
+    ? item.time || (() => { const now = new Date(); return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'); })()
+    : (() => { const now = new Date(); return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'); })(),
+  category: type === 'edit' && item ? item.category || 'Berita' : 'Berita',
+  location: type === 'edit' && item ? item.location || '' : '',
+  image: type === 'edit' && item ? item.image || '' : '',
+  contentBlocks:
+    type === 'edit' && item
+      ? item.contentBlocks || (item.content ? [{ type: 'text', value: item.content }] : [])
+      : [],
+});
+
 export default function BeritaForm({ type, item, onSave, onClose }) {
-  const [formData, setFormData] = useState({
-    title: '',
-    date: new Date().toISOString().split('T')[0],
-    time: (() => { const now = new Date(); return String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0'); })(),
-    category: 'Berita',
-    location: '',
-    image: '',
-    contentBlocks: [],
-  });
+  const [formData, setFormData] = useState(() => getInitialFormData(type, item));
   const [errors, setErrors] = useState({});
   const contentRefs = useRef([]);
   const [activeBlock, setActiveBlock] = useState(null);
-
-  useEffect(() => {
-    if (type === 'edit' && item) {
-      setFormData({
-        title: item.title || '',
-        date: item.date || new Date().toISOString().split('T')[0],
-        time: item.time || (() => { const now = new Date(); return String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0'); })(),
-        category: item.category || 'Berita',
-        location: item.location || '',
-        image: item.image || '',
-        contentBlocks:
-          item.contentBlocks ||
-          (item.content ? [{ type: 'text', value: item.content }] : []),
-      });
-    }
-  }, [type, item]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -121,7 +112,7 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
         const sel = window.getSelection();
         sel.removeAllRanges();
         sel.addRange(range);
-      } catch (e) {
+      } catch {
         // ignore
       }
     }, 0);
@@ -207,7 +198,18 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
               <span className="text-sm mt-2">Klik untuk upload thumbnail</span>
               <input type="file" hidden onChange={handleImageChange} />
             </label>
-            {formData.image && (`n              <div className="relative inline-block mt-3">`n                <img src={formData.image} className="h-32 rounded" />`n                <button`n                  type="button"`n                  onClick={() => setFormData((prev) => ({ ...prev, image: '' }))}`n                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"`n                >`n                  <X size={16} />`n                </button>`n              </div>`n            )}
+            {formData.image && (
+              <div className="relative inline-block mt-3">
+                <img src={formData.image} className="h-32 rounded" />
+                <button
+                  type="button"
+                  onClick={() => setFormData((prev) => ({ ...prev, image: '' }))}
+                  className="absolute right-0 top-0 rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Tanggal */}
@@ -350,11 +352,15 @@ export default function BeritaForm({ type, item, onSave, onClose }) {
         <div className="flex justify-end gap-3 p-4 border-t">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded bg-gray-200 font-medium"`n          >`n            Batal
+            className="px-4 py-2 rounded bg-gray-200 font-medium"
+          >
+            Batal
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 rounded bg-blue-700 text-white font-medium"`n          >`n            Simpan Berita
+            className="px-4 py-2 rounded bg-blue-700 text-white font-medium"
+          >
+            Simpan Berita
           </button>
         </div>
       </div>

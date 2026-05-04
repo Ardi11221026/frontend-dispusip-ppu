@@ -11,6 +11,7 @@ export default function BeritaFormModal({
 
   return (
     <BeritaForm
+      key={`${type}-${item?.id ?? 'new'}`}
       type={type}
       item={item}
       onSave={onSave}
