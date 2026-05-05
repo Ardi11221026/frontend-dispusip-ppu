@@ -18,6 +18,8 @@ import BackOfficeLogin from './petugas-perpus/pages/BackOfficeLogin';
 import Beranda from './petugas-perpus/pages/Beranda';
 import ProfilPetugasPerpus from './petugas-perpus/pages/ProfilPetugasPerpus';
 import Akuisisi from './petugas-perpus/pages/Akuisisi';
+import AkuisisiSubmenuPage from './petugas-perpus/pages/AkuisisiSubmenuPage';
+import { akuisisiSubmenus } from './petugas-perpus/akuisisiSubmenus';
 import Katalog from './petugas-perpus/pages/Katalog';
 import SSKCKR from './petugas-perpus/pages/SSKCKR';
 import Keanggotaan from './petugas-perpus/pages/Keanggotaan';
@@ -89,6 +91,13 @@ function App() {
         <Route path="/back-office/home" element={<Beranda />} />
         <Route path="/back-office/beranda" element={<Beranda />} />
         <Route path="/back-office/akuisisi" element={<Akuisisi />} />
+        {akuisisiSubmenus.map((submenu) => (
+          <Route
+            key={submenu.id}
+            path={submenu.to}
+            element={<AkuisisiSubmenuPage menu={submenu} />}
+          />
+        ))}
         <Route path="/back-office/katalog" element={<Katalog />} />
         <Route path="/back-office/sskckr" element={<SSKCKR />} />
         <Route path="/back-office/keanggotaan" element={<Keanggotaan />} />

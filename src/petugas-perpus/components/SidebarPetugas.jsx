@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   LogOut,
   Home,
@@ -12,15 +13,25 @@ import {
   FileText,
   Settings,
   ChevronRight,
+  ChevronDown,
   X,
 } from 'lucide-react';
+import { akuisisiSubmenus } from '../akuisisiSubmenus';
 
 export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, setActiveMenu, setOpen }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isAkuisisiOpen, setIsAkuisisiOpen] = useState(location.pathname.startsWith('/back-office/akuisisi'));
+
+  useEffect(() => {
+    if (location.pathname.startsWith('/back-office/akuisisi')) {
+      setIsAkuisisiOpen(true);
+    }
+  }, [location.pathname]);
 
   const menuItems = [
     { id: 'beranda', label: 'Beranda', icon: Home, to: '/back-office/beranda' },
-    { id: 'akuisisi', label: 'Akuisisi', icon: BookOpen, to: '/back-office/akuisisi', chevron: true },
+    { id: 'akuisisi', label: 'Akuisisi', icon: BookOpen, to: '/back-office/akuisisi', chevron: true, children: akuisisiSubmenus },
     { id: 'katalog', label: 'Katalog', icon: Search, to: '/back-office/katalog', chevron: true },
     { id: 'sskckr', label: 'SSKCKR', icon: ClipboardList, to: '/back-office/sskckr', chevron: true },
     { id: 'keanggotaan', label: 'Keanggotaan', icon: Users, to: '/back-office/keanggotaan', chevron: true },
@@ -35,13 +46,38 @@ export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, se
     { id: 'administrasi', label: 'Administrasi', icon: Settings, to: '/back-office/administrasi', chevron: true },
   ];
 
+  const isActive = (item) => {
+    if (item.id === 'akuisisi') {
+      return location.pathname.startsWith('/back-office/akuisisi') || activeMenu === 'akuisisi';
+    }
+
+    return location.pathname === item.to || activeMenu === item.id;
+  };
+
   const handleMenuClick = (item) => {
+    if (item.id === 'akuisisi') {
+      setActiveMenu?.('akuisisi');
+      setIsAkuisisiOpen((previous) => !previous);
+
+      if (!location.pathname.startsWith('/back-office/akuisisi')) {
+        navigate('/back-office/akuisisi', { state: { activeMenu: 'akuisisi' } });
+      }
+      return;
+    }
+
     setActiveMenu?.(item.id);
 
     if (item.to) {
       navigate(item.to, { state: { activeMenu: item.id } });
     }
 
+    setOpen?.(false);
+    onClose?.();
+  };
+
+  const handleSubmenuClick = (submenu) => {
+    setActiveMenu?.(submenu.id);
+    navigate(submenu.to, { state: { activeMenu: submenu.id } });
     setOpen?.(false);
     onClose?.();
   };
@@ -77,19 +113,49 @@ export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, se
         <nav className="flex-1 overflow-y-auto space-y-2 px-3 py-6">
           {menuItems.map((item) => {
             const Icon = item.icon;
+            const active = isActive(item);
 
             return (
-              <button
-                key={item.id}
-                onClick={() => handleMenuClick(item)}
-                className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition ${
-                  activeMenu === item.id ? 'bg-yellow-600 text-white' : 'text-blue-100 hover:bg-white/10'
-                }`}
-              >
-                <Icon size={20} />
-                <span className="flex-1 font-medium">{item.label}</span>
-                {item.chevron ? <ChevronRight size={16} /> : null}
-              </button>
+              <div key={item.id}>
+                <button
+                  onClick={() => handleMenuClick(item)}
+                  className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition ${
+                    active ? 'bg-yellow-600 text-white' : 'text-blue-100 hover:bg-white/10'
+                  }`}
+                >
+                  <Icon size={20} />
+                  <span className="flex-1 font-medium">{item.label}</span>
+                  {item.id === 'akuisisi' ? (
+                    <ChevronDown size={16} className={`transition-transform ${isAkuisisiOpen ? 'rotate-180' : ''}`} />
+                  ) : item.chevron ? (
+                    <ChevronRight size={16} />
+                  ) : null}
+                </button>
+
+                {item.id === 'akuisisi' && isAkuisisiOpen ? (
+                  <div className="mt-1 space-y-1 pl-5">
+                    {item.children.map((submenu) => {
+                      const subActive = location.pathname === submenu.to || activeMenu === submenu.id;
+
+                      return (
+                        <button
+                          key={submenu.id}
+                          type="button"
+                          onClick={() => handleSubmenuClick(submenu)}
+                          className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition ${
+                            subActive
+                              ? 'bg-white/20 text-white'
+                              : 'text-blue-100/90 hover:bg-white/10 hover:text-white'
+                          }`}
+                        >
+                          <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                          <span className="line-clamp-2">{submenu.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </div>
             );
           })}
         </nav>

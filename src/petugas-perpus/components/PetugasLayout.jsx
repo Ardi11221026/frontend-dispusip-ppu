@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import SidebarPetugas from './SidebarPetugas';
 import Footer2 from '../../shared/components/Footer2';
 import HeaderDateTime from '../../shared/components/HeaderDateTime';
+import { akuisisiSubmenus } from '../akuisisiSubmenus';
 
 export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
   const navigate = useNavigate();
@@ -11,10 +12,15 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef(null);
+
+  const akuisisiPathToMenu = Object.fromEntries(akuisisiSubmenus.map((submenu) => [submenu.to, submenu.id]));
+  const akuisisiTitleMap = Object.fromEntries(akuisisiSubmenus.map((submenu) => [submenu.id, submenu.label]));
+
   const pathToMenuKey = {
     '/back-office/home': 'beranda',
     '/back-office/beranda': 'beranda',
     '/back-office/akuisisi': 'akuisisi',
+    ...akuisisiPathToMenu,
     '/back-office/katalog': 'katalog',
     '/back-office/sskckr': 'sskckr',
     '/back-office/keanggotaan': 'keanggotaan',
@@ -46,6 +52,7 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
     laporan: 'Laporan',
     administrasi: 'Administrasi',
     'pengaturan-akun': 'Pengaturan Akun',
+    ...akuisisiTitleMap,
   };
 
   useEffect(() => {
