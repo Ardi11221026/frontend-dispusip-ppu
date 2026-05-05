@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Phone, Lock, MapPin, ArrowLeft } from 'lucide-react';
 import Header from '../components/Header';
@@ -5,6 +6,34 @@ import Footer from '../components/Footer';
 
 export default function Daftar() {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', password: '', address: '' });
+  const [errors, setErrors] = useState({});
+
+  const validateEmail = (value) => /.+@.+\..+/.test(value);
+
+  const validateForm = () => {
+    const nextErrors = {};
+
+    if (!formData.name.trim()) nextErrors.name = 'Nama lengkap wajib diisi';
+    if (!formData.email.trim()) {
+      nextErrors.email = 'Email wajib diisi';
+    } else if (!validateEmail(formData.email.trim())) {
+      nextErrors.email = 'Format email tidak valid';
+    }
+    if (!formData.phone.trim()) nextErrors.phone = 'No. Telp / WhatsApp wajib diisi';
+    if (!formData.password.trim()) nextErrors.password = 'Password wajib diisi';
+    if (!formData.address.trim()) nextErrors.address = 'Alamat lengkap wajib diisi';
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!validateForm()) return;
+
+    navigate('/login');
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 font-poppins flex flex-col">
@@ -25,7 +54,7 @@ export default function Daftar() {
             <p className="text-gray-500">Lengkapi data diri Anda untuk mendapatkan nomor anggota</p>
           </div>
           
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-bold text-gray-700 ml-1">Nama Lengkap</label>
               <div className="relative">
@@ -33,9 +62,16 @@ export default function Daftar() {
                 <input 
                   type="text" 
                   placeholder="Nama Lengkap" 
+                  value={formData.name}
+                  onChange={(e) => {
+                    setFormData((current) => ({ ...current, name: e.target.value }));
+                    if (errors.name) setErrors((current) => ({ ...current, name: '' }));
+                  }}
+                  aria-invalid={!!errors.name}
                   className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-blue-500 transition-all"
                 />
               </div>
+              {errors.name ? <p className="mt-1 text-xs text-red-600">{errors.name}</p> : null}
             </div>
 
             <div className="space-y-2">
@@ -45,9 +81,16 @@ export default function Daftar() {
                 <input 
                   type="email" 
                   placeholder="email@example.com" 
+                  value={formData.email}
+                  onChange={(e) => {
+                    setFormData((current) => ({ ...current, email: e.target.value }));
+                    if (errors.email) setErrors((current) => ({ ...current, email: '' }));
+                  }}
+                  aria-invalid={!!errors.email}
                   className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-blue-500 transition-all"
                 />
               </div>
+              {errors.email ? <p className="mt-1 text-xs text-red-600">{errors.email}</p> : null}
             </div>
 
             <div className="space-y-2">
@@ -57,9 +100,16 @@ export default function Daftar() {
                 <input 
                   type="tel" 
                   placeholder="08xxxxxx" 
+                  value={formData.phone}
+                  onChange={(e) => {
+                    setFormData((current) => ({ ...current, phone: e.target.value }));
+                    if (errors.phone) setErrors((current) => ({ ...current, phone: '' }));
+                  }}
+                  aria-invalid={!!errors.phone}
                   className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-blue-500 transition-all"
                 />
               </div>
+              {errors.phone ? <p className="mt-1 text-xs text-red-600">{errors.phone}</p> : null}
             </div>
 
             <div className="space-y-2">
@@ -69,9 +119,16 @@ export default function Daftar() {
                 <input 
                   type="password" 
                   placeholder="••••••••" 
+                  value={formData.password}
+                  onChange={(e) => {
+                    setFormData((current) => ({ ...current, password: e.target.value }));
+                    if (errors.password) setErrors((current) => ({ ...current, password: '' }));
+                  }}
+                  aria-invalid={!!errors.password}
                   className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-blue-500 transition-all"
                 />
               </div>
+              {errors.password ? <p className="mt-1 text-xs text-red-600">{errors.password}</p> : null}
             </div>
 
             <div className="space-y-2 md:col-span-2">
@@ -81,9 +138,16 @@ export default function Daftar() {
                 <textarea 
                   rows="3" 
                   placeholder="Masukkan alamat lengkap" 
+                  value={formData.address}
+                  onChange={(e) => {
+                    setFormData((current) => ({ ...current, address: e.target.value }));
+                    if (errors.address) setErrors((current) => ({ ...current, address: '' }));
+                  }}
+                  aria-invalid={!!errors.address}
                   className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"
                 />
               </div>
+              {errors.address ? <p className="mt-1 text-xs text-red-600">{errors.address}</p> : null}
             </div>
 
             <div className="md:col-span-2 mt-4">

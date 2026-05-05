@@ -16,6 +16,7 @@ export default function ProfilPetugasPerpus() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [successState, setSuccessState] = useState({ isOpen: false, message: '' });
+  const [errors, setErrors] = useState({});
   const [profile, setProfile] = useState({ name: '', email: '', password: '', photo: '' });
   const [draft, setDraft] = useState({ name: '', password: '' });
   const [photoDraft, setPhotoDraft] = useState('');
@@ -65,6 +66,12 @@ export default function ProfilPetugasPerpus() {
   const handleSave = (event) => {
     event.preventDefault();
 
+    const nextErrors = {};
+    if (!draft.name.trim()) nextErrors.name = 'Nama wajib diisi';
+    if (!draft.password.trim()) nextErrors.password = 'Password wajib diisi';
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
+
     const email = (profile.email || localStorage.getItem('userEmail') || '').trim().toLowerCase();
     const items = JSON.parse(localStorage.getItem('adminPetugasItems') || '[]');
     const updatedItems = items.map((item) => {
@@ -100,6 +107,7 @@ export default function ProfilPetugasPerpus() {
     setDraft({ name: profile.name, password: profile.password });
     setPhotoDraft(profile.photo || '');
     setShowPassword(false);
+    setErrors({});
     setEditModalOpen(true);
   };
 
@@ -228,9 +236,14 @@ export default function ProfilPetugasPerpus() {
                       <input
                         type="text"
                         value={draft.name}
-                        onChange={(event) => setDraft((current) => ({ ...current, name: event.target.value }))}
+                        onChange={(event) => {
+                          setDraft((current) => ({ ...current, name: event.target.value }));
+                          if (errors.name) setErrors((current) => ({ ...current, name: '' }));
+                        }}
+                        aria-invalid={!!errors.name}
                         className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
                       />
+                      {errors.name ? <p className="mt-1 text-xs text-red-600">{errors.name}</p> : null}
                     </div>
 
                     <div>
@@ -249,7 +262,11 @@ export default function ProfilPetugasPerpus() {
                         <input
                           type={showPassword ? 'text' : 'password'}
                           value={draft.password}
-                          onChange={(event) => setDraft((current) => ({ ...current, password: event.target.value }))}
+                          onChange={(event) => {
+                            setDraft((current) => ({ ...current, password: event.target.value }));
+                            if (errors.password) setErrors((current) => ({ ...current, password: '' }));
+                          }}
+                          aria-invalid={!!errors.password}
                           className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 pr-12 text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
                         />
                         <button
@@ -261,6 +278,7 @@ export default function ProfilPetugasPerpus() {
                           {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                       </div>
+                      {errors.password ? <p className="mt-1 text-xs text-red-600">{errors.password}</p> : null}
                     </div>
                   </div>
                 </div>

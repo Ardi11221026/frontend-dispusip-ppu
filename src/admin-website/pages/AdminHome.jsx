@@ -16,6 +16,7 @@ export default function AdminHome() {
     return savedItems ? JSON.parse(savedItems) : [];
   });
   const [modalState, setModalState] = useState({ isOpen: false, type: 'view', category: 'berita', item: null });
+  const [modalErrors, setModalErrors] = useState({});
   const [successState, setSuccessState] = useState({ isOpen: false, message: '' });
 
   useEffect(() => {
@@ -46,10 +47,39 @@ export default function AdminHome() {
 
   const openModal = (category, type, item = null) => {
     setModalState({ isOpen: true, type, category, item });
+    setModalErrors({});
   };
 
   const closeModal = () => {
     setModalState({ isOpen: false, type: 'view', category: 'berita', item: null });
+    setModalErrors({});
+  };
+
+  const isValidEmail = (value) => /.+@.+\..+/.test(value);
+
+  const validateModalForm = (formData) => {
+    const nextErrors = {};
+
+    if (modalState.category === 'berita') {
+      if (!formData.get('title')?.toString().trim()) nextErrors.title = 'Judul wajib diisi';
+      if (!formData.get('date')?.toString().trim()) nextErrors.date = 'Tanggal wajib diisi';
+      if (!formData.get('status')?.toString().trim()) nextErrors.status = 'Status wajib dipilih';
+    } else {
+      const name = formData.get('name')?.toString().trim() || '';
+      const email = formData.get('email')?.toString().trim() || '';
+      const status = formData.get('status')?.toString().trim() || '';
+
+      if (!name) nextErrors.name = 'Nama wajib diisi';
+      if (!email) {
+        nextErrors.email = 'Email wajib diisi';
+      } else if (!isValidEmail(email)) {
+        nextErrors.email = 'Format email tidak valid';
+      }
+      if (!status) nextErrors.status = 'Status wajib dipilih';
+    }
+
+    setModalErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
   };
 
   const handleDelete = () => {
@@ -68,6 +98,8 @@ export default function AdminHome() {
   const handleSave = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+
+    if (!validateModalForm(formData)) return;
 
     if (modalState.category === 'berita') {
       const nextItem = {
@@ -368,6 +400,7 @@ export default function AdminHome() {
                       disabled={modalState.type === 'view'}
                       className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none disabled:bg-gray-50"
                     />
+                    {modalErrors.title ? <p className="mt-1 text-xs text-red-600">{modalErrors.title}</p> : null}
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-medium text-gray-700">Tanggal</label>
@@ -377,6 +410,7 @@ export default function AdminHome() {
                       disabled={modalState.type === 'view'}
                       className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none disabled:bg-gray-50"
                     />
+                    {modalErrors.date ? <p className="mt-1 text-xs text-red-600">{modalErrors.date}</p> : null}
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-medium text-gray-700">Status</label>
@@ -389,6 +423,7 @@ export default function AdminHome() {
                       <option value="Publik">Publik</option>
                       <option value="Draft">Draft</option>
                     </select>
+                    {modalErrors.status ? <p className="mt-1 text-xs text-red-600">{modalErrors.status}</p> : null}
                   </div>
                 </>
               ) : (
@@ -401,6 +436,7 @@ export default function AdminHome() {
                       disabled={modalState.type === 'view'}
                       className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none disabled:bg-gray-50"
                     />
+                    {modalErrors.name ? <p className="mt-1 text-xs text-red-600">{modalErrors.name}</p> : null}
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-medium text-gray-700">Email</label>
@@ -410,6 +446,7 @@ export default function AdminHome() {
                       disabled={modalState.type === 'view'}
                       className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none disabled:bg-gray-50"
                     />
+                    {modalErrors.email ? <p className="mt-1 text-xs text-red-600">{modalErrors.email}</p> : null}
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-medium text-gray-700">Status</label>
@@ -422,6 +459,7 @@ export default function AdminHome() {
                       <option value="Aktif">Aktif</option>
                       <option value="Nonaktif">Nonaktif</option>
                     </select>
+                    {modalErrors.status ? <p className="mt-1 text-xs text-red-600">{modalErrors.status}</p> : null}
                   </div>
                 </>
               )}

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Lock, ArrowLeft } from 'lucide-react';
 import Header from '../components/Header';
@@ -5,6 +6,25 @@ import Footer from '../components/Footer';
 
 export default function Login() {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({ memberNumber: '', password: '' });
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const nextErrors = {};
+
+    if (!formData.memberNumber.trim()) nextErrors.memberNumber = 'Nomor anggota wajib diisi';
+    if (!formData.password.trim()) nextErrors.password = 'Password wajib diisi';
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!validateForm()) return;
+
+    navigate('/');
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 font-poppins flex flex-col">
@@ -27,7 +47,7 @@ export default function Login() {
           <h1 className="text-3xl font-extrabold text-gray-900 text-center mb-2">Login Anggota</h1>
           <p className="text-center text-gray-500 mb-10">Masuk untuk melanjutkan peminjaman buku</p>
           
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label className="text-sm font-bold text-gray-700 ml-1">Nomor Anggota</label>
               <div className="relative">
@@ -35,9 +55,16 @@ export default function Login() {
                 <input 
                   type="text" 
                   placeholder="Masukkan No. Anggota" 
+                  value={formData.memberNumber}
+                  onChange={(e) => {
+                    setFormData((current) => ({ ...current, memberNumber: e.target.value }));
+                    if (errors.memberNumber) setErrors((current) => ({ ...current, memberNumber: '' }));
+                  }}
+                  aria-invalid={!!errors.memberNumber}
                   className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-blue-500 transition-all"
                 />
               </div>
+              {errors.memberNumber ? <p className="mt-1 text-xs text-red-600">{errors.memberNumber}</p> : null}
             </div>
             
             <div className="space-y-2">
@@ -50,9 +77,16 @@ export default function Login() {
                 <input 
                   type="password" 
                   placeholder="••••••••" 
+                  value={formData.password}
+                  onChange={(e) => {
+                    setFormData((current) => ({ ...current, password: e.target.value }));
+                    if (errors.password) setErrors((current) => ({ ...current, password: '' }));
+                  }}
+                  aria-invalid={!!errors.password}
                   className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-blue-500 transition-all"
                 />
               </div>
+              {errors.password ? <p className="mt-1 text-xs text-red-600">{errors.password}</p> : null}
             </div>
 
             <button 

@@ -7,26 +7,41 @@ export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const validateForm = () => {
+    const nextErrors = {};
+
+    if (!email.trim()) nextErrors.email = 'Email wajib diisi';
+    if (!password.trim()) nextErrors.password = 'Password wajib diisi';
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setSubmitError('');
     setLoading(true);
 
     // Simulasi login admin (dalam produksi akan memanggil API)
     try {
+      if (!validateForm()) {
+        return;
+      }
+
       if (email && password) {
         // Simpan ke localStorage dengan role admin
         localStorage.setItem('userRole', 'admin');
         localStorage.setItem('userEmail', email);
         navigate('/admin/home');
       } else {
-        setError('Email dan password harus diisi');
+        setSubmitError('Email dan password harus diisi');
       }
-    } catch (err) {
-      setError('Terjadi kesalahan saat login');
+    } catch {
+      setSubmitError('Terjadi kesalahan saat login');
     } finally {
       setLoading(false);
     }
@@ -66,11 +81,16 @@ export default function AdminLogin() {
                   <input
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (errors.email) setErrors((current) => ({ ...current, email: '' }));
+                    }}
                     placeholder="admin@perpustakaan.id"
+                    aria-invalid={!!errors.email}
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition"
                   />
                 </div>
+                {errors.email ? <p className="mt-1 text-xs text-red-600">{errors.email}</p> : null}
               </div>
 
               {/* Password Input */}
@@ -81,8 +101,12 @@ export default function AdminLogin() {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (errors.password) setErrors((current) => ({ ...current, password: '' }));
+                    }}
                     placeholder="••••••••"
+                    aria-invalid={!!errors.password}
                     className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition"
                   />
                   <button
@@ -93,12 +117,13 @@ export default function AdminLogin() {
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
+                {errors.password ? <p className="mt-1 text-xs text-red-600">{errors.password}</p> : null}
               </div>
 
               {/* Error Message */}
-              {error && (
+              {submitError && (
                 <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                  {error}
+                  {submitError}
                 </div>
               )}
 
