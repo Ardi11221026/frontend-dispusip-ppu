@@ -15,6 +15,7 @@ import Opac from './website-publik/pages/Opac';
 import Login from './website-publik/pages/Login';
 import Daftar from './website-publik/pages/Daftar';
 import BukuTamuDigital from './website-publik/pages/BukuTamuDigital';
+import BukuTamuDigitalList from './petugas-perpus/pages/BukuTamuDigitalList';
 import BackOfficeLogin from './petugas-perpus/pages/BackOfficeLogin';
 import Beranda from './petugas-perpus/pages/Beranda';
 import ProfilPetugasPerpus from './petugas-perpus/pages/ProfilPetugasPerpus';
@@ -81,6 +82,7 @@ function App() {
         <Route path="/berita/:id" element={<BeritaDetail />} />
         <Route path="/galeri" element={<Galeri />} />
         <Route path="/buku-tamu-digital" element={<BukuTamuDigital />} />
+        <Route path="/back-office/buku-tamu-digital" element={<BukuTamuDigitalList />} />
         
         {/* Profile Pages */}
         <Route path="/profil/kelembagaan" element={<Kelembagaan />} />

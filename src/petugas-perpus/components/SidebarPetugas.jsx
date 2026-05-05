@@ -41,6 +41,7 @@ export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, se
     { id: 'loker', label: 'Loker', icon: Lock, to: '/back-office/loker' },
     { id: 'survey', label: 'Survey', icon: BarChart3, to: '/back-office/survey', chevron: true },
     { id: 'buku-tamu', label: 'Buku Tamu', icon: FileText, to: '/back-office/buku-tamu' },
+    { id: 'buku-tamu-digital', label: 'Buku Tamu Digital', icon: FileText, to: '/back-office/buku-tamu-digital' },
     { id: 'opac', label: 'Opac', icon: Search, to: '/back-office/opac' },
     { id: 'layanan-koleksi-digital', label: 'Layanan Koleksi Digital', icon: BookOpen, to: '/back-office/layanan-koleksi-digital', chevron: true },
     { id: 'baca-ditempat', label: 'Baca Ditempat', icon: BookOpen, to: '/back-office/baca-ditempat' },
