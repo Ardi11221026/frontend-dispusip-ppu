@@ -86,12 +86,11 @@ export default function Opac() {
   return (
     <div className="min-h-screen bg-slate-50 font-poppins">
       <Header />
-      <div className="md:hidden h-20" /> {/* Spacer untuk offset fixed header di mobile */}
       
       {/* Hero Search Section */}
-      <div className="bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 text-white pt-24 pb-32 px-4">
+      <div className="bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 text-white pt-20 pb-24 sm:pt-24 sm:pb-32 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">Online Public Access Catalog</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6 tracking-tight">Online Public Access Catalog</h1>
           <p className="text-blue-100 text-lg mb-10 max-w-2xl mx-auto">
             Temukan ribuan koleksi buku, jurnal, dan referensi lainnya dari Dinas Perpustakaan dan Arsip Kab. Penajam Paser Utara.
           </p>
@@ -107,13 +106,13 @@ export default function Opac() {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <select className="px-6 py-4 rounded-xl text-gray-700 bg-gray-50 border-none font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select className="w-full md:w-auto px-6 py-4 rounded-xl text-gray-700 bg-gray-50 border-none font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
               <option>Semua Bahan</option>
               <option>Buku</option>
               <option>Jurnal</option>
               <option>Skripsi</option>
             </select>
-            <button className="bg-green-600 hover:bg-green-700 text-white px-10 py-4 rounded-xl font-bold transition-all shadow-lg hover:shadow-green-500/30">
+            <button className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white px-10 py-4 rounded-xl font-bold transition-all shadow-lg hover:shadow-green-500/30">
               Cari Koleksi
             </button>
           </div>
@@ -161,7 +160,7 @@ export default function Opac() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {booksData.map((book) => (
                 <div 
                   key={book.id} 
@@ -228,7 +227,7 @@ export default function Opac() {
                   <p className="text-xl text-gray-600 font-medium">{selectedBook.author}</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-6 mb-8 bg-slate-50 p-6 rounded-2xl">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8 bg-slate-50 p-6 rounded-2xl">
                   <div>
                     <p className="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">Penerbit</p>
                     <p className="font-semibold text-gray-900">{selectedBook.publisher}</p>
@@ -256,7 +255,7 @@ export default function Opac() {
                   </p>
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
                   <button 
                     onClick={handlePinjam}
                     className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-2xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2"
@@ -264,7 +263,7 @@ export default function Opac() {
                     <Book className="w-5 h-5" />
                     Pinjam Buku Sekarang
                   </button>
-                  <button className="w-16 h-16 border-2 border-gray-100 rounded-2xl flex items-center justify-center text-gray-400 hover:text-blue-600 hover:border-blue-100 transition-all">
+                  <button className="h-14 w-full border-2 border-gray-100 rounded-2xl flex items-center justify-center text-gray-400 hover:text-blue-600 hover:border-blue-100 transition-all sm:h-16 sm:w-16">
                     <Bookmark className="w-6 h-6" />
                   </button>
                 </div>

@@ -118,7 +118,7 @@ export default function AdminPetugas() {
             <h3 className="text-2xl font-bold text-gray-900">Manajemen Petugas</h3>
             <p className="text-sm text-gray-500">Tambahkan akun petugas perpustakaan di sini, lalu mereka bisa login memakai data yang tersimpan di browser.</p>
           </div>
-          <button onClick={() => openModal('add')} className="inline-flex items-center gap-2 self-start rounded-lg bg-purple-600 px-5 py-2 text-white transition hover:bg-purple-700 sm:self-auto">
+          <button onClick={() => openModal('add')} className="inline-flex items-center gap-2 self-start rounded-lg bg-blue-600 px-5 py-2 text-white transition hover:bg-blue-700 sm:self-auto">
             <Plus size={18} />
             Tambah Petugas
           </button>
@@ -169,7 +169,7 @@ export default function AdminPetugas() {
                       value={formData.name}
                       onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                       placeholder="Contoh: Hilmi"
-                      className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     {errors.name ? <p className="mt-1 text-sm text-red-500">{errors.name}</p> : null}
                   </div>
@@ -182,7 +182,7 @@ export default function AdminPetugas() {
                       value={formData.email}
                       onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
                       placeholder="hilmi123@gmail.com"
-                      className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     {errors.email ? <p className="mt-1 text-sm text-red-500">{errors.email}</p> : null}
                   </div>
@@ -196,7 +196,7 @@ export default function AdminPetugas() {
                         value={formData.password}
                         onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
                         placeholder="hilmi123"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:ring-2 focus:ring-blue-500"
                       />
                       <button
                         type="button"
@@ -216,7 +216,7 @@ export default function AdminPetugas() {
                       name="status"
                       value={formData.status}
                       onChange={(e) => setFormData((prev) => ({ ...prev, status: e.target.value }))}
-                      className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="Aktif">Aktif</option>
                       <option value="Nonaktif">Nonaktif</option>

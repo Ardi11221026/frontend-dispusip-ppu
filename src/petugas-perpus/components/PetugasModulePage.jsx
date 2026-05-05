@@ -13,23 +13,23 @@ function ModuleCardContent({
   return (
     <div className="p-4 sm:p-6">
       <div className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
-        <div className="bg-gradient-to-r from-blue-950 via-blue-900 to-indigo-950 px-6 py-8 text-white sm:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-300">{badge}</p>
-          <h1 className="mt-3 text-3xl font-bold sm:text-4xl">{title}</h1>
+        <div className="bg-gradient-to-r from-blue-950 via-blue-900 to-indigo-950 px-4 py-7 text-white sm:px-8">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-amber-300 sm:text-xs sm:tracking-[0.35em]">{badge}</p>
+          <h1 className="mt-3 text-2xl font-bold sm:text-4xl">{title}</h1>
           <p className="mt-3 max-w-3xl text-sm text-blue-100 sm:text-base">{description}</p>
         </div>
 
-        <div className="grid gap-4 border-b border-gray-200 p-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 border-b border-gray-200 p-4 sm:p-6 md:grid-cols-2 xl:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label} className="rounded-2xl border border-gray-200 bg-slate-50 p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{stat.label}</p>
-              <p className="mt-2 text-3xl font-bold text-slate-900">{stat.value}</p>
+              <p className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">{stat.value}</p>
               <p className="mt-1 text-sm text-slate-600">{stat.caption}</p>
             </div>
           ))}
         </div>
 
-        <div className="grid gap-6 p-6 lg:grid-cols-[1.6fr_0.9fr]">
+        <div className="grid gap-6 p-4 sm:p-6 lg:grid-cols-[1.6fr_0.9fr]">
           <div className="space-y-6">
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
               <h2 className="text-lg font-bold text-slate-900">Sorotan Modul</h2>

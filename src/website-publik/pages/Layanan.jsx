@@ -82,9 +82,9 @@ export default function Layanan() {
           <h2 className="text-3xl font-bold text-gray-900 font-poppins mb-8">Layanan Kelembagaan</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* PPID */}
-            <div className="bg-white rounded-lg shadow-md p-8 border-l-4 border-purple-600">
+            <div className="bg-white rounded-lg shadow-md p-8 border-l-4 border-emerald-600">
               <div className="flex items-center gap-4 mb-4">
-                <div className="bg-purple-600 p-3 rounded-full text-white">
+                <div className="bg-emerald-600 p-3 rounded-full text-white">
                   <FileText size={32} />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 font-poppins">PPID Penajam Kab</h3>
@@ -98,7 +98,7 @@ export default function Layanan() {
                 <li>Dokumentasi arsip pemerintah</li>
                 <li>Sesuai dengan UU Keterbukaan Informasi Publik</li>
               </ul>
-              <button className="mt-6 bg-purple-600 hover:bg-purple-700 text-white font-poppins font-bold py-2 px-6 rounded transition">
+              <button className="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-poppins font-bold py-2 px-6 rounded transition">
                 Ajukan Permohonan
               </button>
             </div>

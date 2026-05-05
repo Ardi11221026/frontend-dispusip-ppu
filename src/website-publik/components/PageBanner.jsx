@@ -57,13 +57,13 @@ export default function PageBanner({ title, breadcrumbs = [] }) {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-center justify-center px-4 py-14 text-center sm:py-16">
-        <h1 className="text-3xl font-bold text-white drop-shadow sm:text-4xl font-poppins">
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-center justify-center px-4 py-10 text-center sm:py-14">
+        <h1 className="text-2xl font-bold text-white drop-shadow sm:text-4xl font-poppins">
           {title}
         </h1>
 
         {breadcrumbs.length > 0 && (
-          <nav className="mt-3 flex items-center gap-1 text-sm text-white/80 font-poppins flex-wrap justify-center">
+          <nav className="mt-3 flex items-center gap-1 text-xs text-white/80 font-poppins flex-wrap justify-center sm:text-sm">
             {breadcrumbs.map((crumb, index) => {
               const isLast = index === breadcrumbs.length - 1;
               return (

@@ -40,7 +40,7 @@ export default function AdminHome() {
   const stats = [
     { label: 'Total Berita', value: '0', color: 'from-blue-500 to-blue-600' },
     { label: 'Berita Bulan Ini', value: '0', color: 'from-emerald-500 to-emerald-600' },
-    { label: 'Total Pengunjung', value: '3,730', color: 'from-purple-500 to-purple-600' },
+    { label: 'Total Pengunjung', value: '3,730', color: 'from-blue-500 to-emerald-600' },
     { label: 'Petugas Aktif', value: '98', color: 'from-orange-500 to-orange-600' },
   ];
 
@@ -162,7 +162,7 @@ export default function AdminHome() {
                   <Plus size={18} />
                   Kelola Konten
                 </button>
-                <button className="w-full inline-flex items-center justify-center gap-2 bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition font-medium">
+                <button className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition font-medium">
                   <Plus size={18} />
                   Tambah Petugas
                 </button>
@@ -243,7 +243,7 @@ export default function AdminHome() {
         <div className="space-y-4">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="text-2xl font-bold text-gray-900">Daftar Petugas</h3>
-            <button className="inline-flex items-center gap-2 self-start bg-purple-600 text-white px-5 py-2 rounded-lg hover:bg-purple-700 transition font-medium sm:self-auto">
+            <button className="inline-flex items-center gap-2 self-start bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition font-medium sm:self-auto">
               <Plus size={18} />
               Tambah Petugas
             </button>
@@ -317,7 +317,7 @@ export default function AdminHome() {
       {activeMenu === 'import' && (
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="rounded-lg bg-purple-600 p-3 text-white">
+            <div className="rounded-lg bg-blue-600 p-3 text-white">
               <FileUp size={24} />
             </div>
             <div>

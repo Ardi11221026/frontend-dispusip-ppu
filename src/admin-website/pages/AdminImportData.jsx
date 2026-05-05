@@ -18,7 +18,7 @@ export default function AdminImportData() {
       <div className="p-4 sm:p-6">
         <div className="rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-200">
           <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-purple-600 p-3 text-white"><FileUp size={24} /></div>
+            <div className="rounded-lg bg-blue-600 p-3 text-white"><FileUp size={24} /></div>
             <div>
               <h3 className="text-2xl font-bold text-gray-900">Impor Data</h3>
               <p className="text-sm text-gray-500">Masukkan data dari file ke sistem admin.</p>

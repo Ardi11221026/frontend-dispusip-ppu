@@ -20,7 +20,6 @@ export default function Galeri() {
   return (
     <div className="w-full">
       <Header />
-      <div className="md:hidden h-20" /> {/* Spacer untuk offset fixed header di mobile */}
 
       <PageBanner
         title="Galeri"
@@ -31,11 +30,11 @@ export default function Galeri() {
       />
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 py-10 sm:py-12">
         {/* Category filter removed - simplified gallery */}
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
           {filteredImages.map((image) => (
             <div
               key={image.id}

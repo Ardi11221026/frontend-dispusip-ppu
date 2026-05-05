@@ -66,10 +66,6 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
     return () => document.removeEventListener('mousedown', handlePointerDown);
   }, []);
 
-  useEffect(() => {
-    setProfileMenuOpen(false);
-  }, [location.pathname]);
-
   const handleLogout = () => {
     localStorage.removeItem('userRole');
     localStorage.removeItem('userEmail');
@@ -116,7 +112,7 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
               </h2>
             </div>
 
-            <div className="absolute left-1/2 hidden -translate-x-1/2 md:flex">
+            <div className="absolute left-1/2 hidden -translate-x-1/2 xl:flex">
               <HeaderDateTime />
             </div>
 
@@ -124,12 +120,12 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
               <button
                 type="button"
                 onClick={() => setProfileMenuOpen((prevOpen) => !prevOpen)}
-                className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2 shadow-sm transition hover:bg-amber-100"
+                className="flex items-center gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 shadow-sm transition hover:bg-amber-100 xl:gap-3 xl:px-4"
               >
                 <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
                   <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
                 </div>
-                <div className="text-right leading-tight">
+                <div className="hidden text-right leading-tight xl:block">
                   <p className="text-sm font-bold text-blue-950">
                     {localStorage.getItem('userName') || localStorage.getItem('userEmail') || 'petugas@perpus.id'}
                   </p>
@@ -153,11 +149,11 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
             </div>
 
             <div className="flex items-center gap-2 md:hidden">
-              <HeaderDateTime />
+              <HeaderDateTime compact />
               <button
                 type="button"
                 onClick={() => setProfileMenuOpen((prevOpen) => !prevOpen)}
-                className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 shadow-sm"
+                className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-2.5 py-2 shadow-sm"
               >
                 <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
                   <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
@@ -176,7 +172,7 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
                   </button>
                 </div>
               )}
-              </div>
+            </div>
           </div>
 
           <main className="flex-1">{children}</main>

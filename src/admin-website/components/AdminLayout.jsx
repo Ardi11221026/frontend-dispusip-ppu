@@ -69,7 +69,7 @@ export default function AdminLayout({ children, activeMenu, setActiveMenu }) {
               </h2>
             </div>
 
-            <div className="absolute left-1/2 hidden -translate-x-1/2 md:flex">
+            <div className="absolute left-1/2 hidden -translate-x-1/2 xl:flex">
               <HeaderDateTime />
             </div>
 
@@ -84,8 +84,9 @@ export default function AdminLayout({ children, activeMenu, setActiveMenu }) {
               </div>
             </div>
 
-            {/* Mobile: Icon Only */}
-            <div className="flex md:hidden">
+            {/* Mobile: Compact time + icon */}
+            <div className="flex items-center gap-2 md:hidden">
+              <HeaderDateTime compact />
               <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
                 <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
               </div>

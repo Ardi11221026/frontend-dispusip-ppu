@@ -4,33 +4,41 @@ import { bannerStorage } from '../../shared/utils/bannerStorage';
 
 export default function Banner() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slides, setSlides] = useState(() => bannerStorage.getAll());
-
-  const displayText = 'Selamat Datang di website Dinas Perpus Kabupaten PPU';
+  const [slides] = useState(() => bannerStorage.getAll());
 
   // Auto-rotate slides every 5 seconds
   useEffect(() => {
+    if (!slides.length) return;
+
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    setSlides(bannerStorage.getAll());
-  }, []);
+  }, [slides.length]);
 
   const nextSlide = () => {
+    if (!slides.length) return;
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
   const prevSlide = () => {
+    if (!slides.length) return;
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
+  if (!slides.length) {
+    return (
+      <section className="relative w-full overflow-hidden bg-gradient-to-b from-blue-900 to-emerald-800">
+        <div className="flex h-[280px] w-full items-center justify-center sm:h-[360px] lg:h-[460px]">
+          <p className="text-sm font-semibold text-white/90 sm:text-base">Banner belum tersedia</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="relative w-full overflow-hidden bg-gradient-to-b from-blue-900 to-emerald-800">
-      <div className="relative h-[420px] w-full sm:h-[520px] lg:h-[640px]">
+      <div className="relative h-[300px] w-full sm:h-[420px] lg:h-[560px] xl:h-[640px]">
         {slides.map((slide, index) => (
           <div
             key={slide.id}
@@ -45,8 +53,8 @@ export default function Banner() {
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black/40">
               <div className="px-4 text-center">
-                <p className="text-sm font-semibold text-white sm:text-base md:text-lg">Selamat Datang di Website</p>
-                <h2 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl uppercase">Dinas Perpustakaan<br />Dan Arsip</h2>
+                <p className="text-xs font-semibold text-white sm:text-sm md:text-lg">Selamat Datang di Website</p>
+                <h2 className="text-xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl uppercase">Dinas Perpustakaan<br />Dan Arsip</h2>
                 <p className="mt-2 text-sm font-semibold text-white sm:text-base md:text-lg">Kabupaten Penajam Paser Utara</p>
               </div>
             </div>

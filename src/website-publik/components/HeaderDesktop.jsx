@@ -30,22 +30,22 @@ export default function HeaderDesktop() {
   return (
     <header className="w-full border-b border-slate-200 bg-white text-gray-900 shadow-lg">
       <div className="border-b border-gray-200 bg-gradient-to-r from-blue-900 via-emerald-700 to-teal-600">
-        <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-6 px-4 py-7">
+        <div className="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 py-5 lg:gap-6 lg:py-7">
           <div className="flex items-center justify-start">
-            <img src="/logo/logo ppu.png" alt="Logo PPU" className="h-24 w-24 object-contain sm:h-28 sm:w-28" />
+            <img src="/logo/logo ppu.png" alt="Logo PPU" className="h-16 w-16 object-contain lg:h-24 lg:w-24 xl:h-28 xl:w-28" />
           </div>
 
           <div className="min-w-0 text-center">
-            <p className="text-xl font-bold uppercase tracking-[0.35em] text-emerald-100 sm:text-2xl md:text-3xl">
+            <p className="text-base font-bold uppercase tracking-[0.16em] text-emerald-100 lg:text-xl lg:tracking-[0.24em] xl:text-3xl xl:tracking-[0.32em]">
               Dinas Perpustakaan Dan Arsip
             </p>
-            <h1 className="mt-1 text-xs font-semibold leading-tight text-white/90 sm:text-sm md:text-base">
+            <h1 className="mt-1 text-[11px] font-semibold leading-tight text-white/90 lg:text-sm xl:text-base">
               Kabupaten Penajam Paser Utara
             </h1>
           </div>
 
           <div className="flex items-center justify-end">
-            <img src="/logo/Logo Perpusnas.png" alt="Logo Perpusnas" className="h-24 w-24 object-contain sm:h-28 sm:w-28" />
+            <img src="/logo/Logo Perpusnas.png" alt="Logo Perpusnas" className="h-16 w-16 object-contain lg:h-24 lg:w-24 xl:h-28 xl:w-28" />
           </div>
         </div>
       </div>
