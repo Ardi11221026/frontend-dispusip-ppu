@@ -43,6 +43,16 @@ export default function LayananKami() {
       iconBg: 'bg-blue-100',
       iconColor: 'text-blue-900',
     },
+    {
+      id: 5,
+      title: 'Buku Tamu Digital',
+      description: 'Isi buku tamu pengunjung perpustakaan secara online',
+      icon: FileText,
+      href: '/buku-tamu-digital',
+      color: 'from-emerald-600 to-teal-700',
+      iconBg: 'bg-emerald-100',
+      iconColor: 'text-emerald-700',
+    },
   ];
 
   return (

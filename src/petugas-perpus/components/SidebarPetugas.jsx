@@ -17,11 +17,13 @@ import {
   X,
 } from 'lucide-react';
 import { akuisisiSubmenus } from '../akuisisiSubmenus';
+import { katalogSubmenus } from '../katalogSubmenus';
 
 export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, setActiveMenu, setOpen }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isAkuisisiOpen, setIsAkuisisiOpen] = useState(location.pathname.startsWith('/back-office/akuisisi'));
+  const [isKatalogOpen, setIsKatalogOpen] = useState(location.pathname.startsWith('/back-office/katalog'));
 
   useEffect(() => {
     if (location.pathname.startsWith('/back-office/akuisisi')) {
@@ -32,7 +34,7 @@ export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, se
   const menuItems = [
     { id: 'beranda', label: 'Beranda', icon: Home, to: '/back-office/beranda' },
     { id: 'akuisisi', label: 'Akuisisi', icon: BookOpen, to: '/back-office/akuisisi', chevron: true, children: akuisisiSubmenus },
-    { id: 'katalog', label: 'Katalog', icon: Search, to: '/back-office/katalog', chevron: true },
+     { id: 'katalog', label: 'Katalog', icon: Search, to: '/back-office/katalog', chevron: true, children: katalogSubmenus },
     { id: 'sskckr', label: 'SSKCKR', icon: ClipboardList, to: '/back-office/sskckr', chevron: true },
     { id: 'keanggotaan', label: 'Keanggotaan', icon: Users, to: '/back-office/keanggotaan', chevron: true },
     { id: 'sirkulasi', label: 'Sirkulasi', icon: RefreshCw, to: '/back-office/sirkulasi', chevron: true },
@@ -50,6 +52,9 @@ export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, se
     if (item.id === 'akuisisi') {
       return location.pathname.startsWith('/back-office/akuisisi') || activeMenu === 'akuisisi';
     }
+     if (item.id === 'katalog') {
+       return location.pathname.startsWith('/back-office/katalog') || activeMenu === 'katalog';
+     }
 
     return location.pathname === item.to || activeMenu === item.id;
   };
@@ -64,6 +69,15 @@ export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, se
       }
       return;
     }
+     if (item.id === 'katalog') {
+       setActiveMenu?.('katalog');
+       setIsKatalogOpen((previous) => !previous);
+
+       if (!location.pathname.startsWith('/back-office/katalog')) {
+         navigate('/back-office/katalog', { state: { activeMenu: 'katalog' } });
+       }
+       return;
+     }
 
     setActiveMenu?.(item.id);
 

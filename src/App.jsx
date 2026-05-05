@@ -14,6 +14,7 @@ import StrukturOrganisasi from './website-publik/pages/StrukturOrganisasi';
 import Opac from './website-publik/pages/Opac';
 import Login from './website-publik/pages/Login';
 import Daftar from './website-publik/pages/Daftar';
+import BukuTamuDigital from './website-publik/pages/BukuTamuDigital';
 import BackOfficeLogin from './petugas-perpus/pages/BackOfficeLogin';
 import Beranda from './petugas-perpus/pages/Beranda';
 import ProfilPetugasPerpus from './petugas-perpus/pages/ProfilPetugasPerpus';
@@ -21,9 +22,11 @@ import Akuisisi from './petugas-perpus/pages/Akuisisi';
 import AkuisisiSubmenuPage from './petugas-perpus/pages/AkuisisiSubmenuPage';
 import { akuisisiSubmenus } from './petugas-perpus/akuisisiSubmenus';
 import Katalog from './petugas-perpus/pages/Katalog';
+import KatalogSubmenuPage from './petugas-perpus/pages/KatalogSubmenuPage';
 import SSKCKR from './petugas-perpus/pages/SSKCKR';
 import Keanggotaan from './petugas-perpus/pages/Keanggotaan';
 import Sirkulasi from './petugas-perpus/pages/Sirkulasi';
+import { katalogSubmenus } from './petugas-perpus/katalogSubmenus';
 import Loker from './petugas-perpus/pages/Loker';
 import Survey from './petugas-perpus/pages/Survey';
 import BukuTamu from './petugas-perpus/pages/BukuTamu';
@@ -77,6 +80,7 @@ function App() {
         <Route path="/berita" element={<Berita />} />
         <Route path="/berita/:id" element={<BeritaDetail />} />
         <Route path="/galeri" element={<Galeri />} />
+        <Route path="/buku-tamu-digital" element={<BukuTamuDigital />} />
         
         {/* Profile Pages */}
         <Route path="/profil/kelembagaan" element={<Kelembagaan />} />
@@ -99,6 +103,13 @@ function App() {
           />
         ))}
         <Route path="/back-office/katalog" element={<Katalog />} />
+         {katalogSubmenus.map((submenu) => (
+           <Route
+             key={submenu.id}
+             path={submenu.to}
+             element={<KatalogSubmenuPage menu={submenu} />}
+           />
+         ))}
         <Route path="/back-office/sskckr" element={<SSKCKR />} />
         <Route path="/back-office/keanggotaan" element={<Keanggotaan />} />
         <Route path="/back-office/sirkulasi" element={<Sirkulasi />} />
