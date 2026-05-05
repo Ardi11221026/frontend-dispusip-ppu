@@ -3,6 +3,7 @@ import { Menu, X } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SidebarAdmin from './SidebarAdmin';
 import Footer2 from '../../shared/components/Footer2';
+import HeaderDateTime from '../../shared/components/HeaderDateTime';
 
 export default function AdminLayout({ children, activeMenu, setActiveMenu }) {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ export default function AdminLayout({ children, activeMenu, setActiveMenu }) {
         />
 
         <div className="flex min-h-0 flex-1 flex-col">
-          <div className="sticky top-0 z-40 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-4 shadow-sm sm:px-6">
+          <div className="sticky top-0 z-40 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-4 shadow-sm sm:px-6 relative">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setSidebarOpen((prevOpen) => !prevOpen)}
@@ -66,6 +67,10 @@ export default function AdminLayout({ children, activeMenu, setActiveMenu }) {
               <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">
                 {titleByMenu[menuKey] || 'Admin'}
               </h2>
+            </div>
+
+            <div className="absolute left-1/2 hidden -translate-x-1/2 md:flex">
+              <HeaderDateTime />
             </div>
 
             {/* Desktop: Icon + Text */}

@@ -16,6 +16,7 @@ import Login from './website-publik/pages/Login';
 import Daftar from './website-publik/pages/Daftar';
 import BackOfficeLogin from './petugas-perpus/pages/BackOfficeLogin';
 import Beranda from './petugas-perpus/pages/Beranda';
+import ProfilPetugasPerpus from './petugas-perpus/pages/ProfilPetugasPerpus';
 import Akuisisi from './petugas-perpus/pages/Akuisisi';
 import Katalog from './petugas-perpus/pages/Katalog';
 import SSKCKR from './petugas-perpus/pages/SSKCKR';
@@ -100,6 +101,7 @@ function App() {
         <Route path="/back-office/baca-ditempat" element={<BacaDitempat />} />
         <Route path="/back-office/laporan" element={<Laporan />} />
         <Route path="/back-office/administrasi" element={<Administrasi />} />
+        <Route path="/profil-petugas-perpus" element={<ProfilPetugasPerpus />} />
         
         {/* Admin Pages */}
         <Route path="/admin-website-dispusip-ppu" element={<AdminLogin />} />

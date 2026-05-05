@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ChevronDown, Menu, X } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SidebarPetugas from './SidebarPetugas';
 import Footer2 from '../../shared/components/Footer2';
+import HeaderDateTime from '../../shared/components/HeaderDateTime';
 
 export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef(null);
   const pathToMenuKey = {
     '/back-office/home': 'beranda',
     '/back-office/beranda': 'beranda',
@@ -24,6 +27,7 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
     '/back-office/baca-ditempat': 'baca-ditempat',
     '/back-office/laporan': 'laporan',
     '/back-office/administrasi': 'administrasi',
+    '/profil-petugas-perpus': 'pengaturan-akun',
   };
   const menuKey = activeMenu || pathToMenuKey[location.pathname] || 'beranda';
   const titleByMenu = {
@@ -41,6 +45,7 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
     'baca-ditempat': 'Baca Ditempat',
     laporan: 'Laporan',
     administrasi: 'Administrasi',
+    'pengaturan-akun': 'Pengaturan Akun',
   };
 
   useEffect(() => {
@@ -50,10 +55,30 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
     }
   }, [navigate]);
 
+  useEffect(() => {
+    const handlePointerDown = (event) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+        setProfileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => document.removeEventListener('mousedown', handlePointerDown);
+  }, []);
+
+  useEffect(() => {
+    setProfileMenuOpen(false);
+  }, [location.pathname]);
+
   const handleLogout = () => {
     localStorage.removeItem('userRole');
     localStorage.removeItem('userEmail');
     navigate('/back-office/login');
+  };
+
+  const handleOpenProfile = () => {
+    setProfileMenuOpen(false);
+    navigate('/profil-petugas-perpus');
   };
 
   return (
@@ -78,7 +103,7 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
         />
 
         <div className="flex min-h-0 flex-1 flex-col">
-          <div className="sticky top-0 z-40 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-4 shadow-sm sm:px-6">
+          <div className="sticky top-0 z-40 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-4 shadow-sm sm:px-6 relative">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setSidebarOpen((prevOpen) => !prevOpen)}
@@ -91,23 +116,67 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
               </h2>
             </div>
 
-            {/* Desktop: Icon + Text (match Admin appearance) */}
-            <div className="hidden items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2 shadow-sm md:flex">
-              <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
-                <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
-              </div>
-              <div className="text-right leading-tight">
-                <p className="text-sm font-bold text-blue-950">{localStorage.getItem('userName') || localStorage.getItem('userEmail') || 'petugas@perpus.id'}</p>
-                <p className="text-xs text-amber-700">{localStorage.getItem('userEmail') || 'Petugas Perpustakaan'}</p>
-              </div>
+            <div className="absolute left-1/2 hidden -translate-x-1/2 md:flex">
+              <HeaderDateTime />
             </div>
 
-            {/* Mobile: Icon Only */}
-            <div className="flex md:hidden">
-              <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
-                <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
-              </div>
+            <div className="relative hidden md:block" ref={profileMenuRef}>
+              <button
+                type="button"
+                onClick={() => setProfileMenuOpen((prevOpen) => !prevOpen)}
+                className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2 shadow-sm transition hover:bg-amber-100"
+              >
+                <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
+                  <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
+                </div>
+                <div className="text-right leading-tight">
+                  <p className="text-sm font-bold text-blue-950">
+                    {localStorage.getItem('userName') || localStorage.getItem('userEmail') || 'petugas@perpus.id'}
+                  </p>
+                  <p className="text-xs text-amber-700">{localStorage.getItem('userEmail') || 'Petugas Perpustakaan'}</p>
+                </div>
+                <ChevronDown size={16} className={`text-amber-700 transition-transform ${profileMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {profileMenuOpen && (
+                <div className="absolute right-0 top-full mt-3 w-56 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg">
+                  <button
+                    type="button"
+                    onClick={handleOpenProfile}
+                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                  >
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-700">⚙</span>
+                    Pengaturan Akun
+                  </button>
+                </div>
+              )}
             </div>
+
+            <div className="flex items-center gap-2 md:hidden">
+              <HeaderDateTime />
+              <button
+                type="button"
+                onClick={() => setProfileMenuOpen((prevOpen) => !prevOpen)}
+                className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 shadow-sm"
+              >
+                <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
+                  <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
+                </div>
+                <ChevronDown size={14} className="text-amber-700" />
+              </button>
+              {profileMenuOpen && (
+                <div className="absolute right-4 top-full mt-2 w-52 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg md:hidden">
+                  <button
+                    type="button"
+                    onClick={handleOpenProfile}
+                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                  >
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-700">⚙</span>
+                    Pengaturan Akun
+                  </button>
+                </div>
+              )}
+              </div>
           </div>
 
           <main className="flex-1">{children}</main>
