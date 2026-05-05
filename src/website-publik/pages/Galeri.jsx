@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageBanner from '../components/PageBanner';
-import { X, Eye } from 'lucide-react';
 import { galleryStorage } from '../../shared/utils/galleryStorage';
 import { formatDate } from '../../shared/utils/formatDate';
+import GaleriModal from '../components/GaleriModal';
 
 export default function Galeri() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -66,36 +66,11 @@ export default function Galeri() {
         )}
       </div>
 
-      {/* Lightbox Modal */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 px-4"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div
-            className="relative max-w-3xl w-full bg-white rounded-lg overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={selectedImage.image}
-              alt={selectedImage.title}
-              className="w-full h-auto"
-            />
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-900 font-poppins">
-                {selectedImage.title}
-              </h2>
-              <p className="text-sm text-gray-500 mt-2">{formatDate(selectedImage.date)}</p>
-            </div>
-            <button
-              onClick={() => setSelectedImage(null)}
-              className="absolute top-4 right-4 bg-gray-800 hover:bg-gray-900 text-white p-2 rounded-full transition"
-            >
-              <X size={24} />
-            </button>
-          </div>
-        </div>
-      )}
+      <GaleriModal
+        isOpen={Boolean(selectedImage)}
+        item={selectedImage}
+        onClose={() => setSelectedImage(null)}
+      />
 
       <Footer />
     </div>
