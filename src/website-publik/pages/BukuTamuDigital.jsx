@@ -112,10 +112,12 @@ export default function BukuTamuDigital() {
                         if (errors.nama) setErrors((current) => ({ ...current, nama: '' }));
                       }}
                       aria-invalid={!!errors.nama}
-                      className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                      className={`w-full rounded-lg border bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 ${
+                        errors.nama ? 'border-red-500' : 'border-gray-300 focus:border-emerald-500'
+                      }`}
                       placeholder="Nama lengkap"
                     />
-                    {errors.nama ? <p className="mt-1 text-xs text-red-600">{errors.nama}</p> : null}
+                    {errors.nama ? <p className="mt-1 text-xs text-red-600 font-medium">{errors.nama}</p> : null}
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-semibold text-gray-700">Nomor Anggota</label>
@@ -127,10 +129,12 @@ export default function BukuTamuDigital() {
                         if (errors.nomorAnggota) setErrors((current) => ({ ...current, nomorAnggota: '' }));
                       }}
                       aria-invalid={!!errors.nomorAnggota}
-                      className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                      className={`w-full rounded-lg border bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 ${
+                        errors.nomorAnggota ? 'border-red-500' : 'border-gray-300 focus:border-emerald-500'
+                      }`}
                       placeholder="Nomor anggota"
                     />
-                    {errors.nomorAnggota ? <p className="mt-1 text-xs text-red-600">{errors.nomorAnggota}</p> : null}
+                    {errors.nomorAnggota ? <p className="mt-1 text-xs text-red-600 font-medium">{errors.nomorAnggota}</p> : null}
                   </div>
                 </div>
               )}
@@ -147,10 +151,12 @@ export default function BukuTamuDigital() {
                         if (errors.nama) setErrors((current) => ({ ...current, nama: '' }));
                       }}
                       aria-invalid={!!errors.nama}
-                      className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                      className={`w-full rounded-lg border bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 ${
+                        errors.nama ? 'border-red-500' : 'border-gray-300 focus:border-emerald-500'
+                      }`}
                       placeholder="Nama pengunjung"
                     />
-                    {errors.nama ? <p className="mt-1 text-xs text-red-600">{errors.nama}</p> : null}
+                    {errors.nama ? <p className="mt-1 text-xs text-red-600 font-medium">{errors.nama}</p> : null}
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-semibold text-gray-700">Jenis Kelamin</label>
@@ -162,14 +168,16 @@ export default function BukuTamuDigital() {
                         if (errors.jenisKelamin) setErrors((current) => ({ ...current, jenisKelamin: '' }));
                       }}
                       aria-invalid={!!errors.jenisKelamin}
-                      className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                      className={`w-full rounded-lg border bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition focus:ring-2 focus:ring-emerald-500 ${
+                        errors.jenisKelamin ? 'border-red-500' : 'border-gray-300 focus:border-emerald-500'
+                      }`}
                     >
                       <option value="">-- Pilih --</option>
                       <option value="Laki-laki">Laki-laki</option>
                       <option value="Perempuan">Perempuan</option>
                       <option value="Lainnya">Lainnya</option>
                     </select>
-                    {errors.jenisKelamin ? <p className="mt-1 text-xs text-red-600">{errors.jenisKelamin}</p> : null}
+                    {errors.jenisKelamin ? <p className="mt-1 text-xs text-red-600 font-medium">{errors.jenisKelamin}</p> : null}
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-semibold text-gray-700">Umur</label>
@@ -184,10 +192,12 @@ export default function BukuTamuDigital() {
                         if (errors.umur) setErrors((current) => ({ ...current, umur: '' }));
                       }}
                       aria-invalid={!!errors.umur}
-                      className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                      className={`w-full rounded-lg border bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 ${
+                        errors.umur ? 'border-red-500' : 'border-gray-300 focus:border-emerald-500'
+                      }`}
                       placeholder="0"
                     />
-                    {errors.umur ? <p className="mt-1 text-xs text-red-600">{errors.umur}</p> : null}
+                    {errors.umur ? <p className="mt-1 text-xs text-red-600 font-medium">{errors.umur}</p> : null}
                   </div>
                 </div>
               )}
@@ -204,10 +214,12 @@ export default function BukuTamuDigital() {
                         if (errors.asalSekolah) setErrors((current) => ({ ...current, asalSekolah: '' }));
                       }}
                       aria-invalid={!!errors.asalSekolah}
-                      className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                      className={`w-full rounded-lg border bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 ${
+                        errors.asalSekolah ? 'border-red-500' : 'border-gray-300 focus:border-emerald-500'
+                      }`}
                       placeholder="Nama sekolah atau institusi"
                     />
-                    {errors.asalSekolah ? <p className="mt-1 text-xs text-red-600">{errors.asalSekolah}</p> : null}
+                    {errors.asalSekolah ? <p className="mt-1 text-xs text-red-600 font-medium">{errors.asalSekolah}</p> : null}
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-semibold text-gray-700">Penanggungjawab</label>
@@ -219,10 +231,12 @@ export default function BukuTamuDigital() {
                         if (errors.penanggungjawab) setErrors((current) => ({ ...current, penanggungjawab: '' }));
                       }}
                       aria-invalid={!!errors.penanggungjawab}
-                      className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                      className={`w-full rounded-lg border bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 ${
+                        errors.penanggungjawab ? 'border-red-500' : 'border-gray-300 focus:border-emerald-500'
+                      }`}
                       placeholder="Nama penanggungjawab"
                     />
-                    {errors.penanggungjawab ? <p className="mt-1 text-xs text-red-600">{errors.penanggungjawab}</p> : null}
+                    {errors.penanggungjawab ? <p className="mt-1 text-xs text-red-600 font-medium">{errors.penanggungjawab}</p> : null}
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-semibold text-gray-700">Nomor Telp / WA</label>
@@ -234,10 +248,12 @@ export default function BukuTamuDigital() {
                         if (errors.kontak) setErrors((current) => ({ ...current, kontak: '' }));
                       }}
                       aria-invalid={!!errors.kontak}
-                      className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                      className={`w-full rounded-lg border bg-gray-50 px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 ${
+                        errors.kontak ? 'border-red-500' : 'border-gray-300 focus:border-emerald-500'
+                      }`}
                       placeholder="08xxxxxxxxxx"
                     />
-                    {errors.kontak ? <p className="mt-1 text-xs text-red-600">{errors.kontak}</p> : null}
+                    {errors.kontak ? <p className="mt-1 text-xs text-red-600 font-medium">{errors.kontak}</p> : null}
                   </div>
                 </div>
               )}

@@ -2,19 +2,25 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Image, Package } from 'lucide-react';
 import AdminLayout from '../components/AdminLayout';
+import PetugasLayout from '../../petugas-perpus/components/PetugasLayout';
 
 export default function AdminKonten() {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState('konten');
 
   useEffect(() => {
-    if (localStorage.getItem('userRole') !== 'admin') {
-      navigate('/admin/login');
+    const role = localStorage.getItem('userRole');
+    if (role !== 'admin' && role !== 'petugas') {
+      navigate('/back-office/login');
     }
   }, [navigate]);
 
+  const role = localStorage.getItem('userRole');
+  const Layout = role === 'admin' ? AdminLayout : PetugasLayout;
+  const bannerPath = role === 'admin' ? '/admin/konten/banner' : '/back-office/konten/banner';
+
   return (
-    <AdminLayout activeMenu={activeMenu} setActiveMenu={setActiveMenu}>
+    <Layout activeMenu={activeMenu} setActiveMenu={setActiveMenu}>
       <div className="p-4 sm:p-6 space-y-4">
         <div>
           <h3 className="text-2xl font-bold text-gray-900">Daftar Konten</h3>
@@ -22,7 +28,7 @@ export default function AdminKonten() {
         </div>
 
         <button
-          onClick={() => navigate('/admin/konten/banner')}
+          onClick={() => navigate(bannerPath)}
           className="flex w-full items-center gap-4 rounded-2xl bg-white p-5 text-left shadow-sm ring-1 ring-gray-200 transition hover:-translate-y-0.5 hover:shadow-md"
         >
           <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
@@ -41,6 +47,6 @@ export default function AdminKonten() {
           <p className="mt-2 text-sm text-gray-500">Menu lain bisa ditambahkan di sini nanti.</p>
         </div>
       </div>
-    </AdminLayout>
+    </Layout>
   );
 }

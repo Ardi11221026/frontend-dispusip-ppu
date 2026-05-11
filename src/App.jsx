@@ -28,9 +28,9 @@ import SSKCKR from './petugas-perpus/pages/SSKCKR';
 import Keanggotaan from './petugas-perpus/pages/Keanggotaan';
 import Sirkulasi from './petugas-perpus/pages/Sirkulasi';
 import { katalogSubmenus } from './petugas-perpus/katalogSubmenus';
+import { bukuTamuDigitalSubmenus } from './petugas-perpus/bukuTamuDigitalSubmenus';
 import Loker from './petugas-perpus/pages/Loker';
 import Survey from './petugas-perpus/pages/Survey';
-import BukuTamu from './petugas-perpus/pages/BukuTamu';
 import OpacPetugas from './petugas-perpus/pages/Opac';
 import LayananKoleksiDigital from './petugas-perpus/pages/LayananKoleksiDigital';
 import BacaDitempat from './petugas-perpus/pages/BacaDitempat';
@@ -83,6 +83,14 @@ function App() {
         <Route path="/galeri" element={<Galeri />} />
         <Route path="/buku-tamu-digital" element={<BukuTamuDigital />} />
         <Route path="/back-office/buku-tamu-digital" element={<BukuTamuDigitalList />} />
+        {bukuTamuDigitalSubmenus.map((submenu) => (
+          <Route
+            key={submenu.id}
+            path={submenu.to}
+            element={<BukuTamuDigitalList />}
+          />
+        ))}
+        <Route path="/back-office/buku-tamu-digital/:category" element={<BukuTamuDigitalList />} />
         
         {/* Profile Pages */}
         <Route path="/profil/kelembagaan" element={<Kelembagaan />} />
@@ -122,6 +130,10 @@ function App() {
         <Route path="/back-office/layanan-koleksi-digital" element={<LayananKoleksiDigital />} />
         <Route path="/back-office/baca-ditempat" element={<BacaDitempat />} />
         <Route path="/back-office/laporan" element={<Laporan />} />
+        <Route path="/back-office/berita" element={<AdminBerita />} />
+        <Route path="/back-office/galeri" element={<AdminGaleriManajemen />} />
+        <Route path="/back-office/konten" element={<AdminKonten />} />
+        <Route path="/back-office/konten/banner" element={<AdminBanner />} />
         <Route path="/back-office/administrasi" element={<Administrasi />} />
         <Route path="/profil-petugas-perpus" element={<ProfilPetugasPerpus />} />
         

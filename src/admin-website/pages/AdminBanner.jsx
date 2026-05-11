@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, Pencil, Plus, Trash2, AlertCircle } from 'lucide-react';
 import AdminLayout from '../components/AdminLayout';
+import PetugasLayout from '../../petugas-perpus/components/PetugasLayout';
 import { bannerStorage } from '../../shared/utils/bannerStorage';
 import PopupKonfirmasi from '../../shared/components/PopupKonfirmasi';
 import PopupBerhasil from '../../shared/components/PopupBerhasil';
@@ -15,8 +16,9 @@ export default function AdminBanner() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (localStorage.getItem('userRole') !== 'admin') {
-      navigate('/admin/login');
+    const role = localStorage.getItem('userRole');
+    if (role !== 'admin' && role !== 'petugas') {
+      navigate('/back-office/login');
     }
   }, [navigate]);
 
@@ -65,8 +67,11 @@ export default function AdminBanner() {
     setSuccessState({ isOpen: true, message: 'Banner berhasil dihapus.' });
   };
 
+  const role = localStorage.getItem('userRole');
+  const Layout = role === 'admin' ? AdminLayout : PetugasLayout;
+
   return (
-    <AdminLayout activeMenu={activeMenu} setActiveMenu={setActiveMenu}>
+    <Layout activeMenu={activeMenu} setActiveMenu={setActiveMenu}>
       <div className="space-y-4 p-4 sm:p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -157,6 +162,6 @@ export default function AdminBanner() {
 
         <PopupBerhasil isOpen={successState.isOpen} message={successState.message} onClose={() => setSuccessState({ isOpen: false, message: '' })} />
       </div>
-    </AdminLayout>
+    </Layout>
   );
 }

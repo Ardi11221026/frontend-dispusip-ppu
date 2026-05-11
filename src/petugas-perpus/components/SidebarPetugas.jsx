@@ -15,15 +15,19 @@ import {
   ChevronRight,
   ChevronDown,
   X,
+  Image,
+  Layout,
 } from 'lucide-react';
 import { akuisisiSubmenus } from '../akuisisiSubmenus';
 import { katalogSubmenus } from '../katalogSubmenus';
+import { bukuTamuDigitalSubmenus } from '../bukuTamuDigitalSubmenus';
 
 export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, setActiveMenu, setOpen }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isAkuisisiOpen, setIsAkuisisiOpen] = useState(location.pathname.startsWith('/back-office/akuisisi'));
   const [isKatalogOpen, setIsKatalogOpen] = useState(location.pathname.startsWith('/back-office/katalog'));
+  const [isBukuTamuOpen, setIsBukuTamuOpen] = useState(location.pathname.startsWith('/back-office/buku-tamu-digital'));
 
   useEffect(() => {
     if (location.pathname.startsWith('/back-office/akuisisi')) {
@@ -35,17 +39,16 @@ export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, se
     { id: 'beranda', label: 'Beranda', icon: Home, to: '/back-office/beranda' },
     { id: 'akuisisi', label: 'Akuisisi', icon: BookOpen, to: '/back-office/akuisisi', chevron: true, children: akuisisiSubmenus },
      { id: 'katalog', label: 'Katalog', icon: Search, to: '/back-office/katalog', chevron: true, children: katalogSubmenus },
-    { id: 'sskckr', label: 'SSKCKR', icon: ClipboardList, to: '/back-office/sskckr', chevron: true },
     { id: 'keanggotaan', label: 'Keanggotaan', icon: Users, to: '/back-office/keanggotaan', chevron: true },
     { id: 'sirkulasi', label: 'Sirkulasi', icon: RefreshCw, to: '/back-office/sirkulasi', chevron: true },
-    { id: 'loker', label: 'Loker', icon: Lock, to: '/back-office/loker' },
-    { id: 'survey', label: 'Survey', icon: BarChart3, to: '/back-office/survey', chevron: true },
-    { id: 'buku-tamu', label: 'Buku Tamu', icon: FileText, to: '/back-office/buku-tamu' },
-    { id: 'buku-tamu-digital', label: 'Buku Tamu Digital', icon: FileText, to: '/back-office/buku-tamu-digital' },
+    { id: 'buku-tamu-digital', label: 'Buku Tamu Digital', icon: FileText, to: '/back-office/buku-tamu-digital', chevron: true, children: bukuTamuDigitalSubmenus },
     { id: 'opac', label: 'Opac', icon: Search, to: '/back-office/opac' },
     { id: 'layanan-koleksi-digital', label: 'Layanan Koleksi Digital', icon: BookOpen, to: '/back-office/layanan-koleksi-digital', chevron: true },
     { id: 'baca-ditempat', label: 'Baca Ditempat', icon: BookOpen, to: '/back-office/baca-ditempat' },
     { id: 'laporan', label: 'Laporan', icon: FileText, to: '/back-office/laporan' },
+    { id: 'berita', label: 'Manajemen Berita', icon: FileText, to: '/back-office/berita' },
+    { id: 'galeri', label: 'Manajemen Galeri', icon: Image, to: '/back-office/galeri' },
+    { id: 'konten', label: 'Manajemen Banner', icon: Layout, to: '/back-office/konten' },
     { id: 'administrasi', label: 'Administrasi', icon: Settings, to: '/back-office/administrasi', chevron: true },
   ];
 
@@ -55,6 +58,9 @@ export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, se
     }
      if (item.id === 'katalog') {
        return location.pathname.startsWith('/back-office/katalog') || activeMenu === 'katalog';
+     }
+     if (item.id === 'buku-tamu-digital') {
+       return location.pathname.startsWith('/back-office/buku-tamu-digital') || activeMenu === 'buku-tamu-digital';
      }
 
     return location.pathname === item.to || activeMenu === item.id;
@@ -76,6 +82,15 @@ export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, se
 
        if (!location.pathname.startsWith('/back-office/katalog')) {
          navigate('/back-office/katalog', { state: { activeMenu: 'katalog' } });
+       }
+       return;
+     }
+     if (item.id === 'buku-tamu-digital') {
+       setActiveMenu?.('buku-tamu-digital');
+       setIsBukuTamuOpen((previous) => !previous);
+
+       if (!location.pathname.startsWith('/back-office/buku-tamu-digital')) {
+         navigate('/back-office/buku-tamu-digital', { state: { activeMenu: 'buku-tamu-digital' } });
        }
        return;
      }
@@ -142,12 +157,64 @@ export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, se
                   <span className="flex-1 font-medium">{item.label}</span>
                   {item.id === 'akuisisi' ? (
                     <ChevronDown size={16} className={`transition-transform ${isAkuisisiOpen ? 'rotate-180' : ''}`} />
+                  ) : item.id === 'katalog' ? (
+                    <ChevronDown size={16} className={`transition-transform ${isKatalogOpen ? 'rotate-180' : ''}`} />
+                  ) : item.id === 'buku-tamu-digital' ? (
+                    <ChevronDown size={16} className={`transition-transform ${isBukuTamuOpen ? 'rotate-180' : ''}`} />
                   ) : item.chevron ? (
                     <ChevronRight size={16} />
                   ) : null}
                 </button>
 
                 {item.id === 'akuisisi' && isAkuisisiOpen ? (
+                  <div className="mt-1 space-y-1 pl-5">
+                    {item.children.map((submenu) => {
+                      const subActive = location.pathname === submenu.to || activeMenu === submenu.id;
+
+                      return (
+                        <button
+                          key={submenu.id}
+                          type="button"
+                          onClick={() => handleSubmenuClick(submenu)}
+                          className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition ${
+                            subActive
+                              ? 'bg-white/20 text-white'
+                              : 'text-blue-100/90 hover:bg-white/10 hover:text-white'
+                          }`}
+                        >
+                          <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                          <span className="line-clamp-2">{submenu.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : null}
+
+                {item.id === 'katalog' && isKatalogOpen ? (
+                  <div className="mt-1 space-y-1 pl-5">
+                    {item.children.map((submenu) => {
+                      const subActive = location.pathname === submenu.to || activeMenu === submenu.id;
+
+                      return (
+                        <button
+                          key={submenu.id}
+                          type="button"
+                          onClick={() => handleSubmenuClick(submenu)}
+                          className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition ${
+                            subActive
+                              ? 'bg-white/20 text-white'
+                              : 'text-blue-100/90 hover:bg-white/10 hover:text-white'
+                          }`}
+                        >
+                          <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                          <span className="line-clamp-2">{submenu.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : null}
+
+                {item.id === 'buku-tamu-digital' && isBukuTamuOpen ? (
                   <div className="mt-1 space-y-1 pl-5">
                     {item.children.map((submenu) => {
                       const subActive = location.pathname === submenu.to || activeMenu === submenu.id;

@@ -17,26 +17,30 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
   const akuisisiPathToMenu = Object.fromEntries(akuisisiSubmenus.map((submenu) => [submenu.to, submenu.id]));
   const akuisisiTitleMap = Object.fromEntries(akuisisiSubmenus.map((submenu) => [submenu.id, submenu.label]));
 
-    const katalogPathToMenu = Object.fromEntries(katalogSubmenus.map((submenu) => [submenu.to, submenu.id]));
-    const katalogTitleMap = Object.fromEntries(katalogSubmenus.map((submenu) => [submenu.id, submenu.label]));
+  const katalogPathToMenu = Object.fromEntries(katalogSubmenus.map((submenu) => [submenu.to, submenu.id]));
+  const katalogTitleMap = Object.fromEntries(katalogSubmenus.map((submenu) => [submenu.id, submenu.label]));
+
+  const visitorPathToMenu = Object.fromEntries(bukuTamuDigitalSubmenus.map((submenu) => [submenu.to, submenu.id]));
+  const visitorTitleMap = Object.fromEntries(bukuTamuDigitalSubmenus.map((submenu) => [submenu.id, `Buku Tamu: ${submenu.label}`]));
 
   const pathToMenuKey = {
     '/back-office/home': 'beranda',
     '/back-office/beranda': 'beranda',
     '/back-office/akuisisi': 'akuisisi',
     ...akuisisiPathToMenu,
-     ...katalogPathToMenu,
+    ...katalogPathToMenu,
+    ...visitorPathToMenu,
     '/back-office/katalog': 'katalog',
-    '/back-office/sskckr': 'sskckr',
     '/back-office/keanggotaan': 'keanggotaan',
     '/back-office/sirkulasi': 'sirkulasi',
-    '/back-office/loker': 'loker',
-    '/back-office/survey': 'survey',
-    '/back-office/buku-tamu': 'buku-tamu',
+    '/back-office/buku-tamu-digital': 'buku-tamu-digital',
     '/back-office/opac': 'opac',
     '/back-office/layanan-koleksi-digital': 'layanan-koleksi-digital',
     '/back-office/baca-ditempat': 'baca-ditempat',
     '/back-office/laporan': 'laporan',
+    '/back-office/berita': 'berita',
+    '/back-office/galeri': 'galeri',
+    '/back-office/konten': 'konten',
     '/back-office/administrasi': 'administrasi',
     '/profil-petugas-perpus': 'pengaturan-akun',
   };
@@ -45,20 +49,21 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
     beranda: 'Beranda',
     akuisisi: 'Akuisisi',
     katalog: 'Katalog',
-    sskckr: 'SSKCKR',
     keanggotaan: 'Keanggotaan',
     sirkulasi: 'Sirkulasi',
-    loker: 'Loker',
-    survey: 'Survey',
-    'buku-tamu': 'Buku Tamu',
+    'buku-tamu-digital': 'Buku Tamu Digital',
     opac: 'OPAC',
     'layanan-koleksi-digital': 'Layanan Koleksi Digital',
     'baca-ditempat': 'Baca Ditempat',
     laporan: 'Laporan',
+    berita: 'Manajemen Berita',
+    galeri: 'Manajemen Galeri',
+    konten: 'Manajemen Konten',
     administrasi: 'Administrasi',
     'pengaturan-akun': 'Pengaturan Akun',
     ...akuisisiTitleMap,
-     ...katalogTitleMap,
+    ...katalogTitleMap,
+    ...visitorTitleMap,
   };
 
   useEffect(() => {

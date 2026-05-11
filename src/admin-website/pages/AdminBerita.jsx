@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Eye, Pencil, Plus, Trash2, Calendar, Clock } from 'lucide-react';
 import { formatDate } from '../../shared/utils/formatDate';
 import AdminLayout from '../components/AdminLayout';
+import PetugasLayout from '../../petugas-perpus/components/PetugasLayout';
 import BeritaFormModal from '../components/BeritaFormModal';
 import LihatBeritaModal from '../components/LihatBeritaModal';
 import PopupKonfirmasi from '../../shared/components/PopupKonfirmasi';
@@ -26,8 +27,9 @@ export default function AdminBerita() {
   const [successState, setSuccessState] = useState({ isOpen: false, message: '' });
 
   useEffect(() => {
-    if (localStorage.getItem('userRole') !== 'admin') {
-      navigate('/admin/login');
+    const role = localStorage.getItem('userRole');
+    if (role !== 'admin' && role !== 'petugas') {
+      navigate('/back-office/login');
     }
   }, [navigate]);
 
@@ -73,8 +75,11 @@ export default function AdminBerita() {
     </div>
   );
 
+  const role = localStorage.getItem('userRole');
+  const Layout = role === 'admin' ? AdminLayout : PetugasLayout;
+
   return (
-    <AdminLayout activeMenu={activeMenu} setActiveMenu={setActiveMenu}>
+    <Layout activeMenu={activeMenu} setActiveMenu={setActiveMenu}>
       <div className="p-4 sm:p-6 space-y-4">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h3 className="text-2xl font-bold text-gray-900">Daftar Berita</h3>
@@ -162,6 +167,6 @@ export default function AdminBerita() {
           onClose={() => setSuccessState({ isOpen: false, message: '' })}
         />
       </div>
-    </AdminLayout>
+    </Layout>
   );
 }

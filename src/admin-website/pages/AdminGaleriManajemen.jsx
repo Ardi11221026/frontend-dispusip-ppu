@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
 import { formatDate } from '../../shared/utils/formatDate';
 import AdminLayout from '../components/AdminLayout';
+import PetugasLayout from '../../petugas-perpus/components/PetugasLayout';
 import { DeleteConfirmModal, GalleryModal, SuccessModal } from '../components/GalleryModals';
 import { galleryStorage } from '../../shared/utils/galleryStorage';
 
@@ -16,8 +17,8 @@ const AdminGaleriManajemen = () => {
 
   useEffect(() => {
     const userRole = localStorage.getItem('userRole');
-    if (userRole !== 'admin') {
-      navigate('/admin/login');
+    if (userRole !== 'admin' && userRole !== 'petugas') {
+      navigate('/back-office/login');
     }
   }, [navigate]);
 
@@ -146,7 +147,10 @@ const AdminGaleriManajemen = () => {
     </div>
   );
 
-  return <AdminLayout activeMenu={activeMenu} setActiveMenu={setActiveMenu}>{content}</AdminLayout>;
+  const role = localStorage.getItem('userRole');
+  const Layout = role === 'admin' ? AdminLayout : PetugasLayout;
+
+  return <Layout activeMenu={activeMenu} setActiveMenu={setActiveMenu}>{content}</Layout>;
 };
 
 export default AdminGaleriManajemen;

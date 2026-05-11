@@ -1,19 +1,40 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import PetugasLayout from '../components/PetugasLayout';
 import { Trash2, Eye } from 'lucide-react';
 
 export default function BukuTamuDigitalList() {
+  const { category } = useParams();
   const [entries, setEntries] = useState([]);
 
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem('bukuTamuDigital') || '[]');
-    setEntries(items.reverse());
-  }, []);
+    let filtered = items.reverse();
+    
+    if (category) {
+      filtered = filtered.filter(e => e.type === category);
+    }
+    
+    setEntries(filtered);
+  }, [category]);
 
   const handleDelete = (id) => {
-    const remaining = (JSON.parse(localStorage.getItem('bukuTamuDigital') || '[]') || []).filter((e) => e.id !== id);
+    const all = JSON.parse(localStorage.getItem('bukuTamuDigital') || '[]');
+    const remaining = all.filter((e) => e.id !== id);
     localStorage.setItem('bukuTamuDigital', JSON.stringify(remaining));
-    setEntries(remaining.reverse());
+    
+    let filtered = remaining.reverse();
+    if (category) {
+      filtered = filtered.filter(e => e.type === category);
+    }
+    setEntries(filtered);
+  };
+
+  const getTitle = () => {
+    if (category === 'non-anggota') return 'Buku Tamu: Non Anggota';
+    if (category === 'anggota') return 'Buku Tamu: Anggota';
+    if (category === 'rombongan') return 'Buku Tamu: Rombongan';
+    return 'Buku Tamu Digital (Semua)';
   };
 
   return (
@@ -22,7 +43,7 @@ export default function BukuTamuDigitalList() {
         <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold">Buku Tamu Digital</h1>
+              <h1 className="text-2xl font-bold">{getTitle()}</h1>
               <p className="text-sm text-slate-600">Daftar entri pengunjung yang masuk melalui layanan publik.</p>
             </div>
           </div>
@@ -31,37 +52,49 @@ export default function BukuTamuDigitalList() {
             <table className="w-full text-sm border-collapse min-w-[720px]">
               <thead className="bg-slate-50">
                 <tr>
-                  <th className="px-4 py-3 text-left font-semibold">ID</th>
-                  <th className="px-4 py-3 text-left font-semibold">Tipe</th>
-                  <th className="px-4 py-3 text-left font-semibold">Ringkasan</th>
-                  <th className="px-4 py-3 text-left font-semibold">Waktu</th>
-                  <th className="px-4 py-3 text-center font-semibold">Aksi</th>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-700">ID</th>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-700">Tipe</th>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-700">Ringkasan</th>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-700">Waktu</th>
+                  <th className="px-4 py-3 text-center font-semibold text-slate-700">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {entries.length === 0 && (
                   <tr>
-                    <td colSpan="5" className="px-4 py-8 text-center text-slate-500">Tidak ada entri.</td>
+                    <td colSpan="5" className="px-4 py-12 text-center text-slate-400">
+                      <div className="flex flex-col items-center gap-2">
+                        <p className="text-lg font-medium text-slate-500">Tidak ada entri</p>
+                        <p className="text-xs">Belum ada data pengunjung untuk kategori ini.</p>
+                      </div>
+                    </td>
                   </tr>
                 )}
 
                 {entries.map((e) => (
-                  <tr key={e.id} className="border-b border-slate-100">
-                    <td className="px-4 py-3 font-mono text-xs">{e.id}</td>
-                    <td className="px-4 py-3">{e.type}</td>
-                    <td className="px-4 py-3">
+                  <tr key={e.id} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
+                    <td className="px-4 py-4 font-mono text-xs font-semibold text-blue-600">{e.id}</td>
+                    <td className="px-4 py-4">
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                        e.type === 'rombongan' ? 'bg-purple-100 text-purple-800' :
+                        e.type === 'anggota' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'
+                      }`}>
+                        {e.type}
+                      </span>
+                    </td>
+                    <td className="px-4 py-4 text-slate-700 font-medium">
                       {e.type === 'anggota' && `${e.data.nama} — #${e.data.nomorAnggota}`}
                       {e.type === 'non-anggota' && `${e.data.nama} — ${e.data.jenisKelamin} — ${e.data.umur} th`}
                       {e.type === 'rombongan' && `${e.data.asalSekolah} — ${e.data.penanggungjawab}`}
                     </td>
-                    <td className="px-4 py-3">{new Date(e.createdAt).toLocaleString()}</td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-4 py-4 text-slate-500">{new Date(e.createdAt).toLocaleString()}</td>
+                    <td className="px-4 py-4 text-center">
                       <div className="inline-flex items-center gap-2">
-                        <button type="button" title="Lihat detail" onClick={() => alert(JSON.stringify(e, null, 2))} className="rounded-lg bg-blue-600 px-3 py-1 text-white">
-                          <Eye size={14} />
+                        <button type="button" title="Lihat detail" onClick={() => alert(JSON.stringify(e, null, 2))} className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm">
+                          <Eye size={16} />
                         </button>
-                        <button type="button" title="Hapus" onClick={() => handleDelete(e.id)} className="rounded-lg bg-rose-600 px-3 py-1 text-white">
-                          <Trash2 size={14} />
+                        <button type="button" title="Hapus" onClick={() => handleDelete(e.id)} className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white transition-all shadow-sm">
+                          <Trash2 size={16} />
                         </button>
                       </div>
                     </td>
