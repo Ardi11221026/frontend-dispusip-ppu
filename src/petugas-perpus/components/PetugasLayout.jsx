@@ -38,9 +38,10 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
     '/back-office/layanan-koleksi-digital': 'layanan-koleksi-digital',
     '/back-office/baca-ditempat': 'baca-ditempat',
     '/back-office/laporan': 'laporan',
-    '/back-office/berita': 'berita',
-    '/back-office/galeri': 'galeri',
-    '/back-office/konten': 'konten',
+    '/back-office/manajemen-berita': 'berita',
+    '/back-office/manajemen-galeri': 'galeri',
+    '/back-office/manajemen-konten': 'konten',
+    '/back-office/manajemen-konten/banner': 'konten',
     '/back-office/administrasi': 'administrasi',
     '/profil-petugas-perpus': 'pengaturan-akun',
   };

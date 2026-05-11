@@ -9,7 +9,7 @@ import LihatBeritaModal from '../components/LihatBeritaModal';
 import PopupKonfirmasi from '../../shared/components/PopupKonfirmasi';
 import PopupBerhasil from '../../shared/components/PopupBerhasil';
 
-export default function AdminBerita() {
+export default function ManajemenBerita() {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState('berita');
   const [items, setItems] = useState(() => {

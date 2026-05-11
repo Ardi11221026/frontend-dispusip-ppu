@@ -4,7 +4,7 @@ import { Image, Package } from 'lucide-react';
 import AdminLayout from '../components/AdminLayout';
 import PetugasLayout from '../../petugas-perpus/components/PetugasLayout';
 
-export default function AdminKonten() {
+export default function ManajemenKonten() {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState('konten');
 
@@ -17,7 +17,7 @@ export default function AdminKonten() {
 
   const role = localStorage.getItem('userRole');
   const Layout = role === 'admin' ? AdminLayout : PetugasLayout;
-  const bannerPath = role === 'admin' ? '/admin/konten/banner' : '/back-office/konten/banner';
+  const bannerPath = role === 'admin' ? '/admin/manajemen-konten/banner' : '/back-office/manajemen-konten/banner';
 
   return (
     <Layout activeMenu={activeMenu} setActiveMenu={setActiveMenu}>

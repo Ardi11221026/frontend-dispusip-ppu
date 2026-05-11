@@ -9,7 +9,7 @@ const emptyForm = { name: '', email: '', password: '', status: 'Aktif' };
 
 const isValidEmail = (value) => /.+@.+\..+/.test(value);
 
-export default function AdminPetugas() {
+export default function ManajemenPetugas() {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState('petugas');
   const [items, setItems] = useState(() => {

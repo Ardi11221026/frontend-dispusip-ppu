@@ -6,10 +6,10 @@ export default function SidebarAdmin({ activeMenu, open, onClose, onLogout, setA
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home, to: '/admin/home' },
-    { id: 'berita', label: 'Manajemen Berita', icon: Newspaper, to: '/admin/berita' },
-    { id: 'galeri', label: 'Manajemen Galeri', icon: Image, to: '/admin/galeri-manajemen' },
-    { id: 'konten', label: 'Manajemen Konten', icon: Package, to: '/admin/konten' },
-    { id: 'petugas', label: 'Manajemen Petugas', icon: Users, to: '/admin/petugas' },
+    { id: 'berita', label: 'Manajemen Berita', icon: Newspaper, to: '/admin/manajemen-berita' },
+    { id: 'galeri', label: 'Manajemen Galeri', icon: Image, to: '/admin/manajemen-galeri' },
+    { id: 'konten', label: 'Manajemen Konten', icon: Package, to: '/admin/manajemen-konten' },
+    { id: 'petugas', label: 'Manajemen Petugas', icon: Users, to: '/admin/manajemen-petugas' },
   ];
 
   const dataMenuItems = [

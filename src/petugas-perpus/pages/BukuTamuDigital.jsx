@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import PetugasLayout from '../components/PetugasLayout';
 import { Trash2, Eye } from 'lucide-react';
 
-export default function BukuTamuDigitalList() {
+export default function BukuTamuDigitalPetugas() {
   const { category } = useParams();
   const [entries, setEntries] = useState([]);
 

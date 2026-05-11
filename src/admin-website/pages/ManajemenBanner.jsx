@@ -7,7 +7,7 @@ import { bannerStorage } from '../../shared/utils/bannerStorage';
 import PopupKonfirmasi from '../../shared/components/PopupKonfirmasi';
 import PopupBerhasil from '../../shared/components/PopupBerhasil';
 
-export default function AdminBanner() {
+export default function ManajemenBanner() {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState('konten');
   const [items, setItems] = useState(() => bannerStorage.getAll());

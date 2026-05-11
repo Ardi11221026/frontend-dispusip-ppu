@@ -46,9 +46,9 @@ export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, se
     { id: 'layanan-koleksi-digital', label: 'Layanan Koleksi Digital', icon: BookOpen, to: '/back-office/layanan-koleksi-digital', chevron: true },
     { id: 'baca-ditempat', label: 'Baca Ditempat', icon: BookOpen, to: '/back-office/baca-ditempat' },
     { id: 'laporan', label: 'Laporan', icon: FileText, to: '/back-office/laporan' },
-    { id: 'berita', label: 'Manajemen Berita', icon: FileText, to: '/back-office/berita' },
-    { id: 'galeri', label: 'Manajemen Galeri', icon: Image, to: '/back-office/galeri' },
-    { id: 'konten', label: 'Manajemen Banner', icon: Layout, to: '/back-office/konten' },
+    { id: 'berita', label: 'Manajemen Berita', icon: FileText, to: '/back-office/manajemen-berita' },
+    { id: 'galeri', label: 'Manajemen Galeri', icon: Image, to: '/back-office/manajemen-galeri' },
+    { id: 'konten', label: 'Manajemen Konten', icon: Layout, to: '/back-office/manajemen-konten' },
     { id: 'administrasi', label: 'Administrasi', icon: Settings, to: '/back-office/administrasi', chevron: true },
   ];
 

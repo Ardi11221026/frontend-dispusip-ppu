@@ -7,7 +7,7 @@ import PetugasLayout from '../../petugas-perpus/components/PetugasLayout';
 import { DeleteConfirmModal, GalleryModal, SuccessModal } from '../components/GalleryModals';
 import { galleryStorage } from '../../shared/utils/galleryStorage';
 
-const AdminGaleriManajemen = () => {
+const ManajemenGaleri = () => {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState('galeri');
   const [galleryItems, setGalleryItems] = useState(() => galleryStorage.getAll());
@@ -153,4 +153,4 @@ const AdminGaleriManajemen = () => {
   return <Layout activeMenu={activeMenu} setActiveMenu={setActiveMenu}>{content}</Layout>;
 };
 
-export default AdminGaleriManajemen;
+export default ManajemenGaleri;
