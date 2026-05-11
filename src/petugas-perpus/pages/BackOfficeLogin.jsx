@@ -31,21 +31,34 @@ export default function BackOfficeLogin() {
         return;
       }
 
+      const emailValue = email.trim().toLowerCase();
+      const passValue = password.trim();
+
+      // Check Admin (Hardcoded for demo)
+      if (emailValue === 'admin@perpus.id' && passValue === 'admin123') {
+        localStorage.setItem('userRole', 'admin');
+        localStorage.setItem('userEmail', emailValue);
+        localStorage.setItem('userName', 'Administrator');
+        navigate('/admin/home');
+        return;
+      }
+
+      // Check Petugas (from localStorage)
       const savedItems = JSON.parse(localStorage.getItem('adminPetugasItems') || '[]');
       const matchedItem = savedItems.find((item) => {
         const itemEmail = (item.email || '').trim().toLowerCase();
         const itemPassword = (item.password || '').trim();
         const itemStatus = (item.status || 'Aktif').trim();
-        return itemEmail === email.trim().toLowerCase() && itemPassword === password && itemStatus === 'Aktif';
+        return itemEmail === emailValue && itemPassword === passValue && itemStatus === 'Aktif';
       });
 
       if (matchedItem) {
         localStorage.setItem('userRole', 'petugas');
-        localStorage.setItem('userEmail', email);
-        localStorage.setItem('userName', matchedItem.name || email);
+        localStorage.setItem('userEmail', emailValue);
+        localStorage.setItem('userName', matchedItem.name || emailValue);
         navigate('/back-office/beranda');
       } else {
-        setSubmitError('Email atau password tidak cocok, atau akun belum didaftarkan admin');
+        setSubmitError('Email atau password tidak cocok, atau akun belum aktif');
       }
     } catch (err) {
       setSubmitError('Terjadi kesalahan saat login');
@@ -66,24 +79,25 @@ export default function BackOfficeLogin() {
         {/* Card */}
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-900 to-emerald-700 px-6 py-8 text-white">
+          <div className="bg-gradient-to-r from-blue-900 to-emerald-700 px-6 py-8 text-white text-center">
             <div className="flex items-center justify-center mb-4">
               <div className="w-16 h-16 rounded-full bg-white ring-2 ring-amber-300 overflow-hidden">
                 <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-2" />
               </div>
             </div>
-            <h1 className="text-3xl font-bold text-center">Portal Petugas</h1>
-            <p className="text-blue-100 text-center mt-2">Dinas Perpustakaan dan Arsip</p>
+            <h1 className="text-3xl font-bold uppercase tracking-wide">Back Office</h1>
+            <p className="text-blue-100 mt-1 font-medium">Dinas Perpustakaan dan Arsip</p>
+            <p className="text-xs text-amber-300 mt-1 uppercase tracking-widest font-semibold opacity-80">Kabupaten Penajam Paser Utara</p>
           </div>
 
           {/* Form */}
           <div className="p-6 sm:p-8">
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email Input */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5 ml-1">Email / Username</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3.5 text-gray-400" size={20} />
+                  <Mail className="absolute left-3.5 top-3.5 text-gray-400" size={18} />
                   <input
                     type="email"
                     value={email}
@@ -93,17 +107,17 @@ export default function BackOfficeLogin() {
                     }}
                     placeholder="nama@perpustakaan.id"
                     aria-invalid={!!errors.email}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition"
+                    className="w-full pl-11 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition bg-slate-50"
                   />
                 </div>
-                {errors.email ? <p className="mt-1 text-xs text-red-600">{errors.email}</p> : null}
+                {errors.email ? <p className="mt-1 text-xs text-red-600 ml-1">{errors.email}</p> : null}
               </div>
 
               {/* Password Input */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5 ml-1">Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3.5 text-gray-400" size={20} />
+                  <Lock className="absolute left-3.5 top-3.5 text-gray-400" size={18} />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
@@ -113,22 +127,22 @@ export default function BackOfficeLogin() {
                     }}
                     placeholder="••••••••"
                     aria-invalid={!!errors.password}
-                    className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition"
+                    className="w-full pl-11 pr-11 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition bg-slate-50"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-                {errors.password ? <p className="mt-1 text-xs text-red-600">{errors.password}</p> : null}
+                {errors.password ? <p className="mt-1 text-xs text-red-600 ml-1">{errors.password}</p> : null}
               </div>
 
               {/* Error Message */}
               {submitError && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm font-medium animate-shake">
                   {submitError}
                 </div>
               )}
@@ -137,27 +151,33 @@ export default function BackOfficeLogin() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-blue-900 to-emerald-700 text-white font-bold py-3 rounded-lg hover:shadow-lg transition duration-300 disabled:opacity-70 mt-6"
+                className="w-full bg-gradient-to-r from-blue-900 to-emerald-700 text-white font-bold py-4 rounded-xl hover:shadow-xl hover:shadow-emerald-900/20 active:scale-[0.98] transition-all duration-300 disabled:opacity-70 mt-6 shadow-lg"
               >
-                {loading ? 'Loading...' : 'Login'}
+                {loading ? 'Memverifikasi...' : 'Masuk ke Dashboard'}
               </button>
             </form>
 
             {/* Footer */}
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
-                Hubungi admin jika lupa password
+            <div className="mt-8 text-center">
+              <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold">
+                Sistem Informasi Manajemen Perpustakaan
               </p>
             </div>
           </div>
         </div>
 
         {/* Info Box */}
-        <div className="mt-6 bg-white/10 backdrop-blur border border-white/20 rounded-lg p-4 text-white text-sm">
-          <p className="font-semibold mb-2">Demo Login:</p>
-          <p>Email: petugas@perpus.id</p>
-          <p>Password: password123</p>
-          <p className="mt-2 text-xs text-amber-200">Login petugas membaca data dari daftar petugas yang didaftarkan admin.</p>
+        <div className="mt-6 flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+          <div className="shrink-0 bg-white/10 backdrop-blur border border-white/20 rounded-xl p-4 text-white text-xs w-56">
+            <p className="font-bold mb-2 text-amber-300">ADMINISTRATOR:</p>
+            <p className="opacity-80">Email: admin@perpus.id</p>
+            <p className="opacity-80">Pass: admin123</p>
+          </div>
+          <div className="shrink-0 bg-white/10 backdrop-blur border border-white/20 rounded-xl p-4 text-white text-xs w-56">
+            <p className="font-bold mb-2 text-sky-300">PETUGAS PERPUS:</p>
+            <p className="opacity-80">Email: petugas@perpus.id</p>
+            <p className="opacity-80">Pass: password123</p>
+          </div>
         </div>
       </div>
     </div>

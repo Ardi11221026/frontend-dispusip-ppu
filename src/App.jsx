@@ -131,7 +131,6 @@ function App() {
         <Route path="/profil-petugas-perpus" element={<ProfilPetugasPerpus />} />
         
         {/* Admin Pages */}
-        <Route path="/admin-website-dispusip-ppu" element={<AdminLogin />} />
         <Route path="/admin/home" element={<AdminHome />} />
         <Route path="/admin/manajemen-berita" element={<ManajemenBerita />} />
         <Route path="/admin/manajemen-galeri" element={<ManajemenGaleri />} />

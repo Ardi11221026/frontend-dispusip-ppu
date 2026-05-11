@@ -49,20 +49,38 @@ export default function BukuTamuDigitalPetugas() {
           </div>
 
           <div className="mt-4 overflow-x-auto">
-            <table className="w-full text-sm border-collapse min-w-[720px]">
+            <table className="w-full text-sm border-collapse min-w-[900px]">
               <thead className="bg-slate-50">
                 <tr>
                   <th className="px-4 py-3 text-left font-semibold text-slate-700">ID</th>
-                  <th className="px-4 py-3 text-left font-semibold text-slate-700">Tipe</th>
-                  <th className="px-4 py-3 text-left font-semibold text-slate-700">Ringkasan</th>
                   <th className="px-4 py-3 text-left font-semibold text-slate-700">Waktu</th>
+                  {(!category || category === 'non-anggota') && (
+                    <>
+                      <th className="px-4 py-3 text-left font-semibold text-slate-700">Nama</th>
+                      <th className="px-4 py-3 text-left font-semibold text-slate-700">JK</th>
+                      <th className="px-4 py-3 text-left font-semibold text-slate-700">Umur</th>
+                    </>
+                  )}
+                  {category === 'anggota' && (
+                    <>
+                      <th className="px-4 py-3 text-left font-semibold text-slate-700">Nama</th>
+                      <th className="px-4 py-3 text-left font-semibold text-slate-700">No. Anggota</th>
+                    </>
+                  )}
+                  {category === 'rombongan' && (
+                    <>
+                      <th className="px-4 py-3 text-left font-semibold text-slate-700">Asal Instansi</th>
+                      <th className="px-4 py-3 text-left font-semibold text-slate-700">Penanggungjawab</th>
+                      <th className="px-4 py-3 text-left font-semibold text-slate-700">Kontak</th>
+                    </>
+                  )}
                   <th className="px-4 py-3 text-center font-semibold text-slate-700">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {entries.length === 0 && (
                   <tr>
-                    <td colSpan="5" className="px-4 py-12 text-center text-slate-400">
+                    <td colSpan="10" className="px-4 py-12 text-center text-slate-400">
                       <div className="flex flex-col items-center gap-2">
                         <p className="text-lg font-medium text-slate-500">Tidak ada entri</p>
                         <p className="text-xs">Belum ada data pengunjung untuk kategori ini.</p>
@@ -74,20 +92,31 @@ export default function BukuTamuDigitalPetugas() {
                 {entries.map((e) => (
                   <tr key={e.id} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
                     <td className="px-4 py-4 font-mono text-xs font-semibold text-blue-600">{e.id}</td>
-                    <td className="px-4 py-4">
-                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        e.type === 'rombongan' ? 'bg-purple-100 text-purple-800' :
-                        e.type === 'anggota' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'
-                      }`}>
-                        {e.type}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4 text-slate-700 font-medium">
-                      {e.type === 'anggota' && `${e.data.nama} — #${e.data.nomorAnggota}`}
-                      {e.type === 'non-anggota' && `${e.data.nama} — ${e.data.jenisKelamin} — ${e.data.umur} th`}
-                      {e.type === 'rombongan' && `${e.data.asalSekolah} — ${e.data.penanggungjawab}`}
-                    </td>
-                    <td className="px-4 py-4 text-slate-500">{new Date(e.createdAt).toLocaleString()}</td>
+                    <td className="px-4 py-4 text-slate-500 text-xs">{new Date(e.createdAt).toLocaleString()}</td>
+                    
+                    {(!category || category === 'non-anggota') && (
+                      <>
+                        <td className="px-4 py-4 text-slate-700 font-medium">{e.data.nama || '-'}</td>
+                        <td className="px-4 py-4 text-slate-600">{e.data.jenisKelamin || '-'}</td>
+                        <td className="px-4 py-4 text-slate-600">{e.data.umur ? `${e.data.umur} th` : '-'}</td>
+                      </>
+                    )}
+                    
+                    {category === 'anggota' && (
+                      <>
+                        <td className="px-4 py-4 text-slate-700 font-medium">{e.data.nama || '-'}</td>
+                        <td className="px-4 py-4 font-mono text-blue-600 text-xs">{e.data.nomorAnggota || '-'}</td>
+                      </>
+                    )}
+
+                    {category === 'rombongan' && (
+                      <>
+                        <td className="px-4 py-4 text-slate-700 font-medium">{e.data.asalSekolah || '-'}</td>
+                        <td className="px-4 py-4 text-slate-600">{e.data.penanggungjawab || '-'}</td>
+                        <td className="px-4 py-4 text-slate-600">{e.data.kontak || '-'}</td>
+                      </>
+                    )}
+
                     <td className="px-4 py-4 text-center">
                       <div className="inline-flex items-center gap-2">
                         <button type="button" title="Lihat detail" onClick={() => alert(JSON.stringify(e, null, 2))} className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm">
