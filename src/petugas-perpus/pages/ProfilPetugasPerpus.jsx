@@ -115,42 +115,35 @@ export default function ProfilPetugasPerpus() {
     <PetugasLayout>
       <div className="flex min-h-[calc(100vh-10rem)] items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
         <div className="w-full max-w-2xl overflow-hidden rounded-3xl bg-white shadow-2xl ring-1 ring-black/5">
-          <div className="bg-gradient-to-r from-blue-900 via-emerald-700 to-teal-700 px-6 py-8 text-white sm:px-8">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-4 border-amber-300 bg-white shadow-lg">
-              {previewPhoto ? (
-                <img src={previewPhoto} alt="Foto profil petugas" className="h-full w-full object-cover" />
-              ) : (
-                <UserCircle2 size={48} className="text-blue-900" />
-              )}
-            </div>
-            <h1 className="mt-5 text-center text-3xl font-bold sm:text-4xl">Pengaturan Akun</h1>
-            <p className="mt-2 text-center text-blue-100">Profil petugas perpustakaan</p>
-          </div>
-
-          <div className="space-y-6 px-6 py-6 sm:px-8">
-            <div className="grid gap-5 sm:grid-cols-[180px_1fr] sm:items-start">
-              <div className="space-y-3">
-                <div className="flex items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3">
-                  <div className="flex h-36 w-36 items-center justify-center overflow-hidden rounded-2xl border-4 border-amber-200 bg-white shadow-sm">
-                    {previewPhoto ? (
-                      <img src={previewPhoto} alt="Foto profil petugas" className="h-full w-full object-cover" />
-                    ) : (
-                      <UserCircle2 size={84} className="text-blue-900" />
-                    )}
-                  </div>
+          <div className="bg-gradient-to-r from-blue-900 via-emerald-700 to-teal-700 px-6 py-12 text-white sm:px-8">
+            <div className="flex flex-col items-center justify-center">
+              <div className="relative group">
+                <div className="h-32 w-32 overflow-hidden rounded-full border-4 border-amber-300 bg-white shadow-2xl transition-transform hover:scale-105">
+                  {previewPhoto ? (
+                    <img src={previewPhoto} alt="Foto profil petugas" className="h-full w-full object-cover" />
+                  ) : (
+                    <UserCircle2 size={84} className="h-full w-full p-4 text-blue-900" />
+                  )}
                 </div>
-                <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
                 <button
                   type="button"
                   onClick={handlePhotoPick}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                  className="absolute bottom-0 right-0 rounded-full bg-amber-400 p-2 text-blue-900 shadow-lg transition hover:bg-amber-300 active:scale-95"
+                  title="Ubah Foto"
                 >
-                  <Upload size={16} />
-                  Ubah Foto Profil
+                  <Upload size={20} />
                 </button>
               </div>
+              
+              <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
+              
+              <h1 className="mt-6 text-2xl font-bold sm:text-3xl">Profil Petugas</h1>
+              <p className="text-blue-100 opacity-80 text-sm">Kelola informasi akun Anda di sini</p>
+            </div>
+          </div>
 
-              <div className="space-y-4">
+          <div className="space-y-6 px-6 py-10 sm:px-12">
+            <div className="mx-auto max-w-xl space-y-5">
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-700">Nama</label>
                   <input
@@ -191,8 +184,6 @@ export default function ProfilPetugasPerpus() {
                     <PencilLine size={16} />
                     Edit Profil
                   </button>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -207,30 +198,30 @@ export default function ProfilPetugasPerpus() {
                 <p className="mt-1 text-sm text-blue-100">Ubah nama, password, dan foto profil petugas.</p>
               </div>
 
-              <div className="space-y-5 px-6 py-6 sm:px-8">
-                <div className="grid gap-5 sm:grid-cols-[180px_1fr] sm:items-start">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3">
-                      <div className="flex h-36 w-36 items-center justify-center overflow-hidden rounded-2xl border-4 border-amber-200 bg-white shadow-sm">
-                        {previewPhoto ? (
-                          <img src={previewPhoto} alt="Foto profil petugas" className="h-full w-full object-cover" />
-                        ) : (
-                          <UserCircle2 size={84} className="text-blue-900" />
-                        )}
-                      </div>
+              <div className="space-y-6 px-6 py-8 sm:px-8">
+                <div className="flex flex-col items-center justify-center">
+                  <div className="relative group">
+                    <div className="h-28 w-28 overflow-hidden rounded-full border-4 border-amber-300 bg-white shadow-xl transition-transform hover:scale-105">
+                      {previewPhoto ? (
+                        <img src={previewPhoto} alt="Foto profil petugas" className="h-full w-full object-cover" />
+                      ) : (
+                        <UserCircle2 size={64} className="h-full w-full p-3 text-blue-900" />
+                      )}
                     </div>
-                    <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
                     <button
                       type="button"
                       onClick={handlePhotoPick}
-                      className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                      className="absolute bottom-0 right-0 rounded-full bg-amber-400 p-1.5 text-blue-900 shadow-md transition hover:bg-amber-300 active:scale-95"
+                      title="Ubah Foto"
                     >
                       <Upload size={16} />
-                      Ubah Foto Profil
                     </button>
                   </div>
+                  <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
+                  <p className="mt-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Ubah Foto Profil</p>
+                </div>
 
-                  <div className="space-y-4">
+                <div className="mx-auto max-w-sm space-y-4">
                     <div>
                       <label className="mb-2 block text-sm font-semibold text-slate-700">Nama</label>
                       <input
@@ -279,7 +270,6 @@ export default function ProfilPetugasPerpus() {
                         </button>
                       </div>
                       {errors.password ? <p className="mt-1 text-xs text-red-600">{errors.password}</p> : null}
-                    </div>
                   </div>
                 </div>
 
