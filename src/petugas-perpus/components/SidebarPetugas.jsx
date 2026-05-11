@@ -70,28 +70,16 @@ export default function SidebarPetugas({ activeMenu, open, onClose, onLogout, se
     if (item.id === 'akuisisi') {
       setActiveMenu?.('akuisisi');
       setIsAkuisisiOpen((previous) => !previous);
-
-      if (!location.pathname.startsWith('/back-office/akuisisi')) {
-        navigate('/back-office/akuisisi', { state: { activeMenu: 'akuisisi' } });
-      }
       return;
     }
      if (item.id === 'katalog') {
        setActiveMenu?.('katalog');
        setIsKatalogOpen((previous) => !previous);
-
-       if (!location.pathname.startsWith('/back-office/katalog')) {
-         navigate('/back-office/katalog', { state: { activeMenu: 'katalog' } });
-       }
        return;
      }
      if (item.id === 'buku-tamu-digital') {
        setActiveMenu?.('buku-tamu-digital');
        setIsBukuTamuOpen((previous) => !previous);
-
-       if (!location.pathname.startsWith('/back-office/buku-tamu-digital')) {
-         navigate('/back-office/buku-tamu-digital', { state: { activeMenu: 'buku-tamu-digital' } });
-       }
        return;
      }
 
