@@ -80,13 +80,6 @@ function App() {
         <Route path="/galeri" element={<Galeri />} />
         <Route path="/buku-tamu-digital" element={<BukuTamuDigital />} />
         <Route path="/back-office/buku-tamu-digital" element={<BukuTamuDigitalPetugas />} />
-        {bukuTamuDigitalSubmenus.map((submenu) => (
-          <Route
-            key={submenu.id}
-            path={submenu.to}
-            element={<BukuTamuDigitalPetugas />}
-          />
-        ))}
         <Route path="/back-office/buku-tamu-digital/:category" element={<BukuTamuDigitalPetugas />} />
         
         {/* Profile Pages */}

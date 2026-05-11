@@ -31,7 +31,7 @@ export default function BukuTamuDigitalPetugas() {
   };
 
   const getTitle = () => {
-    if (category === 'non-anggota') return 'Buku Tamu: Non Anggota';
+    if (category === 'non-anggota') return 'Buku Tamu: Non-Anggota';
     if (category === 'anggota') return 'Buku Tamu: Anggota';
     if (category === 'rombongan') return 'Buku Tamu: Rombongan';
     return 'Buku Tamu Digital (Semua)';
