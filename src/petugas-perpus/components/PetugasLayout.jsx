@@ -6,6 +6,7 @@ import Footer2 from '../../shared/components/Footer2';
 import HeaderDateTime from '../../shared/components/HeaderDateTime';
 import { akuisisiSubmenus } from '../akuisisiSubmenus';
 import { katalogSubmenus } from '../katalogSubmenus';
+import { bukuTamuDigitalSubmenus } from '../bukuTamuDigitalSubmenus';
 
 export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
   const navigate = useNavigate();
