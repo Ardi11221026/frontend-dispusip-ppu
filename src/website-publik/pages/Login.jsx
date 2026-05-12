@@ -1,3 +1,4 @@
+// Halaman Login Anggota
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Lock, ArrowLeft } from 'lucide-react';
@@ -6,8 +7,10 @@ import Footer from '../components/Footer';
 
 export default function Login() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ memberNumber: '', password: '' });
+  const [formData, setFormData] = useState({ memberNumber: 'PPU-0000', password: 'password123' });
   const [errors, setErrors] = useState({});
+
+  const [loginError, setLoginError] = useState('');
 
   const validateForm = () => {
     const nextErrors = {};
@@ -21,9 +24,39 @@ export default function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoginError('');
+
     if (!validateForm()) return;
 
-    navigate('/');
+    // Ambil data dari localStorage
+    const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    
+    // Cari user yang cocok
+    const searchMemberNumber = formData.memberNumber.trim().toUpperCase();
+    const searchPassword = formData.password.trim();
+
+    const user = registeredUsers.find(
+      u => (u.memberNumber || '').toUpperCase() === searchMemberNumber && u.password === searchPassword
+    );
+
+    if (user) {
+      // Login Berhasil
+      localStorage.setItem('userRole', 'anggota');
+      localStorage.setItem('userName', user.name);
+      localStorage.setItem('userEmail', user.email);
+      localStorage.setItem('memberId', user.memberId);
+      
+      navigate('/anggota/beranda');
+    } else {
+      // Cek apakah ini login admin/petugas (opsional, jika ingin disatukan)
+      if (formData.memberNumber === 'admin' && formData.password === 'admin123') {
+        localStorage.setItem('userRole', 'admin');
+        localStorage.setItem('userName', 'Administrator');
+        navigate('/admin/home');
+      } else {
+        setLoginError('Nomor Anggota atau Password salah. Silakan coba lagi.');
+      }
+    }
   };
 
   return (
@@ -47,6 +80,12 @@ export default function Login() {
           <h1 className="text-3xl font-extrabold text-gray-900 text-center mb-2">Login Anggota</h1>
           <p className="text-center text-gray-500 mb-10">Masuk untuk melanjutkan peminjaman buku</p>
           
+          {loginError && (
+            <div className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-100 text-rose-600 text-sm font-medium text-center animate-in fade-in slide-in-from-top-2 duration-300">
+               {loginError}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label className="text-sm font-bold text-gray-700 ml-1">Nomor Anggota</label>

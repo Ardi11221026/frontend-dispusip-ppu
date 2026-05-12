@@ -1,77 +1,41 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, Menu, X, Settings } from 'lucide-react';
+import { ChevronDown, Menu, X, User, Settings, LogOut } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import SidebarPetugas from './SidebarPetugas';
+import SidebarAnggota from './SidebarAnggota';
 import Footer2 from '../../shared/components/Footer2';
 import HeaderDateTime from '../../shared/components/HeaderDateTime';
-import { akuisisiSubmenus } from '../akuisisiSubmenus';
-import { katalogSubmenus } from '../katalogSubmenus';
-import { bukuTamuDigitalSubmenus } from '../bukuTamuDigitalSubmenus';
 
-export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
+export default function AnggotaLayout({ children, activeMenu, setActiveMenu }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef(null);
 
-  const akuisisiPathToMenu = Object.fromEntries(akuisisiSubmenus.map((submenu) => [submenu.to, submenu.id]));
-  const akuisisiTitleMap = Object.fromEntries(akuisisiSubmenus.map((submenu) => [submenu.id, submenu.label]));
-
-  const katalogPathToMenu = Object.fromEntries(katalogSubmenus.map((submenu) => [submenu.to, submenu.id]));
-  const katalogTitleMap = Object.fromEntries(katalogSubmenus.map((submenu) => [submenu.id, submenu.label]));
-
-  const visitorPathToMenu = Object.fromEntries(bukuTamuDigitalSubmenus.map((submenu) => [submenu.to, submenu.id]));
-  const visitorTitleMap = Object.fromEntries(bukuTamuDigitalSubmenus.map((submenu) => [submenu.id, `Buku Tamu: ${submenu.label}`]));
-
   const pathToMenuKey = {
-    '/back-office/home': 'beranda',
-    '/back-office/beranda': 'beranda',
-    '/back-office/akuisisi': 'akuisisi',
-    ...akuisisiPathToMenu,
-    ...katalogPathToMenu,
-    ...visitorPathToMenu,
-    '/back-office/katalog': 'katalog',
-    '/back-office/keanggotaan': 'keanggotaan',
-    '/back-office/sirkulasi': 'sirkulasi',
-    '/back-office/buku-tamu-digital': 'buku-tamu-digital',
-    '/back-office/opac': 'opac',
-    '/back-office/layanan-koleksi-digital': 'layanan-koleksi-digital',
-    '/back-office/baca-ditempat': 'baca-ditempat',
-    '/back-office/laporan': 'laporan',
-    '/back-office/manajemen-berita': 'berita',
-    '/back-office/manajemen-galeri': 'galeri',
-    '/back-office/manajemen-konten': 'konten',
-    '/back-office/manajemen-konten/banner': 'konten',
-    '/back-office/administrasi': 'administrasi',
-    '/profil-petugas-perpus': 'pengaturan-akun',
+    '/anggota/beranda': 'beranda',
+    '/anggota/opac': 'opac',
+    '/anggota/keranjang': 'keranjang',
+    '/anggota/riwayat': 'riwayat',
+    '/anggota/profil': 'profil',
   };
+
   const menuKey = activeMenu || pathToMenuKey[location.pathname] || 'beranda';
+  
   const titleByMenu = {
-    beranda: 'Beranda',
-    akuisisi: 'Akuisisi',
-    katalog: 'Katalog',
-    keanggotaan: 'Keanggotaan',
-    sirkulasi: 'Sirkulasi',
-    'buku-tamu-digital': 'Buku Tamu Digital',
-    opac: 'OPAC',
-    'layanan-koleksi-digital': 'Layanan Koleksi Digital',
-    'baca-ditempat': 'Baca Ditempat',
-    laporan: 'Laporan',
-    berita: 'Manajemen Berita',
-    galeri: 'Manajemen Galeri',
-    konten: 'Manajemen Konten',
-    administrasi: 'Administrasi',
-    'pengaturan-akun': 'Pengaturan Akun',
-    ...akuisisiTitleMap,
-    ...katalogTitleMap,
-    ...visitorTitleMap,
+    beranda: 'Dashboard Anggota',
+    opac: 'Katalog Buku (OPAC)',
+    keranjang: 'Keranjang Pinjam',
+    riwayat: 'Riwayat Pinjam',
+    profil: 'Profil Saya',
   };
 
   useEffect(() => {
     const userRole = localStorage.getItem('userRole');
-    if (userRole !== 'petugas') {
-      navigate('/back-office/login');
+    // Jika tidak ada userRole atau bukan anggota/petugas, redirect ke login
+    // Note: Kita izinkan petugas masuk ke area anggota jika perlu, tapi standarnya adalah 'anggota'
+    if (!userRole) {
+      navigate('/login');
     }
   }, [navigate]);
 
@@ -89,16 +53,17 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
   const handleLogout = () => {
     localStorage.removeItem('userRole');
     localStorage.removeItem('userEmail');
-    navigate('/back-office/login');
+    localStorage.removeItem('userName');
+    navigate('/login');
   };
 
   const handleOpenProfile = () => {
     setProfileMenuOpen(false);
-    navigate('/profil-petugas-perpus');
+    navigate('/anggota/profil');
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-poppins">
       <div className="flex flex-1 items-stretch">
         {sidebarOpen && (
           <button
@@ -109,7 +74,7 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
           />
         )}
 
-        <SidebarPetugas
+        <SidebarAnggota
           activeMenu={activeMenu}
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
@@ -119,16 +84,16 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
         />
 
         <div className="flex min-h-0 flex-1 flex-col">
-          <div className="sticky top-0 z-40 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-4 shadow-sm sm:px-6 relative">
+          <header className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 shadow-sm sm:px-6 relative">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setSidebarOpen((prevOpen) => !prevOpen)}
-                className="md:hidden rounded-lg p-2 transition hover:bg-gray-100"
+                className="md:hidden rounded-lg p-2 transition hover:bg-slate-100"
               >
                 {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
-              <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">
-                {titleByMenu[menuKey] || 'Petugas'}
+              <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">
+                {titleByMenu[menuKey] || 'Anggota'}
               </h2>
             </div>
 
@@ -143,11 +108,11 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
                 className="flex items-center gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 shadow-sm transition hover:bg-amber-100 xl:gap-3 xl:px-4"
               >
                 <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
-                  <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
+                   <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
                 </div>
                 <div className="hidden text-right leading-tight xl:block">
                   <p className="text-sm font-bold text-blue-950">
-                    {localStorage.getItem('userName') || localStorage.getItem('userEmail') || 'Petugas'}
+                    {localStorage.getItem('userName') || 'Anggota'}
                   </p>
                 </div>
                 <ChevronDown size={16} className={`text-amber-700 transition-transform ${profileMenuOpen ? 'rotate-180' : ''}`} />
@@ -165,16 +130,27 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
                     </span>
                     Pengaturan Akun
                   </button>
+                  <div className="border-t border-slate-100" />
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                  >
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-50 text-red-600">
+                      <LogOut size={14} />
+                    </span>
+                    Keluar
+                  </button>
                 </div>
               )}
             </div>
 
+            {/* Mobile Header Elements */}
             <div className="flex items-center gap-2 md:hidden">
-              <HeaderDateTime compact />
               <button
                 type="button"
                 onClick={() => setProfileMenuOpen((prevOpen) => !prevOpen)}
-                className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-2.5 py-2 shadow-sm"
+                className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-2 py-2 shadow-sm"
               >
                 <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-300">
                   <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
@@ -188,15 +164,19 @@ export default function PetugasLayout({ children, activeMenu, setActiveMenu }) {
                     onClick={handleOpenProfile}
                     className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
                   >
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-700">⚙</span>
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-700">
+                      <Settings size={14} />
+                    </span>
                     Pengaturan Akun
                   </button>
                 </div>
               )}
             </div>
-          </div>
+          </header>
 
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 bg-slate-50">
+            {children}
+          </main>
         </div>
       </div>
 

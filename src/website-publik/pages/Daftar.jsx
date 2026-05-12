@@ -1,3 +1,4 @@
+// Halaman Pendaftaran Anggota
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Phone, Lock, MapPin, ArrowLeft } from 'lucide-react';
@@ -6,7 +7,13 @@ import Footer from '../components/Footer';
 
 export default function Daftar() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', password: '', address: '' });
+  const [formData, setFormData] = useState({ 
+    name: 'Ardi', 
+    email: 'ardiduisaputra@gmail.com', 
+    phone: '0895342503504', 
+    password: 'password123', 
+    address: 'gunsel' 
+  });
   const [errors, setErrors] = useState({});
 
   const validateEmail = (value) => /.+@.+\..+/.test(value);
@@ -31,8 +38,21 @@ export default function Daftar() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!validateForm()) return;
-
-    navigate('/login');
+    
+    // Gunakan format PPU-0000 untuk dummy (bisa dirandom 4 digit jika perlu, tapi kita pakai PPU-0000 untuk contoh ini)
+    const memberId = 'PPU-0000';
+    
+    // Simpan data pendaftar ke localStorage sebagai 'pending'
+    const pendingData = {
+      ...formData,
+      memberId,
+      status: 'Pending Verification'
+    };
+    
+    localStorage.setItem('pendingUser', JSON.stringify(pendingData));
+    
+    // Alihkan ke halaman verifikasi terpisah
+    navigate('/verifikasi');
   };
 
   return (
@@ -40,7 +60,7 @@ export default function Daftar() {
       <Header />
       
       <div className="flex-1 py-16 px-4">
-        <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-lg border border-gray-100 p-10">
+        <div className="max-w-xl mx-auto bg-white rounded-3xl shadow-lg border border-gray-100 p-10">
           <button 
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold mb-8 transition-colors"
@@ -54,7 +74,7 @@ export default function Daftar() {
             <p className="text-gray-500">Lengkapi data diri Anda untuk mendapatkan nomor anggota</p>
           </div>
           
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-bold text-gray-700 ml-1">Nama Lengkap</label>
               <div className="relative">
@@ -131,7 +151,7 @@ export default function Daftar() {
               {errors.password ? <p className="mt-1 text-xs text-red-600">{errors.password}</p> : null}
             </div>
 
-            <div className="space-y-2 md:col-span-2">
+            <div className="space-y-2">
               <label className="text-sm font-bold text-gray-700 ml-1">Alamat Lengkap</label>
               <div className="relative">
                 <MapPin className="absolute left-4 top-4 text-gray-400 w-5 h-5" />
@@ -150,7 +170,7 @@ export default function Daftar() {
               {errors.address ? <p className="mt-1 text-xs text-red-600">{errors.address}</p> : null}
             </div>
 
-            <div className="md:col-span-2 mt-4">
+            <div className="mt-4">
               <button 
                 type="submit"
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-500/25 transition-all"

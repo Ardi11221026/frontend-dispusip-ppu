@@ -79,8 +79,7 @@ export default function AdminLayout({ children, activeMenu, setActiveMenu }) {
                 <img src="/logo/Logo%20Perpusnas.png" alt="Logo Perpusnas" className="h-full w-full object-contain p-1" />
               </div>
               <div className="text-right leading-tight">
-                <p className="text-sm font-bold text-blue-950">{localStorage.getItem('userEmail') || 'admin@perpus.id'}</p>
-                <p className="text-xs text-amber-700">Administrator</p>
+                <p className="text-sm font-bold text-blue-950">{localStorage.getItem('userName') || 'Administrator'}</p>
               </div>
             </div>
 

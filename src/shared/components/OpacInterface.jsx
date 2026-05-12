@@ -131,16 +131,28 @@ const CarouselSection = ({ title, books, onBookClick }) => {
   );
 };
 
-export default function OpacInterface({ isPetugas = false }) {
+export default function OpacInterface({ isPetugas = false, isAnggota = false }) {
   const [selectedBook, setSelectedBook] = useState(null);
   const [activeTab, setActiveTab] = useState('cari');
   const [searchTerm, setSearchTerm] = useState("");
   const [errors, setErrors] = useState({});
 
+  const handleAddToCart = (book) => {
+    // Logic for adding to cart
+    alert(`Buku "${book.title}" ditambahkan ke keranjang pinjam.`);
+    setSelectedBook(null);
+  };
+
+  const handleBorrowNow = (book) => {
+    // Logic for borrowing immediately
+    alert(`Permintaan peminjaman buku "${book.title}" dikirim. Silakan cek menu Keranjang untuk konfirmasi.`);
+    setSelectedBook(null);
+  };
+
   return (
     <div className="bg-white font-poppins">
       {/* Search Hero Section */}
-      <div className={`${isPetugas ? 'bg-slate-50' : 'bg-[#D1D9FF] pt-24'} pb-16 px-4`}>
+      <div className={`${(isPetugas || isAnggota) ? 'bg-slate-50' : 'bg-[#D1D9FF] pt-24'} pb-16 px-4`}>
         <div className="max-w-6xl mx-auto">
           {/* Tabs */}
           <div className="flex gap-1 mb-0">
@@ -225,7 +237,7 @@ export default function OpacInterface({ isPetugas = false }) {
       </div>
 
       {/* Main Content Sections */}
-      <main className="max-w-6xl mx-auto px-4 py-12">
+      <main className={`max-w-6xl mx-auto px-4 ${isAnggota ? 'py-6' : 'py-12'}`}>
         <CarouselSection 
           title="KOLEKSI SERING DI PINJAM" 
           books={booksData} 
@@ -260,15 +272,15 @@ export default function OpacInterface({ isPetugas = false }) {
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <div className="md:w-2/3 p-8 md:p-12 overflow-y-auto relative flex flex-col">
+              <div className="md:w-2/3 p-8 md:p-10 overflow-y-auto relative flex flex-col">
                 <button 
                   onClick={() => setSelectedBook(null)}
-                  className="absolute top-8 right-8 hidden md:block text-gray-400 hover:text-gray-900 transition-colors p-2 hover:bg-gray-100 rounded-full"
+                  className="absolute top-6 right-6 hidden md:block text-gray-400 hover:text-gray-900 transition-colors p-2 hover:bg-gray-100 rounded-full"
                 >
                   <X className="w-6 h-6" />
                 </button>
                 
-                <div className="mb-8">
+                <div className="mb-6">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold uppercase tracking-wider">
                       {selectedBook.category}
@@ -279,11 +291,11 @@ export default function OpacInterface({ isPetugas = false }) {
                       {selectedBook.status}
                     </span>
                   </div>
-                  <h2 className="text-3xl font-extrabold text-gray-900 mb-2 leading-tight">{selectedBook.title}</h2>
+                  <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2 leading-tight">{selectedBook.title}</h2>
                   <p className="text-lg text-gray-600 font-medium">{selectedBook.author}</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-6 mb-8 bg-gray-50 p-6 rounded-xl border border-gray-100">
+                <div className="grid grid-cols-2 gap-4 mb-6 bg-gray-50 p-4 rounded-xl border border-gray-100">
                   <div>
                     <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Penerbit</p>
                     <p className="font-semibold text-gray-900 text-sm">{selectedBook.publisher}</p>
@@ -294,20 +306,46 @@ export default function OpacInterface({ isPetugas = false }) {
                   </div>
                 </div>
 
-                <div className="mb-10">
-                  <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <div className="mb-8">
+                  <h4 className="font-bold text-gray-900 mb-2 flex items-center gap-2 text-sm">
                     <Book className="w-4 h-4 text-blue-600" />
                     Detail Koleksi
                   </h4>
                   <p className="text-gray-600 leading-relaxed text-sm">
-                    {selectedBook.description} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    {selectedBook.description} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                   </p>
                 </div>
 
-                <div className="mt-auto">
+                <div className="mt-auto pt-4 flex flex-col gap-3">
+                  {isAnggota && selectedBook.status === 'Tersedia' ? (
+                    <div className="grid grid-cols-2 gap-3">
+                      <button 
+                        onClick={() => handleAddToCart(selectedBook)}
+                        className="flex-1 bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-bold py-3.5 px-6 rounded-xl transition-all flex items-center justify-center gap-2"
+                      >
+                        + Keranjang
+                      </button>
+                      <button 
+                        onClick={() => handleBorrowNow(selectedBook)}
+                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-2"
+                      >
+                        Pinjam Sekarang
+                      </button>
+                    </div>
+                  ) : isAnggota && selectedBook.status !== 'Tersedia' ? (
+                    <button 
+                      disabled
+                      className="w-full bg-gray-100 text-gray-400 font-bold py-3.5 px-6 rounded-xl cursor-not-allowed"
+                    >
+                      Buku Tidak Tersedia
+                    </button>
+                  ) : null}
+                  
                   <button 
                     onClick={() => setSelectedBook(null)}
-                    className="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 px-8 rounded-xl transition-all flex items-center justify-center gap-2"
+                    className={`w-full font-bold py-3.5 px-6 rounded-xl transition-all flex items-center justify-center gap-2 ${
+                      isAnggota ? 'bg-gray-100 text-gray-600 hover:bg-gray-200' : 'bg-slate-800 hover:bg-slate-900 text-white'
+                    }`}
                   >
                     Tutup
                   </button>
@@ -317,6 +355,7 @@ export default function OpacInterface({ isPetugas = false }) {
           </div>
         </div>
       )}
+
 
       {/* Global CSS for hiding scrollbar */}
       <style dangerouslySetInnerHTML={{ __html: `
