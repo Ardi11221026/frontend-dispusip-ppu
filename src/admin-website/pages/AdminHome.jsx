@@ -22,7 +22,7 @@ export default function AdminHome() {
   useEffect(() => {
     const userRole = localStorage.getItem('userRole');
     if (userRole !== 'admin') {
-      navigate('/admin/login');
+      navigate('/back-office/login');
     }
   }, [navigate]);
 

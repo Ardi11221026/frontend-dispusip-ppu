@@ -24,7 +24,7 @@ export default function ManajemenPetugas() {
 
   useEffect(() => {
     if (localStorage.getItem('userRole') !== 'admin') {
-      navigate('/admin/login');
+      navigate('/back-office/login');
     }
   }, [navigate]);
 

@@ -24,14 +24,14 @@ export default function AdminLayout({ children, activeMenu, setActiveMenu }) {
   useEffect(() => {
     const userRole = localStorage.getItem('userRole');
     if (userRole !== 'admin') {
-      navigate('/admin/login');
+      navigate('/back-office/login');
     }
   }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem('userRole');
     localStorage.removeItem('userEmail');
-    navigate('/admin-website-dispusip-ppu');
+    navigate('/back-office/login');
   };
 
   return (

@@ -9,7 +9,7 @@ export default function AdminExportData() {
 
   useEffect(() => {
     if (localStorage.getItem('userRole') !== 'admin') {
-      navigate('/admin/login');
+      navigate('/back-office/login');
     }
   }, [navigate]);
 

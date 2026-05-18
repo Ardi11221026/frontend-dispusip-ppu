@@ -165,20 +165,6 @@ export default function BackOfficeLogin() {
             </div>
           </div>
         </div>
-
-        {/* Info Box */}
-        <div className="mt-6 flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-          <div className="shrink-0 bg-white/10 backdrop-blur border border-white/20 rounded-xl p-4 text-white text-xs w-56">
-            <p className="font-bold mb-2 text-amber-300">ADMINISTRATOR:</p>
-            <p className="opacity-80">Email: admin@perpus.id</p>
-            <p className="opacity-80">Pass: admin123</p>
-          </div>
-          <div className="shrink-0 bg-white/10 backdrop-blur border border-white/20 rounded-xl p-4 text-white text-xs w-56">
-            <p className="font-bold mb-2 text-sky-300">PETUGAS PERPUS:</p>
-            <p className="opacity-80">Email: petugas@perpus.id</p>
-            <p className="opacity-80">Pass: password123</p>
-          </div>
-        </div>
       </div>
     </div>
   );

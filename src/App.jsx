@@ -35,7 +35,6 @@ import LayananKoleksiDigital from './petugas-perpus/pages/LayananKoleksiDigital'
 import BacaDitempat from './petugas-perpus/pages/BacaDitempat';
 import Laporan from './petugas-perpus/pages/Laporan';
 import Administrasi from './petugas-perpus/pages/Administrasi';
-import AdminLogin from './admin-website/pages/AdminLogin';
 import AdminHome from './admin-website/pages/AdminHome';
 import ManajemenBerita from './admin-website/pages/ManajemenBerita';
 import ManajemenGaleri from './admin-website/pages/ManajemenGaleri';
